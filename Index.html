@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ElectroBrain V2 ⚡ — Richmond Owsu</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f8fc;--card:#fff;--text:#172033;--muted:#687386;--blue:#1769e8;--blue2:#0d55c7;--line:#dfe6ef;--green:#16a66a;--red:#df3f52}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;transition:.25s}
+body.dark{--bg:#101722;--card:#172231;--text:#f1f5fb;--muted:#aab5c5;--line:#29384b}
+button,input,select{font:inherit}button{cursor:pointer}
+header{height:68px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:800}.logo span{color:var(--blue)}
+.bolt{width:37px;height:37px;border-radius:50%;background:var(--blue);color:white;display:grid;place-items:center}
+nav{display:flex;gap:23px}nav a{font-size:14px;font-weight:bold;color:var(--muted);cursor:pointer}nav a:hover{color:var(--blue)}
+.headerBtns{display:flex;gap:8px}.headBtn{width:36px;height:36px;border:0;border-radius:50%;background:#edf3fa;color:var(--text)}
+main{max-width:1200px;margin:auto;padding:35px 5%}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}.tag{color:var(--blue);font-weight:bold;margin-bottom:9px}
+.hero h1{font-size:47px;line-height:1.08;margin-bottom:15px}.hero h1 span{color:var(--blue)}.hero p{color:var(--muted);line-height:1.65;font-size:16px}
+.stats{display:flex;gap:10px;margin-top:25px}.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;min-width:105px}.stat b{display:block;color:var(--blue);font-size:19px}.stat small{color:var(--muted)}
+.quick,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:23px;box-shadow:0 10px 30px rgba(20,40,70,.05)}
+.quick h2{margin-bottom:15px}input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--text);outline:none}
+.primary{border:0;background:var(--blue);color:white;border-radius:9px;padding:12px 16px;font-weight:bold}.primary:hover{background:var(--blue2)}
+.secondary{border:1px solid var(--blue);background:transparent;color:var(--blue);padding:10px 14px;border-radius:8px}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin:42px 0 18px}.sectionTitle h2{font-size:22px}.link{color:var(--blue);font-size:13px;font-weight:bold;cursor:pointer}
+.grid,.learnGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:20px;transition:.2s}
+.card:hover{transform:translateY(-3px);border-color:#9bbef5;box-shadow:0 9px 22px rgba(23,105,232,.08)}
+.icon{width:48px;height:48px;border-radius:12px;background:#edf5ff;color:var(--blue);display:grid;place-items:center;font-size:21px;margin-bottom:13px}
+.card h3{font-size:16px;margin-bottom:7px}.card p{color:var(--muted);font-size:13px;line-height:1.55}.card button{margin-top:15px}
+.lesson{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:21px}.lesson .big{font-size:28px;margin-bottom:12px}.lesson h3{margin-bottom:8px}.lesson p{color:var(--muted);font-size:14px;line-height:1.6}.lesson button{margin-top:14px}
+.formulaBox{background:#edf5ff;color:#0d55c7;padding:12px;border-radius:8px;font-weight:bold;margin:10px 0}body.dark .formulaBox{background:#102c55;color:#7fb1ff}
+.diagram{background:#0e1824;color:#e9f1ff;border-radius:14px;padding:20px;overflow:auto;margin-top:12px}.diagram pre{font-family:monospace;font-size:13px;line-height:1.5;min-width:520px}
+.faults{display:grid;gap:10px}.fault{border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden}.faultHead{padding:15px;display:flex;justify-content:space-between;font-weight:bold;cursor:pointer}.faultBody{display:none;padding:0 15px 15px;color:var(--muted);line-height:1.7}
+.labTabs{display:flex;gap:8px;overflow:auto;margin-bottom:18px}.labTabs button{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:8px}.labTabs button.active{background:var(--blue);color:white}
+.practice{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:23px}.progress{height:8px;background:#e7edf5;border-radius:20px;margin:14px 0 24px;overflow:hidden}.progressBar{height:100%;background:var(--blue);width:0}
+.question{font-size:18px;line-height:1.6;margin-bottom:17px}.options{display:grid;gap:9px}.option{text-align:left;border:1px solid var(--line);background:var(--card);color:var(--text);padding:13px;border-radius:9px}.option:hover{border-color:var(--blue)}.option.correct{background:#eafaf3;border-color:var(--green)}.option.wrong{background:#fff0f2;border-color:var(--red)}
+body.dark .option.correct{background:#103b2c}body.dark .option.wrong{background:#4a1c25}.score{margin-top:15px;color:var(--blue);font-weight:bold}
+.profileCard{display:grid;grid-template-columns:1fr 1fr;gap:15px}.progressCard{background:var(--card);border:1px solid var(--line);padding:18px;border-radius:14px}.progressLine{height:9px;background:#e7edf5;border-radius:20px;margin-top:10px;overflow:hidden}.progressLine div{height:100%;background:var(--blue)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;padding:18px}.modalBox{width:100%;max-width:540px;max-height:90vh;overflow:auto;background:var(--card);color:var(--text);border-radius:17px;padding:24px}.close{float:right;border:0;background:none;color:var(--text);font-size:27px}
+.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}.result{margin-top:15px;background:#edf5ff;color:#0d55c7;padding:14px;border-radius:9px;line-height:1.7;font-weight:bold}body.dark .result{background:#102c55;color:#7fb1ff}
+.bottom{position:fixed;bottom:0;left:0;right:0;height:68px;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;gap:50px;align-items:center;z-index:200}.bottom div{text-align:center;font-size:11px;color:var(--muted);cursor:pointer}.bottom div.active{color:var(--blue)}.bottom span{display:block;font-size:20px;margin-bottom:3px}
+.page{display:none}.page.active{display:block}.searchBox{display:none;margin-bottom:20px}.searchBox input{font-size:16px}.symbols{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.symbol{background:var(--card);border:1px solid var(--line);border-radius:12px;text-align:center;padding:18px}.symbol b{font-size:29px;color:var(--blue);display:block;margin-bottom:8px}.symbol small{color:var(--muted)}
+.contactBox{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.contactItem{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}.contactItem strong{display:block;margin-bottom:6px}.contactItem a{color:var(--blue);font-weight:bold;text-decoration:none}
+@media(max-width:850px){nav{display:none}.hero{grid-template-columns:1fr}.grid,.learnGrid{grid-template-columns:repeat(2,1fr)}.symbols{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:550px){main{padding:28px 17px 95px}.hero h1{font-size:36px}.grid,.learnGrid,.profileCard,.contactBox{grid-template-columns:1fr}.stats{overflow:auto}.bottom{gap:15px;justify-content:space-around}.symbols{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><div class="bolt">⚡</div>Electro<span>Brain</span></div>
+<nav><a onclick="showPage('home')">Home</a><a onclick="showPage('learn')">Learn</a><a onclick="showPage('labs')">Labs</a><a onclick="showPage('practice')">Practice</a></nav>
+<div class="headerBtns"><button class="headBtn" onclick="toggleSearch()">⌕</button><button class="headBtn" onclick="toggleDark()" id="themeBtn">☾</button></div>
+</header>
+<main>
+<div class="searchBox" id="searchBox"><input id="searchInput" placeholder="Search ElectroBrain..." oninput="searchCards()"></div>
+
+<section class="page active" id="home">
+<div class="hero"><div><div class="tag">YOUR ENGINEERING STUDY LAB</div><h1>Learn. Calculate.<br><span>Build.</span> ⚡</h1><p>ElectroBrain brings electrical calculations, formulas, engineering lessons, wiring labs and practice questions together in one place.</p>
+<div class="stats"><div class="stat"><b id="scoreStat">0</b><small>Practice Score</small></div><div class="stat"><b>20+</b><small>Tools</small></div><div class="stat"><b>50+</b><small>Topics</small></div></div></div>
+<div class="quick"><h2>⚡ Quick Calculate</h2><select id="quickSelect"><option value="">Choose a tool</option><option value="ohm">Ohm's Law</option><option value="power">Electrical Power</option><option value="three">3-Phase Power</option><option value="slip">Motor Slip</option><option value="transformer">Transformer</option><option value="reactance">AC Reactance</option><option value="battery">Battery Backup</option><option value="dcmotor">DC Motor</option></select><button class="primary" style="width:100%;margin-top:12px" onclick="quickCalculate()">Calculate →</button></div></div>
+
+<div class="sectionTitle"><h2>Engineering Tools</h2><span class="link" onclick="showPage('labs')">View all →</span></div>
+<div class="grid searchable">
+<div class="card" data-search="ohm law voltage current resistance"><div class="icon">Ω</div><h3>Ohm's Law</h3><p>Calculate voltage, current and resistance.</p><button class="secondary" onclick="openCalc('ohm')">Open</button></div>
+<div class="card" data-search="electrical power watts"><div class="icon">ϟ</div><h3>Electrical Power</h3><p>Calculate power from voltage and current.</p><button class="secondary" onclick="openCalc('power')">Open</button></div>
+<div class="card" data-search="three phase power"><div class="icon">3Φ</div><h3>3-Phase Power</h3><p>Calculate active and apparent power.</p><button class="secondary" onclick="openCalc('three')">Open</button></div>
+<div class="card" data-search="motor slip speed"><div class="icon">⚙</div><h3>Motor Slip</h3><p>Calculate slip between synchronous and rotor speed.</p><button class="secondary" onclick="openCalc('slip')">Open</button></div>
+<div class="card" data-search="transformer voltage turns"><div class="icon">T</div><h3>Transformer</h3><p>Calculate transformer voltage ratio.</p><button class="secondary" onclick="openCalc('transformer')">Open</button></div>
+<div class="card" data-search="reactance inductance capacitance"><div class="icon">〽</div><h3>AC Reactance</h3><p>Calculate XL and XC.</p><button class="secondary" onclick="openCalc('reactance')">Open</button></div>
+</div>
+
+<div class="sectionTitle"><h2>Quick Learning</h2><span class="link" onclick="showPage('learn')">Learn more →</span></div>
+<div class="learnGrid">
+<div class="lesson"><div class="big">⚡</div><h3>Electrical Basics</h3><p>Voltage, current, resistance, power and energy.</p><button class="secondary" onclick="lesson('basics')">Study</button></div>
+<div class="lesson"><div class="big">⚙️</div><h3>Motors</h3><p>Motor speed, slip, starters and protection.</p><button class="secondary" onclick="lesson('motors')">Study</button></div>
+<div class="lesson"><div class="big">🧠</div><h3>PLC</h3><p>Inputs, outputs and basic ladder logic.</p><button class="secondary" onclick="lesson('plc')">Study</button></div>
+</div>
+</section>
+
+<section class="page" id="learn"><div class="sectionTitle"><h2>📖 Electrical Engineering Academy</h2><span class="link" onclick="showPage('home')">← Home</span></div>
+<div class="learnGrid">
+<div class="lesson"><div class="big">⚡</div><h3>Voltage</h3><p>Electrical potential difference measured in volts.</p><button class="secondary" onclick="lesson('voltage')">Learn</button></div>
+<div class="lesson"><div class="big">🔌</div><h3>Current</h3><p>Rate of flow of electric charge measured in amperes.</p><button class="secondary" onclick="lesson('current')">Learn</button></div>
+<div class="lesson"><div class="big">Ω</div><h3>Resistance</h3><p>Opposition to current flow, measured in ohms.</p><button class="secondary" onclick="lesson('resistance')">Learn</button></div>
+<div class="lesson"><div class="big">ϟ</div><h3>Power</h3><p>Rate at which electrical energy is transferred.</p><button class="secondary" onclick="lesson('power')">Learn</button></div>
+<div class="lesson"><div class="big">〽</div><h3>AC Circuits</h3><p>Frequency, reactance, impedance and power factor.</p><button class="secondary" onclick="lesson('ac')">Learn</button></div>
+<div class="lesson"><div class="big">⚙️</div><h3>Induction Motors</h3><p>Synchronous speed, slip and motor principles.</p><button class="secondary" onclick="lesson('motors')">Learn</button></div>
+<div class="lesson"><div class="big">🧠</div><h3>PLC Fundamentals</h3><p>Understand inputs, outputs, contacts and coils.</p><button class="secondary" onclick="lesson('plc')">Learn</button></div>
+<div class="lesson"><div class="big">🎛️</div><h3>VFD</h3><p>Learn frequency control and variable-speed motors.</p><button class="secondary" onclick="lesson('vfd')">Learn</button></div>
+<div class="lesson"><div class="big">🛡️</div><h3>Protection</h3><p>Fuses, circuit breakers, overloads and earthing.</p><button class="secondary" onclick="lesson('protection')">Learn</button></div>
+</div></section>
+
+<section class="page" id="labs"><div class="sectionTitle"><h2>🔧 Electrical Engineering Lab</h2><span class="link" onclick="showPage('home')">← Home</span></div>
+<div class="labTabs"><button class="active" onclick="lab('wiring',this)">Wiring</button><button onclick="lab('plc',this)">PLC</button><button onclick="lab('vfd',this)">VFD</button><button onclick="lab('faults',this)">Fault Finder</button><button onclick="lab('symbols',this)">Symbols</button></div><div id="labContent"></div></section>
+
+<section class="page" id="practice"><div class="sectionTitle"><h2>📝 Engineering Practice</h2><span class="link" onclick="showPage('home')">← Home</span></div><div class="practice"><div id="qNumber">Question 1</div><div class="progress"><div class="progressBar" id="progress"></div></div><div class="question" id="question"></div><div class="options" id="options"></div><div class="score" id="practiceScore">Score: 0</div></div></section>
+
+<section class="page" id="profile"><div class="sectionTitle"><h2>📊 My Progress</h2><span class="link" onclick="showPage('home')">← Home</span></div>
+<div class="profileCard"><div class="progressCard"><h3>Practice</h3><p style="color:var(--muted);margin-top:6px" id="profileScore">0 points</p><div class="progressLine"><div id="scoreProgress" style="width:0%"></div></div></div><div class="progressCard"><h3>Engineering Tools</h3><p style="color:var(--muted);margin-top:6px">20+ available</p><div class="progressLine"><div style="width:70%"></div></div></div><div class="progressCard"><h3>Learning</h3><p style="color:var(--muted);margin-top:6px">Electrical fundamentals</p><div class="progressLine"><div style="width:45%"></div></div></div><div class="progressCard"><h3>Labs</h3><p style="color:var(--muted);margin-top:6px">Wiring • PLC • VFD</p><div class="progressLine"><div style="width:55%"></div></div></div></div>
+<div class="sectionTitle"><h2>Contact</h2></div><div class="contactBox"><div class="contactItem"><strong>Developer</strong>Richmond Owsu</div><div class="contactItem"><strong>WhatsApp / Contact</strong><a href="https://wa.me/233544920538" target="_blank" rel="noopener">0544920538 — Message on WhatsApp</a></div></div>
+</section>
+</main>
+
+<div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
+<div class="bottom"><div class="active" onclick="showPage('home')"><span>⌂</span>Home</div><div onclick="showPage('labs')"><span>🔧</span>Labs</div><div onclick="showPage('learn')"><span>📖</span>Learn</div><div onclick="showPage('practice')"><span>📝</span>Practice</div><div onclick="showPage('profile')"><span>📊</span>Progress</div></div>
+
+<script>
+function showPage(page){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(page).classList.add("active");document.querySelectorAll(".bottom div").forEach(x=>x.classList.remove("active"));const map={home:0,labs:1,learn:2,practice:3,profile:4};if(map[page]!==undefined)document.querySelectorAll(".bottom div")[map[page]].classList.add("active");window.scrollTo({top:0,behavior:"smooth"});if(page==="practice")startPractice();if(page==="labs"&&!document.getElementById("labContent").innerHTML)lab("wiring",document.querySelector(".labTabs button"))}
+function toggleDark(){document.body.classList.toggle("dark");let dark=document.body.classList.contains("dark");localStorage.setItem("electroDark",dark);document.getElementById("themeBtn").innerText=dark?"☀":"☾"}
+if(localStorage.getItem("electroDark")==="true"){document.body.classList.add("dark");document.getElementById("themeBtn").innerText="☀"}
+function toggleSearch(){let box=document.getElementById("searchBox");box.style.display=box.style.display==="block"?"none":"block";if(box.style.display==="block")document.getElementById("searchInput").focus()}
+function searchCards(){let text=document.getElementById("searchInput").value.toLowerCase();document.querySelectorAll(".searchable .card").forEach(card=>card.style.display=card.dataset.search.includes(text)?"block":"none")}
+function quickCalculate(){let type=document.getElementById("quickSelect").value;if(!type){alert("Choose a calculator.");return}openCalc(type)}
+const modal=document.getElementById("modal");function closeModal(){modal.style.display="none"}window.onclick=e=>{if(e.target===modal)closeModal()}
+function field(id,label){return `<div class="field"><label>${label}</label><input id="${id}" type="number"></div>`}
+function val(id){return parseFloat(document.getElementById(id).value)}
+function openCalc(type){modal.style.display="flex";let title="",body="";
+if(type==="ohm"){title="Ohm's Law";body=`<div class="formulaBox">V = I × R</div>${field("v","Voltage (V)")}${field("i","Current (A)")}${field("r","Resistance (Ω)")}<button class="primary" onclick="calcOhm()">Calculate</button><div class="result" id="res">Enter any two values.</div>`}
+if(type==="power"){title="Electrical Power";body=`<div class="formulaBox">P = V × I</div>${field("v","Voltage (V)")}${field("i","Current (A)")}<button class="primary" onclick="calcPower()">Calculate</button><div class="result" id="res"></div>`}
+if(type==="three"){title="3-Phase Power";body=`<div class="formulaBox">P = √3 × V × I × PF</div>${field("v","Line Voltage (V)")}${field("i","Line Current (A)")}${field("pf","Power Factor")}<button class="primary" onclick="calcThree()">Calculate</button><div class="result" id="res"></div>`}
+if(type==="slip"){title="Motor Slip";body=`<div class="formulaBox">S% = ((Ns − Nr) / Ns) × 100</div>${field("ns","Synchronous Speed (rpm)")}${field("nr","Rotor Speed (rpm)")}<button class="primary" onclick="calcSlip()">Calculate</button><div class="result" id="res"></div>`}
+if(type==="transformer"){title="Transformer";body=`<div class="formulaBox">V1/V2 = N1/N2</div>${field("v1","Primary Voltage V1")}${field("n1","Primary Turns N1")}${field("n2","Secondary Turns N2")}<button class="primary" onclick="calcTransformer()">Calculate V2</button><div class="result" id="res"></div>`}
+if(type==="reactance"){title="AC Reactance";body=`<div class="formulaBox">XL = 2πfL<br>XC = 1/(2πfC)</div>${field("f","Frequency (Hz)")}${field("l","Inductance (H)")}${field("c","Capacitance (F)")}<button class="primary" onclick="calcReactance()">Calculate</button><div class="result" id="res"></div>`}
+if(type==="battery"){title="Battery Backup";body=`<div class="formulaBox">Time ≈ Ah / Load</div>${field("ah","Battery Capacity (Ah)")}${field("load","Load Current (A)")}<button class="primary" onclick="calcBattery()">Calculate</button><div class="result" id="res"></div>`}
+if(type==="dcmotor"){title="DC Motor Back EMF";body=`<div class="formulaBox">Eb = V − IR</div>${field("v","Supply Voltage (V)")}${field("i","Armature Current (A)")}${field("r","Armature Resistance (Ω)")}<button class="primary" onclick="calcDC()">Calculate</button><div class="result" id="res"></div>`}
+document.getElementById("modalTitle").innerText=title;document.getElementById("modalBody").innerHTML=body}
+function calcOhm(){let V=val("v"),I=val("i"),R=val("r"),result="";if(!isNaN(V)&&!isNaN(I)&&I!==0)result=`Resistance = ${(V/I).toFixed(3)} Ω`;else if(!isNaN(V)&&!isNaN(R)&&R!==0)result=`Current = ${(V/R).toFixed(3)} A`;else if(!isNaN(I)&&!isNaN(R))result=`Voltage = ${(I*R).toFixed(3)} V`;else result="Enter any two values.";document.getElementById("res").innerText=result}
+function calcPower(){let V=val("v"),I=val("i");document.getElementById("res").innerText=`Power = ${(V*I).toFixed(2)} W`}
+function calcThree(){let V=val("v"),I=val("i"),PF=val("pf");if([V,I,PF].some(isNaN)){document.getElementById("res").innerText="Enter valid values.";return}let P=Math.sqrt(3)*V*I*PF;document.getElementById("res").innerHTML=`Active Power = ${(P/1000).toFixed(3)} kW<br>Apparent Power = ${(Math.sqrt(3)*V*I/1000).toFixed(3)} kVA`}
+function calcSlip(){let Ns=val("ns"),Nr=val("nr");if(isNaN(Ns)||isNaN(Nr)||Ns===0){document.getElementById("res").innerText="Enter valid speeds.";return}document.getElementById("res").innerText=`Motor Slip = ${(((Ns-Nr)/Ns)*100).toFixed(2)} %`}
+function calcTransformer(){let V1=val("v1"),N1=val("n1"),N2=val("n2");if(isNaN(V1)||isNaN(N1)||isNaN(N2)||N1===0){document.getElementById("res").innerText="Enter valid values.";return}document.getElementById("res").innerText=`Secondary Voltage = ${(V1*N2/N1).toFixed(2)} V`}
+function calcReactance(){let f=val("f"),L=val("l"),C=val("c"),out="";if(isNaN(f)){document.getElementById("res").innerText="Enter frequency.";return}if(!isNaN(L))out+=`XL = ${(2*Math.PI*f*L).toFixed(3)} Ω<br>`;if(!isNaN(C)&&C!==0)out+=`XC = ${(1/(2*Math.PI*f*C)).toFixed(3)} Ω`;document.getElementById("res").innerHTML=out||"Enter valid values."}
+function calcBattery(){let Ah=val("ah"),load=val("load");if(isNaN(Ah)||isNaN(load)||load<=0){document.getElementById("res").innerText="Enter valid values.";return}document.getElementById("res").innerText=`Estimated Backup = ${(Ah/load).toFixed(2)} hours`}
+function calcDC(){let V=val("v"),I=val("i"),R=val("r");if([V,I,R].some(isNaN)){document.getElementById("res").innerText="Enter valid values.";return}document.getElementById("res").innerText=`Back EMF = ${(V-I*R).toFixed(2)} V`}
+const lessons={basics:{title:"Electrical Fundamentals",body:`<h3>Core quantities</h3><div class="formulaBox">V = IR</div><p>Voltage is measured in volts (V).</p><p>Current is measured in amperes (A).</p><p>Resistance is measured in ohms (Ω).</p><p>Power is measured in watts (W).</p>`},voltage:{title:"Voltage",body:`<div class="formulaBox">V = W/Q</div><p>Voltage is electrical potential difference between two points.</p>`},current:{title:"Current",body:`<div class="formulaBox">I = Q/t</div><p>Current is the rate of flow of electric charge.</p>`},resistance:{title:"Resistance",body:`<div class="formulaBox">R = V/I</div><p>Resistance opposes the flow of current.</p>`},power:{title:"Electrical Power",body:`<div class="formulaBox">P = VI</div><div class="diagram">Example:<br>V = 230 V<br>I = 5 A<br>P = 230 × 5<br>P = 1150 W</div>`},ac:{title:"AC Circuits",body:`<div class="formulaBox">XL = 2πfL</div><p>Inductive reactance increases with frequency.</p><div class="formulaBox">XC = 1/(2πfC)</div><p>Capacitive reactance decreases with frequency.</p>`},motors:{title:"Induction Motors",body:`<div class="formulaBox">Ns = 120f/P</div><p>Ns = synchronous speed, f = frequency, P = number of poles.</p><div class="formulaBox">Slip % = ((Ns − Nr)/Ns) × 100</div><p>The rotor normally runs below synchronous speed.</p>`},plc:{title:"PLC Fundamentals",body:`<p>A PLC receives signals through inputs, processes its program, then controls devices through outputs.</p><div class="diagram"><pre>INPUTS                 PLC                 OUTPUTS
+
+[START] ───────────►  [ I/O ] ───────────► [CONTACTOR]
+[STOP ] ───────────►  [ CPU ] ───────────► [LAMP]
+[SENSOR] ──────────►  [LOGIC] ───────────► [VALVE]</pre></div>`},vfd:{title:"VFD Fundamentals",body:`<p>A Variable Frequency Drive controls an AC motor by controlling the frequency and voltage supplied to the motor.</p><div class="formulaBox">Motor Speed ∝ Frequency</div>`},protection:{title:"Electrical Protection",body:`<p><b>Fuse:</b> protects against excessive current.</p><p><b>MCB:</b> protects circuits against overload and short circuit.</p><p><b>Overload relay:</b> protects motors from prolonged overload.</p><p><b>Earthing:</b> provides a safe path for fault current.</p>`}}
+function lesson(type){modal.style.display="flex";document.getElementById("modalTitle").innerText=lessons[type].title;document.getElementById("modalBody").innerHTML=lessons[type].body}
+function lab(type,button){document.querySelectorAll(".labTabs button").forEach(b=>b.classList.remove("active"));if(button)button.classList.add("active");let box=document.getElementById("labContent");
+if(type==="wiring")box.innerHTML=`<div class="panel"><h2>⚙️ Motor Control Wiring Lab</h2><p style="color:var(--muted);margin-top:7px">Study the basic control sequence before working on real equipment.</p><h3 style="margin-top:20px">DOL Starter — simplified diagram</h3><div class="diagram"><pre>POWER CIRCUIT
+
+ L1 ──[ MCB ]──[ CONTACTOR ]──[ OVERLOAD ]──┐
+ L2 ──[ MCB ]──[ CONTACTOR ]──[ OVERLOAD ]──┼──[ MOTOR ]
+ L3 ──[ MCB ]──[ CONTACTOR ]──[ OVERLOAD ]──┘
+                                             │
+                                            PE
+                                             │
+                                           EARTH
+
+CONTROL CIRCUIT
+
+ L ──[ STOP NC ]──[ OVERLOAD NC ]──┬──[ START NO ]──( KM )
+                                    │
+                                    └──[ KM AUX NO ]──┘
+ N ─────────────────────────────────────────────────────</pre></div><div class="formulaBox">Sequence: START → Contactor energizes → Motor runs</div><p style="color:var(--muted);margin-top:10px">Study only. Real electrical work should be isolated and carried out by a qualified person according to applicable standards and manufacturer instructions.</p></div>`;
+if(type==="plc")box.innerHTML=`<div class="panel"><h2>🧠 PLC Lab</h2><p style="color:var(--muted);margin:8px 0 15px">Basic motor START/STOP ladder logic.</p><div class="diagram"><pre>|----[/ STOP ]----[ START ]----+----( MOTOR )
+|                             |
+|                             +----[ MOTOR ]----|
+
+STOP = Normally Closed
+START = Normally Open
+MOTOR = Output Coil</pre></div><div class="formulaBox">PLC idea: INPUT → PROGRAM LOGIC → OUTPUT</div><button class="primary" onclick="plcDemo()">Run PLC Simulation</button><div id="plcResult" class="result">Motor is OFF</div></div>`;
+if(type==="vfd")box.innerHTML=`<div class="panel"><h2>🎛️ VFD Lab</h2><p style="color:var(--muted);margin:8px 0 15px">Adjust frequency and observe the theoretical motor-speed relationship.</p><div class="field"><label>Frequency (Hz)</label><input id="vfdFreq" type="number" value="50"></div><div class="field"><label>Number of poles</label><select id="vfdPoles"><option value="2">2 poles</option><option value="4" selected>4 poles</option><option value="6">6 poles</option><option value="8">8 poles</option></select></div><button class="primary" onclick="vfdDemo()">Calculate Speed</button><div class="result" id="vfdResult">Enter values.</div><div class="formulaBox">Ns = 120f / P</div></div>`;
+if(type==="faults")box.innerHTML=`<div class="panel"><h2>🛠️ Electrical Fault Finder</h2><p style="color:var(--muted);margin:8px 0 18px">Select a common fault to see a safe troubleshooting sequence.</p><div class="faults"><div class="fault"><div class="faultHead" onclick="fault(this)">Motor won't start <span>+</span></div><div class="faultBody">1. Isolate the equipment safely.<br>2. Check whether the supply is present.<br>3. Check the control fuse/MCB.<br>4. Check the STOP circuit.<br>5. Check the overload relay.<br>6. Check the contactor control circuit.</div></div><div class="fault"><div class="faultHead" onclick="fault(this)">Overload trips <span>+</span></div><div class="faultBody">Check for excessive mechanical load, incorrect motor current, phase problems, poor connections and incorrect overload settings. Do not repeatedly reset a fault without finding its cause.</div></div><div class="fault"><div class="faultHead" onclick="fault(this)">Contactor won't energize <span>+</span></div><div class="faultBody">Check the control supply, STOP button, overload auxiliary contact, START circuit, coil voltage and wiring.</div></div><div class="fault"><div class="faultHead" onclick="fault(this)">PLC output not working <span>+</span></div><div class="faultBody">Check the PLC program condition, input status, output status, output supply, wiring and the controlled device.</div></div><div class="fault"><div class="faultHead" onclick="fault(this)">VFD motor fault <span>+</span></div><div class="faultBody">Read the VFD fault code first. Check motor connections, overload/current, acceleration settings, supply and manufacturer documentation.</div></div></div></div>`;
+if(type==="symbols")box.innerHTML=`<div class="panel"><h2>🔣 Electrical Symbols</h2><div class="symbols"><div class="symbol"><b>Ω</b><small>Resistor</small></div><div class="symbol"><b>~</b><small>AC Supply</small></div><div class="symbol"><b>⎓</b><small>DC Supply</small></div><div class="symbol"><b>⚙</b><small>Motor</small></div><div class="symbol"><b>⏚</b><small>Earth</small></div><div class="symbol"><b>⊗</b><small>Lamp</small></div><div class="symbol"><b>F</b><small>Fuse</small></div><div class="symbol"><b>CB</b><small>Circuit Breaker</small></div><div class="symbol"><b>K</b><small>Contactor</small></div><div class="symbol"><b>OL</b><small>Overload</small></div><div class="symbol"><b>T</b><small>Transformer</small></div><div class="symbol"><b>S</b><small>Switch</small></div></div></div>`}
+let motorState=false;function plcDemo(){motorState=!motorState;document.getElementById("plcResult").innerText=motorState?"PLC Output ON → Motor ON":"PLC Output OFF → Motor OFF"}
+function vfdDemo(){let f=parseFloat(document.getElementById("vfdFreq").value),p=parseInt(document.getElementById("vfdPoles").value);if(isNaN(f)||f<0){document.getElementById("vfdResult").innerText="Enter a valid frequency.";return}document.getElementById("vfdResult").innerText=`Theoretical synchronous speed = ${(120*f/p).toFixed(1)} rpm`}
+function fault(el){let body=el.nextElementSibling;body.style.display=body.style.display==="block"?"none":"block"}
+const questions=[{q:"A 230 V supply is connected to a 46 Ω resistor. What current flows?",o:["2 A","5 A","10 A","46 A"],a:1},{q:"A load uses 230 V and 5 A. What is its power?",o:["46 W","235 W","1150 W","2300 W"],a:2},{q:"What is the SI unit of resistance?",o:["Volt","Ampere","Ohm","Watt"],a:2},{q:"What is the formula for 3-phase active power?",o:["VI","√3VIcosφ","IR","V/R"],a:1},{q:"A motor has Ns = 1500 rpm and Nr = 1440 rpm. What is the slip?",o:["2%","4%","6%","10%"],a:1},{q:"What device protects a motor from prolonged overload?",o:["Lamp","Overload relay","Switch","Transformer"],a:1},{q:"What does PLC stand for?",o:["Power Line Controller","Programmable Logic Controller","Primary Load Circuit","Power Logic Converter"],a:1},{q:"What does a VFD mainly control in an AC motor application?",o:["Frequency and voltage","Earth resistance","Wire colour","Fuse size"],a:0},{q:"The SI unit of frequency is:",o:["Hertz","Ohm","Volt","Watt"],a:0},{q:"A transformer works primarily using:",o:["Electromagnetic induction","Friction","Chemical reaction","Heat conduction"],a:0}];
+let qi=0,score=0;function startPractice(){qi=0;score=0;renderQuestion()}
+function renderQuestion(){let q=questions[qi];document.getElementById("qNumber").innerText=`Question ${qi+1} of ${questions.length}`;document.getElementById("question").innerText=q.q;document.getElementById("progress").style.width=(qi/questions.length*100)+"%";document.getElementById("practiceScore").innerText=`Score: ${score}`;let box=document.getElementById("options");box.innerHTML="";q.o.forEach((text,index)=>{let b=document.createElement("button");b.className="option";b.innerText=text;b.onclick=()=>answer(index,b);box.appendChild(b)})}
+function answer(index,button){let q=questions[qi];document.querySelectorAll(".option").forEach(x=>x.disabled=true);if(index===q.a){button.classList.add("correct");score++}else{button.classList.add("wrong");document.querySelectorAll(".option")[q.a].classList.add("correct")}document.getElementById("practiceScore").innerText=`Score: ${score}`;setTimeout(()=>{qi++;if(qi>=questions.length)finishPractice();else renderQuestion()},850)}
+function finishPractice(){document.getElementById("question").innerHTML=`Practice complete.<br><br><b>You scored ${score}/${questions.length}</b>`;document.getElementById("options").innerHTML=`<button class="primary" onclick="startPractice()">Practice Again</button>`;document.getElementById("progress").style.width="100%";localStorage.setItem("electroScore",score);updateScore()}
+function updateScore(){let s=parseInt(localStorage.getItem("electroScore")||0);document.getElementById("scoreStat").innerText=s;document.getElementById("profileScore").innerText=s+" points";document.getElementById("scoreProgress").style.width=Math.min(s/questions.length*100,100)+"%"}
+updateScore();lab("wiring",document.querySelector(".labTabs button"));
+</script>
+</body>
+</html>
