@@ -582,22 +582,7 @@ const CHAPTER_NAMES=[
 
 function cleanKey(subject){
 if(TEXTBOOK[subject])return subject;
-if(subject.includes("Circuit"))return "Ohm's Law";
-if(subject.includes("Motor"))return "Induction Motors";
-if(subject.includes("Transformer"))return "Transformers";
-if(subject.includes("PLC"))return "PLC Fundamentals";
-if(subject.includes("VFD")||subject.includes("Drives"))
-return "Variable Frequency Drives";
-if(subject.includes("Solar")||subject.includes("Renewable"))
-return "Solar PV Systems";
-if(subject.includes("Power"))return "Power";
-if(subject.includes("Measurement")||subject.includes("Instrumentation"))
-return "Current";
-if(subject.includes("Resistance")||subject.includes("Resistor"))
-return "Resistance";
-if(subject.includes("Voltage"))return "Voltage";
-if(subject.includes("Current"))return "Current";
-return "Ohm's Law";
+return null;
 }
 
 function topicFor(subject,i){
@@ -843,14 +828,12 @@ renderLearn();
 
 function getLessonContent(topic,subject){
 
-let key=topic;
-
-if(!TEXTBOOK[key])key=cleanKey(subject);
-
-let t=TEXTBOOK[key];
+/* Use the exact topic's textbook content first */
+if(TEXTBOOK[topic]){
+const t=TEXTBOOK[topic];
 
 return {
-key,
+key:topic,
 definition:t.definition,
 importance:t.importance,
 explanation:t.explanation,
@@ -859,6 +842,53 @@ symbols:t.symbols,
 example:t.example,
 application:t.application,
 points:t.points
+};
+}
+
+/* Use subject-level textbook content only when it is
+   actually available and the topic has no separate entry */
+if(TEXTBOOK[subject]){
+const t=TEXTBOOK[subject];
+
+return {
+key:subject,
+definition:`${topic} is a topic within ${subject}. It introduces the principles, components and engineering concepts associated with ${topic}.`,
+importance:t.importance,
+explanation:`${topic} is studied as part of ${subject}. Understanding this topic helps learners connect the relevant electrical principles with practical engineering applications.`,
+formula:t.formula,
+symbols:t.symbols,
+example:t.example,
+application:t.application,
+points:t.points
+};
+}
+
+/* Topic-specific fallback.
+   IMPORTANT: Never use Ohm's Law as a fallback. */
+return {
+key:topic,
+
+definition:`${topic} is an electrical engineering topic concerned with the principles, components, methods or applications associated with ${topic}.`,
+
+importance:`Understanding ${topic} is important because it helps learners develop the theoretical and practical knowledge required to analyse, design, operate and troubleshoot electrical engineering systems.`,
+
+explanation:`${topic} should be understood by studying its fundamental principles, relevant electrical quantities, components, operating conditions and practical applications. The exact behaviour depends on the type of system or equipment being studied.`,
+
+formula:`No single formula applies to all aspects of ${topic}. Use the appropriate engineering relationship for the specific problem.`,
+
+symbols:`The symbols and units depend on the particular calculation or engineering relationship being studied under ${topic}.`,
+
+example:`A worked example for ${topic} should use the appropriate quantities, units and engineering relationship for the specific problem being solved.`,
+
+application:`${topic} is applied in electrical engineering study, practical work, equipment operation, system analysis and troubleshooting where relevant.`,
+
+points:[
+`Understand the meaning and purpose of ${topic}.`,
+`Identify the relevant components, quantities and units.`,
+`Use the appropriate engineering principle or formula.`,
+`Apply the concept to practical electrical engineering situations.`,
+`Check calculations and results carefully.`
+]
 };
 }
 
