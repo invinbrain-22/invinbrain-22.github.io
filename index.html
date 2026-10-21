@@ -2,622 +2,690 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="ElectroBrain — Learn, Calculate, Experiment.">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="description" content="ElectroBrain — Learn, Calculate, Experiment. CTVET-aligned electrical engineering learning for SHS, TVET and University 100–400.">
+<meta name="theme-color" content="#050b14">
+<meta name="color-scheme" content="dark">
 <title>ElectroBrain ⚡</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
---bg:#050b14;--panel:#07111e;--card:#0c1828;--card2:#102033;
---border:#1d3149;--border2:#29405b;--text:#f4f8ff;--muted:#9db0c8;
---blue:#37a8ff;--yellow:#ffd43b;--green:#45d483;--red:#ff6978
+  --bg:#050b14;--panel:#07111e;--card:#0c1828;--card2:#102033;
+  --border:#1d3149;--border2:#29405b;--text:#f4f8ff;--muted:#9db0c8;
+  --blue:#37a8ff;--yellow:#ffd43b;--green:#45d483;--red:#ff6978;
+  --radius:17px;--radius-sm:12px;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+  --ease:cubic-bezier(.2,.7,.2,1);
 }
 html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer}
-button:active{transform:scale(.98)}
-.top{
-height:64px;position:fixed;top:0;left:0;right:0;z-index:100;
-display:flex;align-items:center;justify-content:center;
-background:var(--panel);border-bottom:1px solid var(--border)
+body{
+  background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
-.logo{font-size:20px;font-weight:900}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+button:active{transform:scale(.98)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--blue);outline-offset:2px;border-radius:10px;
+}
+a{color:var(--blue)}
+.skip-link{
+  position:absolute;left:-9999px;top:8px;z-index:999;
+  background:var(--blue);color:#04101d;padding:10px 14px;
+  border-radius:10px;font-weight:900
+}
+.skip-link:focus{left:8px}
+
+.top{
+  height:64px;position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panel);border-bottom:1px solid var(--border);
+  padding-top:env(safe-area-inset-top)
+}
+.logo{font-size:20px;font-weight:900;letter-spacing:.2px}
 .logo span{color:var(--blue)}
 .logo b{color:var(--yellow)}
+
 .page{
-position:fixed;top:64px;bottom:64px;left:0;right:0;
-display:none;background:var(--bg)
+  position:fixed;top:64px;bottom:64px;left:0;right:0;
+  display:none;background:var(--bg)
 }
 .page.active{display:block}
 .scroll{
-height:100%;overflow:auto;padding:20px 14px 100px;
-max-width:1000px;margin:auto
+  height:100%;overflow:auto;padding:20px 14px 100px;
+  max-width:1000px;margin:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
 }
+@media(prefers-reduced-motion:reduce){
+  .scroll{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+
 nav{
-position:fixed;bottom:0;left:0;right:0;height:64px;z-index:100;
-display:grid;grid-template-columns:repeat(5,1fr);
-background:var(--panel);border-top:1px solid var(--border)
+  position:fixed;bottom:0;left:0;right:0;height:64px;z-index:100;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:var(--panel);border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom)
 }
 nav button{
-border:0;background:none;color:var(--muted);font-size:10px
+  border:0;background:none;color:var(--muted);font-size:10px;
+  padding:6px 2px;border-radius:10px;margin:4px;transition:color .15s
 }
 nav button.active{color:var(--blue)}
 .navicon{display:block;font-size:19px;margin-bottom:3px}
-h1{font-size:28px;margin:5px 0 7px}
+
+h1{font-size:28px;margin:5px 0 7px;line-height:1.2}
 h2{font-size:19px;margin-bottom:7px}
 h3{font-size:16px}
 p{color:var(--muted);font-size:13px;line-height:1.55}
-.eyebrow{
-font-size:10px;letter-spacing:1.6px;color:var(--blue);
-font-weight:900
-}
+.eyebrow{font-size:10px;letter-spacing:1.6px;color:var(--blue);font-weight:900;text-transform:uppercase}
+
 .card{
-background:var(--card);border:1px solid var(--border);
-border-radius:17px;padding:16px
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px
 }
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+
 .btn{
-border:0;border-radius:12px;padding:12px;background:var(--blue);
-color:#04101d;font-weight:900
+  border:0;border-radius:var(--radius-sm);padding:13px;
+  background:var(--blue);color:#04101d;font-weight:900;
+  transition:filter .15s var(--ease)
 }
+.btn:hover{filter:brightness(1.08)}
 .btn2{
-border:1px solid var(--border2);border-radius:12px;padding:11px;
-background:var(--panel);color:var(--text);font-weight:800
+  border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px;
+  background:var(--panel);color:var(--text);font-weight:800;
+  transition:border-color .15s
 }
+.btn2:hover{border-color:var(--blue)}
+
 .search{
-width:100%;padding:13px;border:1px solid var(--border2);
-border-radius:12px;background:var(--panel);color:var(--text);
-outline:none
+  width:100%;padding:13px 40px 13px 13px;border:1px solid var(--border2);
+  border-radius:var(--radius-sm);background:var(--panel);color:var(--text);
+  outline:none;transition:border-color .15s
 }
+.search:focus{border-color:var(--blue)}
+.search-wrap{position:relative}
+.search-clear{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:8px;background:var(--card);
+  color:var(--muted);display:none
+}
+.search-wrap.has-value .search-clear{display:block}
+
 .tabs{
-display:grid;grid-template-columns:repeat(2,1fr);gap:6px;
-background:var(--panel);border:1px solid var(--border);
-padding:5px;border-radius:14px;margin:14px 0
+  display:grid;grid-template-columns:repeat(2,1fr);gap:6px;
+  background:var(--panel);border:1px solid var(--border);
+  padding:5px;border-radius:14px;margin:14px 0
 }
 .tabs.three{grid-template-columns:repeat(3,1fr)}
 .tabs button{
-border:0;background:transparent;color:var(--muted);
-padding:11px;border-radius:10px;font-weight:900
+  border:0;background:transparent;color:var(--muted);
+  padding:11px;border-radius:10px;font-weight:900;
+  transition:background .15s,color .15s
 }
 .tabs button.active{
-background:var(--card);color:var(--text);
-box-shadow:inset 0 0 0 1px var(--blue)
+  background:var(--card);color:var(--text);
+  box-shadow:inset 0 0 0 1px var(--blue)
 }
+
 .topic{
-padding:15px;border:1px solid var(--border);
-border-radius:15px;background:var(--card);cursor:pointer
+  padding:15px;border:1px solid var(--border);
+  border-radius:15px;background:var(--card);
+  cursor:pointer;transition:border-color .15s,transform .15s
 }
 .topic:hover{border-color:var(--blue)}
+.topic:active{transform:scale(.99)}
 .topic .ico{font-size:23px;margin-bottom:9px}
-.topic small{
-display:block;color:#8295ad;margin-top:5px;font-size:11px
-}
+.topic small{display:block;color:#8295ad;margin-top:5px;font-size:11px}
+
 .back{
-border:0;background:none;color:var(--blue);
-font-weight:800;padding:8px 0;margin-bottom:8px
+  border:0;background:none;color:var(--blue);
+  font-weight:800;padding:8px 0;margin-bottom:8px;display:inline-flex;gap:6px
 }
+
 .notice{
-padding:12px;border-radius:12px;background:#07111e;
-border:1px solid var(--border);color:var(--muted);
-font-size:12px;line-height:1.5;margin:12px 0
+  padding:12px;border-radius:var(--radius-sm);background:#07111e;
+  border:1px solid var(--border);color:var(--muted);
+  font-size:12px;line-height:1.5;margin:12px 0
 }
+
 .result{
-padding:17px;border-radius:16px;background:#071a18;
-border:1px solid #246149;margin-top:12px
+  padding:17px;border-radius:16px;background:#071a18;
+  border:1px solid #246149;margin-top:12px
 }
 .result strong{color:var(--green);font-size:24px}
+
 .formrow{margin:10px 0}
-.formrow label{
-display:block;color:var(--muted);font-size:11px;margin-bottom:5px
-}
+.formrow label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
 .formrow input,.formrow select{
-width:100%;padding:12px;border:1px solid var(--border2);
-border-radius:10px;background:var(--panel);color:var(--text)
+  width:100%;padding:12px;border:1px solid var(--border2);
+  border-radius:10px;background:var(--panel);color:var(--text)
 }
+.formrow input:focus,.formrow select:focus{border-color:var(--blue)}
+
 .lesson{
-background:var(--card);border:1px solid var(--border);
-border-radius:18px;padding:18px;line-height:1.6
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:18px;line-height:1.6
 }
 .lesson .diagram{
-margin:15px 0;padding:25px;text-align:center;
-border:1px dashed var(--border2);border-radius:14px;
-font-size:42px;background:#07111e
+  margin:15px 0;padding:25px;text-align:center;
+  border:1px dashed var(--border2);border-radius:14px;
+  font-size:42px;background:#07111e
 }
 .lesson .formula{
-margin:14px 0;padding:15px;text-align:center;
-background:#07111e;border-radius:12px;color:var(--yellow);
-font-size:20px;font-weight:900
+  margin:14px 0;padding:15px;text-align:center;
+  background:#07111e;border-radius:12px;color:var(--yellow);
+  font-size:20px;font-weight:900
 }
-.lesson h3{
-margin-top:20px;margin-bottom:7px;color:var(--blue)
-}
-.lesson ul{
-padding-left:20px;color:var(--muted);font-size:13px
-}
+.lesson h3{margin-top:20px;margin-bottom:7px;color:var(--blue)}
+.lesson ul{padding-left:20px;color:var(--muted);font-size:13px}
 .lesson li{margin:5px 0}
+.lesson-meta{
+  display:flex;gap:8px;align-items:center;margin:6px 0 12px;
+  font-size:11px;color:var(--muted)
+}
+.progress-dots{display:flex;gap:5px}
+.progress-dots i{
+  width:7px;height:7px;border-radius:50%;background:#1d3149;display:inline-block
+}
+.progress-dots i.on{background:var(--blue)}
+
 .answerbox{
-padding:13px;background:#07111e;border-radius:12px;margin-top:10px;
-color:var(--muted);font-size:13px;line-height:1.6
+  padding:13px;background:#07111e;border-radius:12px;margin-top:10px;
+  color:var(--muted);font-size:13px;line-height:1.6
 }
-.lessonnav{
-display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px
-}
+.lessonnav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .lessonnav button{
-padding:12px;border-radius:11px;border:1px solid var(--border2);
-background:var(--panel);color:var(--text)
+  padding:12px;border-radius:11px;border:1px solid var(--border2);
+  background:var(--panel);color:var(--text)
 }
+
 .quiz{
-padding:18px;background:var(--card);
-border:1px solid var(--border);border-radius:17px
+  padding:18px;background:var(--card);
+  border:1px solid var(--border);border-radius:17px
 }
 .question{font-size:19px;line-height:1.4;margin:13px 0}
 .answers{display:grid;gap:9px}
 .answer{
-text-align:left;width:100%;padding:13px;border-radius:11px;
-border:1px solid var(--border2);background:var(--panel);color:var(--text)
+  text-align:left;width:100%;padding:13px;border-radius:11px;
+  border:1px solid var(--border2);background:var(--panel);color:var(--text);
+  transition:border-color .15s
 }
+.answer:disabled{cursor:default;opacity:.9}
 .answer.correct{border-color:var(--green)}
 .answer.wrong{border-color:var(--red)}
 .feedback{
-padding:13px;margin-top:13px;background:#07111e;
-border-radius:12px;color:var(--muted);font-size:13px;line-height:1.5
+  padding:13px;margin-top:13px;background:#07111e;
+  border-radius:12px;color:var(--muted);font-size:13px;line-height:1.5
 }
+
 .profilehero{
-display:flex;align-items:center;gap:13px;padding:18px;
-background:linear-gradient(135deg,#0c1828,#07111e);
-border:1px solid var(--border);border-radius:20px
+  display:flex;align-items:center;gap:13px;padding:18px;
+  background:linear-gradient(135deg,#0c1828,#07111e);
+  border:1px solid var(--border);border-radius:20px
 }
 .avatar{
-width:58px;height:58px;display:grid;place-items:center;
-border-radius:16px;background:#102a43;border:1px solid var(--blue);
-font-size:27px;color:var(--yellow)
+  width:58px;height:58px;display:grid;place-items:center;
+  border-radius:16px;background:#102a43;border:1px solid var(--blue);
+  font-size:27px;color:var(--yellow)
 }
-.profilehero>div:nth-child(2){flex:1}
+.profilehero>div:nth-child(2){flex:1;min-width:0}
+.profilehero h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .iconbtn{
-border:1px solid var(--border2);background:var(--panel);
-color:var(--text);padding:9px;border-radius:10px
+  border:1px solid var(--border2);background:var(--panel);
+  color:var(--text);padding:9px;border-radius:10px
 }
 .metric{
-padding:14px;text-align:center;background:var(--card);
-border:1px solid var(--border);border-radius:15px
+  padding:14px;text-align:center;background:var(--card);
+  border:1px solid var(--border);border-radius:15px
 }
 .metric b{display:block;font-size:20px;color:var(--blue)}
 .metric span{font-size:10px;color:var(--muted)}
-.progress{
-height:8px;background:#07111e;border-radius:99px;overflow:hidden
-}
-.progress i{display:block;height:100%;width:0;background:var(--blue)}
+.progress{height:8px;background:#07111e;border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--blue);transition:width .5s var(--ease)}
 .badge{
-padding:14px;background:var(--card);
-border:1px solid var(--border);border-radius:15px
+  padding:14px;background:var(--card);
+  border:1px solid var(--border);border-radius:15px;transition:border-color .15s
 }
 .badge small{display:block;color:var(--muted);margin-top:5px}
+.badge.locked{opacity:.5}
 .menu{
-overflow:hidden;background:var(--card);
-border:1px solid var(--border);border-radius:16px
+  overflow:hidden;background:var(--card);
+  border:1px solid var(--border);border-radius:16px
 }
 .menu button{
-width:100%;display:flex;gap:12px;align-items:center;
-padding:14px;border:0;border-bottom:1px solid var(--border);
-background:none;color:var(--text);text-align:left
+  width:100%;display:flex;gap:12px;align-items:center;
+  padding:14px;border:0;border-bottom:1px solid var(--border);
+  background:none;color:var(--text);text-align:left
 }
 .menu button:last-child{border:0}
-.menu span{flex:1}
-.menu small{
-display:block;color:var(--muted);margin-top:3px;font-size:11px
-}
+.menu button:hover{background:#0f1d30}
+.menu span{flex:1;min-width:0}
+.menu small{display:block;color:var(--muted);margin-top:3px;font-size:11px}
 
-/* LAB */
 .labhero{
-padding:18px;background:linear-gradient(135deg,#0c1828,#07111e);
-border:1px solid var(--border);border-radius:18px
+  padding:18px;background:linear-gradient(135deg,#0c1828,#07111e);
+  border:1px solid var(--border);border-radius:18px
 }
 .labvisual{
-height:150px;border:1px solid var(--border2);border-radius:15px;
-display:grid;place-items:center;background:#07111e;
-font-size:60px;margin:12px 0
+  height:150px;border:1px solid var(--border2);border-radius:15px;
+  display:grid;place-items:center;background:#07111e;
+  font-size:60px;margin:12px 0
 }
 .labsection{
-margin-top:12px;padding:15px;background:var(--card);
-border:1px solid var(--border);border-radius:16px
+  margin-top:12px;padding:15px;background:var(--card);
+  border:1px solid var(--border);border-radius:16px
 }
 .labsteps{display:grid;gap:8px;margin:12px 0}
 .step{
-padding:12px;border:1px solid var(--border);
-background:#07111e;border-radius:11px;color:var(--muted);
-font-size:13px
+  padding:12px;border:1px solid var(--border);
+  background:#07111e;border-radius:11px;color:var(--muted);
+  font-size:13px
 }
 .step b{color:var(--blue);margin-right:7px}
 .workshop{
-background:#06101b;border:1px solid var(--border);
-border-radius:18px;padding:15px;margin-top:12px
+  background:#06101b;border:1px solid var(--border);
+  border-radius:18px;padding:15px;margin-top:12px
 }
 .bench{
-min-height:300px;padding:15px;border:1px solid var(--border2);
-border-radius:15px;background:#081522;position:relative
+  min-height:300px;padding:15px;border:1px solid var(--border2);
+  border-radius:15px;background:#081522;position:relative
 }
-.equipment{
-display:grid;grid-template-columns:repeat(3,1fr);gap:9px
-}
+.equipment{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
 .equipment button{
-min-height:82px;border:1px solid var(--border2);
-border-radius:13px;background:var(--card);color:var(--text);
-font-size:12px
+  min-height:82px;border:1px solid var(--border2);
+  border-radius:13px;background:var(--card);color:var(--text);
+  font-size:12px;transition:border-color .15s,box-shadow .15s
 }
 .equipment button.selected{
-border-color:var(--blue);
-box-shadow:0 0 0 1px var(--blue)
+  border-color:var(--blue);
+  box-shadow:0 0 0 1px var(--blue)
 }
 .terminal-board{
-margin-top:15px;padding:14px;border:1px dashed var(--border2);
-border-radius:14px;background:#050d16
+  margin-top:15px;padding:14px;border:1px dashed var(--border2);
+  border-radius:14px;background:#050d16
 }
 .terminal{
-display:inline-flex;align-items:center;justify-content:center;
-min-width:54px;height:35px;margin:4px;padding:5px 8px;
-border:1px solid var(--border2);border-radius:8px;
-font-size:11px;color:var(--muted)
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:54px;height:35px;margin:4px;padding:5px 8px;
+  border:1px solid var(--border2);border-radius:8px;
+  font-size:11px;color:var(--muted)
 }
-.terminal.target{
-border-color:var(--yellow);color:var(--yellow)
-}
-.wires{
-display:grid;gap:8px;margin-top:13px
-}
+.terminal.target{border-color:var(--yellow);color:var(--yellow)}
+.wires{display:grid;gap:8px;margin-top:13px}
 .wireitem{
-display:flex;align-items:center;gap:8px;
-padding:8px;border:1px solid var(--border);
-border-radius:10px;background:#07111e
+  display:flex;align-items:center;gap:8px;
+  padding:8px;border:1px solid var(--border);
+  border-radius:10px;background:#07111e
 }
-.conductor{
-width:28px;height:10px;border-radius:5px;
-display:inline-block
-}
+.conductor{width:28px;height:10px;border-radius:5px;display:inline-block;flex-shrink:0}
 .brown{background:#8b5a2b}
 .bluewire{background:#3186d1}
 .pe{background:#54c96b}
 .dragwire{
-cursor:grab;border:1px solid var(--border2);
-padding:8px;border-radius:9px;background:var(--card);
-color:var(--text);font-size:11px
+  cursor:grab;border:1px solid var(--border2);
+  padding:9px;border-radius:9px;background:var(--card);
+  color:var(--text);font-size:11px;width:100%;text-align:left;
+  display:flex;align-items:center;gap:8px
 }
+.dragwire:active{cursor:grabbing}
+.dragwire[aria-pressed="true"]{border-color:var(--blue);color:var(--blue)}
 .dropzone{
-flex:1;min-height:34px;border:1px dashed var(--border2);
-border-radius:8px;display:flex;align-items:center;
-padding:5px;color:var(--muted);font-size:10px
+  flex:1;min-height:34px;border:1px dashed var(--border2);
+  border-radius:8px;display:flex;align-items:center;
+  padding:5px;color:var(--muted);font-size:10px
 }
-.dropzone.connected{
-border-color:var(--green);color:var(--green)
-}
-.toolgrid{
-display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px
-}
+.dropzone.connected{border-color:var(--green);color:var(--green)}
+.dropzone.wrong{border-color:var(--red);color:var(--red)}
+.toolgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
 .tool{
-padding:10px;text-align:center;border:1px solid var(--border);
-border-radius:10px;background:#07111e;font-size:11px
+  padding:10px;text-align:center;border:1px solid var(--border);
+  border-radius:10px;background:#07111e;font-size:11px
 }
 
-/* CALC */
-.calc-actions{
-display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px
-}
+.calc-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .calc-answer{
-padding:16px;margin-top:12px;background:#071a18;
-border:1px solid #246149;border-radius:15px
+  padding:16px;margin-top:12px;background:#071a18;
+  border:1px solid #246149;border-radius:15px
 }
 .calc-answer .big{
-font-size:27px;color:var(--green);font-weight:900;margin:5px 0
+  font-size:27px;color:var(--green);font-weight:900;margin:5px 0;
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap
+}
+.calc-answer .big .unit{
+  font-size:14px;color:var(--muted);font-weight:700
 }
 .formula-card{
-padding:15px;background:#07111e;border-radius:13px;
-border:1px solid var(--border)
+  padding:15px;background:#07111e;border-radius:13px;
+  border:1px solid var(--border)
 }
 
-/* HOME */
 .homehero{
-padding:20px;border-radius:20px;
-background:linear-gradient(135deg,#0d2034,#07111e);
-border:1px solid var(--border)
+  padding:20px;border-radius:20px;
+  background:linear-gradient(135deg,#0d2034,#07111e);
+  border:1px solid var(--border)
 }
-.quick{
-display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px
-}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
 .quick button{
-padding:12px;border-radius:12px;border:1px solid var(--border2);
-background:var(--card);color:var(--text);font-size:11px
+  padding:12px;border-radius:12px;border:1px solid var(--border2);
+  background:var(--card);color:var(--text);font-size:11px;
+  transition:border-color .15s
 }
+.quick button:hover{border-color:var(--blue)}
 .sectiontitle{
-display:flex;justify-content:space-between;align-items:center;
-margin:20px 0 10px
+  display:flex;justify-content:space-between;align-items:center;
+  margin:20px 0 10px;gap:8px
 }
+.sectiontitle span{color:var(--muted);font-size:11px}
+
+.subject-progress{margin-top:8px;height:5px}
+.subject-progress i{background:var(--yellow)}
+
+.empty{
+  padding:20px;text-align:center;color:var(--muted);
+  font-size:13px;border:1px dashed var(--border2);border-radius:14px
+}
+
+/* Toasts */
+#toasts{
+  position:fixed;left:50%;bottom:80px;transform:translateX(-50%);
+  z-index:300;display:flex;flex-direction:column;gap:8px;
+  pointer-events:none;width:min(92%,420px)
+}
+.toast{
+  padding:11px 14px;border-radius:12px;background:#0d1f33;
+  border:1px solid var(--blue);color:var(--text);font-size:12px;
+  font-weight:700;box-shadow:var(--shadow);
+  animation:toast-in .22s var(--ease)
+}
+.toast.warn{border-color:var(--yellow)}
+.toast.err{border-color:var(--red)}
+@keyframes toast-in{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Modal */
+#modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:400;display:none;align-items:center;justify-content:center;
+  padding:20px
+}
+#modal-backdrop.show{display:flex}
+.modal{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;padding:20px;max-width:420px;width:100%;
+  box-shadow:var(--shadow);max-height:80vh;overflow:auto
+}
+.modal h2{margin-bottom:10px}
+.modal .formrow{margin-top:12px}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.modal-list{font-size:12px;color:var(--muted);line-height:1.7}
 
 @media(max-width:600px){
-.grid4{grid-template-columns:repeat(2,1fr)}
-.grid{grid-template-columns:1fr}
-.equipment{grid-template-columns:repeat(2,1fr)}
-.toolgrid{grid-template-columns:repeat(2,1fr)}
-.quick{grid-template-columns:repeat(2,1fr)}
-.scroll{padding-left:12px;padding-right:12px}
+  .grid4{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .equipment{grid-template-columns:repeat(2,1fr)}
+  .toolgrid{grid-template-columns:repeat(2,1fr)}
+  .quick{grid-template-columns:repeat(2,1fr)}
+  .scroll{padding-left:12px;padding-right:12px}
+  h1{font-size:24px}
 }
 </style>
 </head>
-
 <body>
 
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <header class="top">
-<div class="logo">Electro<span>Brain</span> <b>⚡</b></div>
+  <div class="logo" aria-label="ElectroBrain">Electro<span>Brain</span> <b aria-hidden="true">⚡</b></div>
 </header>
 
-<main id="home" class="page active">
-<section class="scroll" id="learnPage"></section>
-</main>
+<div id="main-content" tabindex="-1" aria-live="polite" aria-atomic="true" style="position:absolute;left:-9999px">
+  <!-- live region for page changes -->
+</div>
 
-<main id="calc" class="page">
-<section class="scroll" id="calcPage"></section>
-</main>
+<main id="home" class="page active" aria-label="Learn"><section class="scroll" id="learnPage"></section></main>
+<main id="calc" class="page" aria-label="Calculations"><section class="scroll" id="calcPage"></section></main>
+<main id="labs" class="page" aria-label="Labs"><section class="scroll" id="labsPage"></section></main>
+<main id="practice" class="page" aria-label="Practice"><section class="scroll" id="practicePage"></section></main>
+<main id="profile" class="page" aria-label="Profile"><section class="scroll" id="profilePage"></section></main>
 
-<main id="labs" class="page">
-<section class="scroll" id="labsPage"></section>
-</main>
-
-<main id="practice" class="page">
-<section class="scroll" id="practicePage"></section>
-</main>
-
-<main id="profile" class="page">
-<section class="scroll" id="profilePage"></section>
-</main>
-
-<nav>
-<button class="active" onclick="go('home',this)">
-<span class="navicon">⌂</span>Home
-</button>
-<button onclick="go('calc',this)">
-<span class="navicon">⚡</span>Calculations
-</button>
-<button onclick="go('labs',this)">
-<span class="navicon">⚙</span>Labs
-</button>
-<button onclick="go('practice',this)">
-<span class="navicon">✓</span>Practice
-</button>
-<button onclick="go('profile',this)">
-<span class="navicon">●</span>Profile
-</button>
+<nav aria-label="Primary">
+  <button class="active" aria-current="page" data-page="home" onclick="go('home',this)">
+    <span class="navicon" aria-hidden="true">⌂</span>Home
+  </button>
+  <button data-page="calc" onclick="go('calc',this)">
+    <span class="navicon" aria-hidden="true">⚡</span>Calculations
+  </button>
+  <button data-page="labs" onclick="go('labs',this)">
+    <span class="navicon" aria-hidden="true">⚙</span>Labs
+  </button>
+  <button data-page="practice" onclick="go('practice',this)">
+    <span class="navicon" aria-hidden="true">✓</span>Practice
+  </button>
+  <button data-page="profile" onclick="go('profile',this)">
+    <span class="navicon" aria-hidden="true">●</span>Profile
+  </button>
 </nav>
+
+<div id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+<div id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="modal">
+    <h2 id="modal-title">Dialog</h2>
+    <div id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
 
 <script>
 
 /* =========================================================
-   APP DATA
+   DATA
    ========================================================= */
 
 const LEVELS=[
-"SHS / TVET",
-"University 100",
-"University 200",
-"University 300",
-"University 400"
+  "SHS / TVET",
+  "University 100",
+  "University 200",
+  "University 300",
+  "University 400"
 ];
 
 const SUBJECTS={
-"SHS / TVET":[
-"Electrical Fundamentals","DC Circuits","AC Circuits",
-"Electrical Installation & Protection","Measurement & Instrumentation",
-"Electrical Machines","Transformers","Electronics",
-"Digital Electronics","Technical Drawing","Renewable Energy",
-"Engineering Mathematics","Basic Control Systems",
-"Industrial Electricity","Electrical Calculations","Basic Electronics"
-],
-"University 100":[
-"Engineering Mathematics I","Engineering Physics",
-"Electrical Engineering Fundamentals","Circuit Theory I",
-"Digital Logic Fundamentals","Engineering Drawing",
-"Measurement Fundamentals","Computing for Engineers",
-"Programming for Electrical Engineers","Electrical Workshop Practice",
-"Introduction to Control Systems","Introduction to Power Systems",
-"Engineering Materials"
-],
-"University 200":[
-"Engineering Mathematics II","Circuit Theory II","AC Circuit Analysis",
-"Electronics I","Electrical Machines I","Signals & Systems",
-"Electromagnetics I","Measurements & Instrumentation",
-"Power Systems Fundamentals","Control Systems I",
-"Electromagnetic Fields","Electrical Installation Engineering",
-"Electronic Devices","Engineering Probability & Statistics",
-"Electrical Energy Systems"
-],
-"University 300":[
-"Power Electronics","Electrical Machines II","Power Systems",
-"Protection Systems","Control Systems II","PLC & Industrial Automation",
-"Renewable Energy Systems","Electrical Drives","Advanced Electronics",
-"Transmission & Distribution","Electromagnetics II",
-"Power System Protection","Industrial Instrumentation",
-"Embedded Systems","Engineering Economics"
-],
-"University 400":[
-"Advanced Power Systems","High Voltage Engineering",
-"Advanced Protection","Advanced Control","Power Electronics Applications",
-"Renewable & Solar PV Systems","Electrical Drives",
-"Industrial Automation","Engineering Project","Research Methods",
-"Professional Practice","Smart Grids","Power System Stability",
-"Advanced Instrumentation","Engineering Design",
-"Entrepreneurship for Engineers"
-]
+  "SHS / TVET":[
+    "Electrical Fundamentals","DC Circuits","AC Circuits",
+    "Electrical Installation & Protection","Measurement & Instrumentation",
+    "Electrical Machines","Transformers","Electronics",
+    "Digital Electronics","Technical Drawing","Renewable Energy",
+    "Engineering Mathematics","Basic Control Systems",
+    "Industrial Electricity","Electrical Calculations","Basic Electronics"
+  ],
+  "University 100":[
+    "Engineering Mathematics I","Engineering Physics",
+    "Electrical Engineering Fundamentals","Circuit Theory I",
+    "Digital Logic Fundamentals","Engineering Drawing",
+    "Measurement Fundamentals","Computing for Engineers",
+    "Programming for Electrical Engineers","Electrical Workshop Practice",
+    "Introduction to Control Systems","Introduction to Power Systems",
+    "Engineering Materials"
+  ],
+  "University 200":[
+    "Engineering Mathematics II","Circuit Theory II","AC Circuit Analysis",
+    "Electronics I","Electrical Machines I","Signals & Systems",
+    "Electromagnetics I","Measurements & Instrumentation",
+    "Power Systems Fundamentals","Control Systems I",
+    "Electromagnetic Fields","Electrical Installation Engineering",
+    "Electronic Devices","Engineering Probability & Statistics",
+    "Electrical Energy Systems"
+  ],
+  "University 300":[
+    "Power Electronics","Electrical Machines II","Power Systems",
+    "Protection Systems","Control Systems II","PLC & Industrial Automation",
+    "Renewable Energy Systems","Electrical Drives","Advanced Electronics",
+    "Transmission & Distribution","Electromagnetics II",
+    "Power System Protection","Industrial Instrumentation",
+    "Embedded Systems","Engineering Economics"
+  ],
+  "University 400":[
+    "Advanced Power Systems","High Voltage Engineering",
+    "Advanced Protection","Advanced Control","Power Electronics Applications",
+    "Renewable & Solar PV Systems","Electrical Drives",
+    "Industrial Automation","Engineering Project","Research Methods",
+    "Professional Practice","Smart Grids","Power System Stability",
+    "Advanced Instrumentation","Engineering Design",
+    "Entrepreneurship for Engineers"
+  ]
 };
-
-/*
-Textbook-style content.
-Wording is written for ElectroBrain as CTVET-aligned educational
-content; it is not represented as a quotation from CTVET.
-*/
 
 const TEXTBOOK={
-
-"Voltage":{
-definition:"Voltage is the electrical potential difference between two points in a circuit. It represents the difference in electrical potential energy per unit charge.",
-importance:"Voltage provides the potential difference required for electrical current to flow through a conducting path. Electrical equipment is designed to operate within specified voltage conditions.",
-explanation:"When two points have different electrical potentials, an electrical pressure exists between them. When a suitable conducting path is provided, charge can move and electrical energy can be transferred to a load.",
-formula:"V = W / Q",
-symbols:"V = voltage in volts (V); W = electrical work or energy in joules (J); Q = charge in coulombs (C).",
-example:"If 24 J of energy is transferred by 2 C of charge: V = W/Q = 24/2 = 12 V.",
-application:"Used in domestic installations, electrical machines, electronic circuits, measurement systems and power systems.",
-points:["Voltage is measured in volts.","Voltage is a potential difference between two points.","A voltmeter is connected across the points being measured."]
-},
-
-"Current":{
-definition:"Electric current is the rate at which electric charge passes through a point in an electrical circuit.",
-importance:"Current indicates the movement of electric charge and is essential when analysing conductors, loads, protection devices and electrical equipment.",
-explanation:"When a closed conducting path and a potential difference are present, electric charge can move through the circuit. The amount of charge passing a point per unit time determines the current.",
-formula:"I = Q / t",
-symbols:"I = current in amperes (A); Q = charge in coulombs (C); t = time in seconds (s).",
-example:"If 20 C of charge passes a point in 4 s: I = 20/4 = 5 A.",
-application:"Used in circuit analysis, motor circuits, protection, measurement and electrical installation.",
-points:["The SI unit is the ampere.","Current is measured using an ammeter.","Circuit current depends on the circuit conditions."]
-},
-
-"Resistance":{
-definition:"Electrical resistance is the opposition offered by a material or component to the flow of electric current.",
-importance:"Resistance controls current in circuits and is important in circuit design, protection, heating applications and electronic systems.",
-explanation:"When current passes through a resistive material, electrical energy is transferred. The resistance of a conductor depends on factors including its material, length and cross-sectional area.",
-formula:"R = V / I",
-symbols:"R = resistance in ohms (Ω); V = voltage in volts (V); I = current in amperes (A).",
-example:"For 12 V across a 4 Ω resistor: R = V/I = 12/3 = 4 Ω when the current is 3 A.",
-application:"Used in resistors, heating elements, voltage division, current limiting and circuit protection.",
-points:["The SI unit is the ohm.","Resistance opposes current.","Resistors can be used to control electrical conditions."]
-},
-
-"Power":{
-definition:"Electrical power is the rate at which electrical energy is transferred, converted or consumed.",
-importance:"Power is used to determine the operating requirements of electrical equipment and to analyse energy consumption.",
-explanation:"A load receiving electrical energy converts or transfers that energy into another form such as mechanical motion, heat, light or electromagnetic energy.",
-formula:"P = VI",
-symbols:"P = power in watts (W); V = voltage in volts (V); I = current in amperes (A).",
-example:"For a load operating at 230 V and drawing 2 A: P = VI = 230 × 2 = 460 W.",
-application:"Used for motors, lamps, heaters, electronic equipment and power-system calculations.",
-points:["The SI unit is the watt.","Power can be calculated from voltage and current.","AC systems may require power factor."]
-},
-
-"Ohm's Law":{
-definition:"Ohm's Law states that, under constant physical conditions, the current through an ohmic conductor is proportional to the potential difference across it.",
-importance:"Ohm's Law provides a fundamental relationship between voltage, current and resistance and is widely used in basic electrical circuit analysis.",
-explanation:"The relationship allows an unknown electrical quantity to be determined when the other relevant quantities are known. It is applicable to circuits and components for which the resistance relationship is appropriate.",
-formula:"V = IR    |    I = V/R    |    R = V/I",
-symbols:"V = voltage (V); I = current (A); R = resistance (Ω).",
-example:"Given V = 12 V and R = 4 Ω: I = V/R = 12/4 = 3 A.",
-application:"Used in DC circuits, resistor calculations, troubleshooting and electrical measurements.",
-points:["Always identify the unknown quantity first.","Use consistent units.","Check whether the component behaves as an ohmic element."]
-},
-
-"Transformers":{
-definition:"A transformer is a static electrical device that transfers electrical energy between circuits through electromagnetic induction.",
-importance:"Transformers are used to change AC voltage levels, provide electrical isolation and support efficient power transmission and distribution.",
-explanation:"An alternating current in the primary winding establishes a changing magnetic field in the core. This changing magnetic field links the secondary winding and induces an alternating voltage.",
-formula:"Vp/Vs = Np/Ns",
-symbols:"Vp = primary voltage; Vs = secondary voltage; Np = primary turns; Ns = secondary turns.",
-example:"If Vp = 240 V, Np = 1000 turns and Ns = 100 turns: Vs = 240 × 100/1000 = 24 V.",
-application:"Used in power supplies, distribution networks, control circuits and isolation systems.",
-points:["A conventional transformer requires changing magnetic flux.","The primary and secondary are magnetically coupled.","Voltage ratio is related to turns ratio."]
-},
-
-"Induction Motors":{
-definition:"An induction motor is an AC motor in which current is induced in the rotor by the magnetic field produced by the stator.",
-importance:"Induction motors are widely used for industrial and commercial mechanical drive applications because of their practical construction and operation.",
-explanation:"The stator creates a rotating magnetic field. The relative motion between the rotating field and rotor induces rotor currents, producing electromagnetic torque.",
-formula:"Ns = 120f/P",
-symbols:"Ns = synchronous speed in rpm; f = supply frequency in Hz; P = number of poles.",
-example:"For 50 Hz and 4 poles: Ns = 120×50/4 = 1500 rpm.",
-application:"Used for pumps, fans, compressors, conveyors and many industrial machines.",
-points:["The rotor normally operates below synchronous speed.","The difference is associated with slip.","Motor operation depends on supply and load conditions."]
-},
-
-"PLC Fundamentals":{
-definition:"A programmable logic controller (PLC) is an industrial digital control system designed to monitor inputs, execute programmed logic and control outputs.",
-importance:"PLCs are important in industrial automation because they allow machines and processes to be monitored and controlled using programmable logic.",
-explanation:"A PLC receives signals from input devices, processes the programmed instructions, and sends appropriate signals to output devices. The process is repeated continuously while the controller operates.",
-formula:"Input → PLC Processing → Output",
-symbols:"Inputs may include switches and sensors; outputs may include contactors, lamps, valves and other actuators.",
-example:"A sensor signal can be read as an input, processed by the PLC program, and used to control an output.",
-application:"Used in manufacturing, motor control, process automation, machine control and industrial monitoring.",
-points:["Inputs provide information.","The PLC executes programmed logic.","Outputs operate controlled devices."]
-},
-
-"Variable Frequency Drives":{
-definition:"A variable frequency drive (VFD) is an electronic drive used to control an AC motor by controlling the frequency and associated voltage supplied to the motor.",
-importance:"VFDs allow controlled motor speed and can support controlled starting, stopping and process operation.",
-explanation:"The drive processes the incoming electrical supply and produces a controlled output suitable for motor operation. Changing frequency changes the motor's operating speed relationship.",
-formula:"Ns = 120f/P",
-symbols:"Ns = synchronous speed; f = frequency; P = number of poles.",
-example:"For a four-pole motor at 50 Hz: Ns = 120×50/4 = 1500 rpm.",
-application:"Used in pumps, fans, conveyors, machine tools and industrial drives.",
-points:["Motor and drive ratings must be compatible.","Drive parameters must match the application.","Installation and commissioning require appropriate supervision."]
-},
-
-"Solar PV Systems":{
-definition:"A solar photovoltaic system converts solar radiation directly into electrical energy using photovoltaic cells and associated electrical equipment.",
-importance:"PV systems provide a method of generating electrical energy from sunlight and can be used in standalone, backup and grid-connected applications.",
-explanation:"Photovoltaic cells produce DC electrical power when exposed to suitable sunlight. Modules and arrays combine cells, while other equipment may regulate, store or convert the generated energy.",
-formula:"P = VI",
-symbols:"P = electrical power; V = voltage; I = current.",
-example:"A PV source producing 24 V at 5 A has P = 24×5 = 120 W.",
-application:"Used in solar home systems, backup systems, battery charging and larger energy systems.",
-points:["PV modules produce DC electricity.","System design depends on load and operating conditions.","Protection and installation requirements must be considered."]
-}
-
+  "Voltage":{
+    definition:"Voltage is the electrical potential difference between two points in a circuit. It represents the difference in electrical potential energy per unit charge.",
+    importance:"Voltage provides the potential difference required for electrical current to flow through a conducting path. Electrical equipment is designed to operate within specified voltage conditions.",
+    explanation:"When two points have different electrical potentials, an electrical pressure exists between them. When a suitable conducting path is provided, charge can move and electrical energy can be transferred to a load.",
+    formula:"V = W / Q",
+    symbols:"V = voltage in volts (V); W = electrical work or energy in joules (J); Q = charge in coulombs (C).",
+    example:"If 24 J of energy is transferred by 2 C of charge: V = W/Q = 24/2 = 12 V.",
+    application:"Used in domestic installations, electrical machines, electronic circuits, measurement systems and power systems.",
+    points:["Voltage is measured in volts.","Voltage is a potential difference between two points.","A voltmeter is connected across the points being measured."]
+  },
+  "Current":{
+    definition:"Electric current is the rate at which electric charge passes through a point in an electrical circuit.",
+    importance:"Current indicates the movement of electric charge and is essential when analysing conductors, loads, protection devices and electrical equipment.",
+    explanation:"When a closed conducting path and a potential difference are present, electric charge can move through the circuit. The amount of charge passing a point per unit time determines the current.",
+    formula:"I = Q / t",
+    symbols:"I = current in amperes (A); Q = charge in coulombs (C); t = time in seconds (s).",
+    example:"If 20 C of charge passes a point in 4 s: I = 20/4 = 5 A.",
+    application:"Used in circuit analysis, motor circuits, protection, measurement and electrical installation.",
+    points:["The SI unit is the ampere.","Current is measured using an ammeter.","Circuit current depends on the circuit conditions."]
+  },
+  "Resistance":{
+    definition:"Electrical resistance is the opposition offered by a material or component to the flow of electric current.",
+    importance:"Resistance controls current in circuits and is important in circuit design, protection, heating applications and electronic systems.",
+    explanation:"When current passes through a resistive material, electrical energy is transferred. The resistance of a conductor depends on factors including its material, length and cross-sectional area.",
+    formula:"R = V / I",
+    symbols:"R = resistance in ohms (Ω); V = voltage in volts (V); I = current in amperes (A).",
+    example:"For a resistor carrying 3 A with 12 V across it: R = V/I = 12/3 = 4 Ω.",
+    application:"Used in resistors, heating elements, voltage division, current limiting and circuit protection.",
+    points:["The SI unit is the ohm.","Resistance opposes current.","Resistors can be used to control electrical conditions."]
+  },
+  "Power":{
+    definition:"Electrical power is the rate at which electrical energy is transferred, converted or consumed.",
+    importance:"Power is used to determine the operating requirements of electrical equipment and to analyse energy consumption.",
+    explanation:"A load receiving electrical energy converts or transfers that energy into another form such as mechanical motion, heat, light or electromagnetic energy.",
+    formula:"P = VI",
+    symbols:"P = power in watts (W); V = voltage in volts (V); I = current in amperes (A).",
+    example:"For a load operating at 230 V and drawing 2 A: P = VI = 230 × 2 = 460 W.",
+    application:"Used for motors, lamps, heaters, electronic equipment and power-system calculations.",
+    points:["The SI unit is the watt.","Power can be calculated from voltage and current.","AC systems may require power factor."]
+  },
+  "Ohm's Law":{
+    definition:"Ohm's Law states that, under constant physical conditions, the current through an ohmic conductor is proportional to the potential difference across it.",
+    importance:"Ohm's Law provides a fundamental relationship between voltage, current and resistance and is widely used in basic electrical circuit analysis.",
+    explanation:"The relationship allows an unknown electrical quantity to be determined when the other relevant quantities are known. It is applicable to circuits and components for which the resistance relationship is appropriate.",
+    formula:"V = IR    |    I = V/R    |    R = V/I",
+    symbols:"V = voltage (V); I = current (A); R = resistance (Ω).",
+    example:"Given V = 12 V and R = 4 Ω: I = V/R = 12/4 = 3 A.",
+    application:"Used in DC circuits, resistor calculations, troubleshooting and electrical measurements.",
+    points:["Always identify the unknown quantity first.","Use consistent units.","Check whether the component behaves as an ohmic element."]
+  },
+  "Transformers":{
+    definition:"A transformer is a static electrical device that transfers electrical energy between circuits through electromagnetic induction.",
+    importance:"Transformers are used to change AC voltage levels, provide electrical isolation and support efficient power transmission and distribution.",
+    explanation:"An alternating current in the primary winding establishes a changing magnetic field in the core. This changing magnetic field links the secondary winding and induces an alternating voltage.",
+    formula:"Vp/Vs = Np/Ns",
+    symbols:"Vp = primary voltage; Vs = secondary voltage; Np = primary turns; Ns = secondary turns.",
+    example:"If Vp = 240 V, Np = 1000 turns and Ns = 100 turns: Vs = 240 × 100/1000 = 24 V.",
+    application:"Used in power supplies, distribution networks, control circuits and isolation systems.",
+    points:["A conventional transformer requires changing magnetic flux.","The primary and secondary are magnetically coupled.","Voltage ratio is related to turns ratio."]
+  },
+  "Induction Motors":{
+    definition:"An induction motor is an AC motor in which current is induced in the rotor by the magnetic field produced by the stator.",
+    importance:"Induction motors are widely used for industrial and commercial mechanical drive applications because of their practical construction and operation.",
+    explanation:"The stator creates a rotating magnetic field. The relative motion between the rotating field and rotor induces rotor currents, producing electromagnetic torque.",
+    formula:"Ns = 120f/P",
+    symbols:"Ns = synchronous speed in rpm; f = supply frequency in Hz; P = number of poles.",
+    example:"For 50 Hz and 4 poles: Ns = 120×50/4 = 1500 rpm.",
+    application:"Used for pumps, fans, compressors, conveyors and many industrial machines.",
+    points:["The rotor normally operates below synchronous speed.","The difference is associated with slip.","Motor operation depends on supply and load conditions."]
+  },
+  "PLC Fundamentals":{
+    definition:"A programmable logic controller (PLC) is an industrial digital control system designed to monitor inputs, execute programmed logic and control outputs.",
+    importance:"PLCs are important in industrial automation because they allow machines and processes to be monitored and controlled using programmable logic.",
+    explanation:"A PLC receives signals from input devices, processes the programmed instructions, and sends appropriate signals to output devices. The process is repeated continuously while the controller operates.",
+    formula:"Input → PLC Processing → Output",
+    symbols:"Inputs may include switches and sensors; outputs may include contactors, lamps, valves and other actuators.",
+    example:"A sensor signal can be read as an input, processed by the PLC program, and used to control an output.",
+    application:"Used in manufacturing, motor control, process automation, machine control and industrial monitoring.",
+    points:["Inputs provide information.","The PLC executes programmed logic.","Outputs operate controlled devices."]
+  },
+  "Variable Frequency Drives":{
+    definition:"A variable frequency drive (VFD) is an electronic drive used to control an AC motor by controlling the frequency and associated voltage supplied to the motor.",
+    importance:"VFDs allow controlled motor speed and can support controlled starting, stopping and process operation.",
+    explanation:"The drive processes the incoming electrical supply and produces a controlled output suitable for motor operation. Changing frequency changes the motor's operating speed relationship.",
+    formula:"Ns = 120f/P",
+    symbols:"Ns = synchronous speed; f = frequency; P = number of poles.",
+    example:"For a four-pole motor at 50 Hz: Ns = 120×50/4 = 1500 rpm.",
+    application:"Used in pumps, fans, conveyors, machine tools and industrial drives.",
+    points:["Motor and drive ratings must be compatible.","Drive parameters must match the application.","Installation and commissioning require appropriate supervision."]
+  },
+  "Solar PV Systems":{
+    definition:"A solar photovoltaic system converts solar radiation directly into electrical energy using photovoltaic cells and associated electrical equipment.",
+    importance:"PV systems provide a method of generating electrical energy from sunlight and can be used in standalone, backup and grid-connected applications.",
+    explanation:"Photovoltaic cells produce DC electrical power when exposed to suitable sunlight. Modules and arrays combine cells, while other equipment may regulate, store or convert the generated energy.",
+    formula:"P = VI",
+    symbols:"P = electrical power; V = voltage; I = current.",
+    example:"A PV source producing 24 V at 5 A has P = 24×5 = 120 W.",
+    application:"Used in solar home systems, backup systems, battery charging and larger energy systems.",
+    points:["PV modules produce DC electricity.","System design depends on load and operating conditions.","Protection and installation requirements must be considered."]
+  }
 };
-
-/* =========================================================
-   CURRICULUM
-   ========================================================= */
 
 const CHAPTER_NAMES=[
-"Introduction & Fundamentals",
-"Principles & Components",
-"Analysis & Calculations",
-"Applications & Troubleshooting"
+  "Introduction & Fundamentals",
+  "Principles & Components",
+  "Analysis & Calculations",
+  "Applications & Troubleshooting"
 ];
 
-function cleanKey(subject){
-if(TEXTBOOK[subject])return subject;
-return null;
-}
-
 function topicFor(subject,i){
-const special={
-"Electrical Fundamentals":["Voltage","Current","Resistance","Power"],
-"DC Circuits":["Ohm's Law","Series Circuits","Parallel Circuits","DC Circuit Analysis"],
-"AC Circuits":["AC Voltage","AC Current","Impedance","Power Factor"],
-"Electrical Machines":["Induction Motors","DC Motors","Motor Control","Motor Applications"],
-"Transformers":["Construction","Operating Principle","Turns Ratio","Applications"],
-"Electronics":["Resistors","Capacitors","Diodes","Transistors"],
-"Digital Electronics":["Number Systems","Logic Gates","Boolean Logic","Digital Circuits"],
-"Measurement & Instrumentation":["Measurement Principles","Multimeter","Current Measurement","Voltage Measurement"],
-"PLC Fundamentals":["PLC Architecture","Inputs & Outputs","PLC Programming","PLC Applications"],
-"Variable Frequency Drives":["VFD Components","Frequency Control","Motor Control","VFD Applications"],
-"Solar PV Systems":["PV Components","PV Connections","System Design","Applications"]
-};
-return special[subject]?.[i]||CHAPTER_NAMES[i];
+  const special={
+    "Electrical Fundamentals":["Voltage","Current","Resistance","Power"],
+    "DC Circuits":["Ohm's Law","Series Circuits","Parallel Circuits","DC Circuit Analysis"],
+    "AC Circuits":["AC Voltage","AC Current","Impedance","Power Factor"],
+    "Electrical Machines":["Induction Motors","DC Motors","Motor Control","Motor Applications"],
+    "Transformers":["Construction","Operating Principle","Turns Ratio","Applications"],
+    "Electronics":["Resistors","Capacitors","Diodes","Transistors"],
+    "Digital Electronics":["Number Systems","Logic Gates","Boolean Logic","Digital Circuits"],
+    "Measurement & Instrumentation":["Measurement Principles","Multimeter","Current Measurement","Voltage Measurement"],
+    "PLC Fundamentals":["PLC Architecture","Inputs & Outputs","PLC Programming","PLC Applications"],
+    "Variable Frequency Drives":["VFD Components","Frequency Control","Motor Control","VFD Applications"],
+    "Solar PV Systems":["PV Components","PV Connections","System Design","Applications"]
+  };
+  return special[subject]?.[i]||CHAPTER_NAMES[i];
 }
 
 const CURRICULUM={};
-
 Object.keys(SUBJECTS).forEach(level=>{
-CURRICULUM[level]=SUBJECTS[level].map(subject=>({
-subject,
-chapters:CHAPTER_NAMES.map((chapter,i)=>({
-chapter,
-topic:topicFor(subject,i),
-subs:[
-"Definition & Introduction",
-"Importance, Principles & Explanation",
-"Calculations & Worked Example",
-"Applications, Key Points & Quick Check"
-]
-}))
-}));
+  CURRICULUM[level]=SUBJECTS[level].map(subject=>({
+    subject,
+    chapters:CHAPTER_NAMES.map((chapter,i)=>({
+      chapter,
+      topic:topicFor(subject,i),
+      subs:[
+        "Definition & Introduction",
+        "Importance, Principles & Explanation",
+        "Calculations & Worked Example",
+        "Applications, Key Points & Quick Check"
+      ]
+    }))
+  }));
 });
 
 /* =========================================================
@@ -625,503 +693,701 @@ subs:[
    ========================================================= */
 
 const KEY="electrobrainData";
+const LEARN_KEY="electrobrainLearn";
+const PREF_KEY="electrobrainPrefs";
 
-let data={
-name:"Engineer",
-level:"SHS / TVET",
-xp:0,
-correct:0,
-attempts:0,
-practice:0,
-labs:0,
-calculations:0,
-learned:[],
-bookmarks:[],
-activity:[],
-streak:0
-};
+function defaultData(){
+  return {
+    name:"Engineer",
+    level:"SHS / TVET",
+    xp:0,
+    correct:0,
+    attempts:0,
+    practice:0,
+    labs:0,
+    calculations:0,
+    learned:[],
+    bookmarks:[],
+    activity:[],
+    streak:0,
+    lastVisit:null
+  };
+}
 
+let data=defaultData();
+
+/* Safe load + repair */
 try{
-const saved=JSON.parse(localStorage.getItem(KEY));
-if(saved)data={...data,...saved};
-}catch(e){}
+  const raw=localStorage.getItem(KEY);
+  const saved=raw?JSON.parse(raw):null;
+  if(saved&&typeof saved==="object"){
+    data={...data,...saved};
+    if(!Array.isArray(data.learned))   data.learned=[];
+    if(!Array.isArray(data.bookmarks)) data.bookmarks=[];
+    if(!Array.isArray(data.activity))  data.activity=[];
+    if(!LEVELS.includes(data.level))   data.level="SHS / TVET";
+    if(typeof data.name!=="string"||!data.name.trim()) data.name="Engineer";
+  }
+}catch(e){ /* corrupt or unavailable storage — use defaults */ }
+
+/* Streak update */
+(function updateStreak(){
+  const now=Date.now();
+  const last=data.lastVisit||0;
+  const dayMs=86400000;
+  if(last){
+    const diff=now-last;
+    if(diff>dayMs*1.5){
+      data.streak=1;
+    }else if(diff>dayMs*0.5){
+      data.streak=(data.streak||0)+1;
+    }
+  }else{
+    data.streak=1;
+  }
+  data.lastVisit=now;
+})();
 
 function save(){
-localStorage.setItem(KEY,JSON.stringify(data));
+  try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
+}
+
+/* Persisted learn state */
+let learnState={level:null,subject:null,chapter:null,sub:null};
+try{
+  const raw=localStorage.getItem(LEARN_KEY);
+  const saved=raw?JSON.parse(raw):null;
+  if(saved&&typeof saved==="object"){
+    learnState={...learnState,...saved};
+    if(learnState.level&&!CURRICULUM[learnState.level]){
+      learnState={level:null,subject:null,chapter:null,sub:null};
+    }
+  }
+}catch(e){}
+function saveLearnState(){
+  try{ localStorage.setItem(LEARN_KEY,JSON.stringify(learnState)); }catch(e){}
+}
+
+/* Persisted prefs */
+let prefs={labModeState:"Domestic",practiceModeState:"Theory"};
+try{
+  const raw=localStorage.getItem(PREF_KEY);
+  const saved=raw?JSON.parse(raw):null;
+  if(saved&&typeof saved==="object"){
+    if(saved.labModeState==="Domestic"||saved.labModeState==="Industrial") prefs.labModeState=saved.labModeState;
+    if(saved.practiceModeState==="Theory"||saved.practiceModeState==="Practical") prefs.practiceModeState=saved.practiceModeState;
+  }
+}catch(e){}
+function savePrefs(){ try{ localStorage.setItem(PREF_KEY,JSON.stringify(prefs)); }catch(e){} }
+
+let labModeState=prefs.labModeState;
+let practiceModeState=prefs.practiceModeState;
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function esc(x){
+  return String(x==null?"":x)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function fmt(n,decimals){
+  if(!Number.isFinite(n)) return "—";
+  const d=decimals==null?6:decimals;
+  const rounded=Number(n.toFixed(d));
+  return String(rounded);
 }
 
 function logActivity(type,title){
-data.activity.unshift({
-type,title,time:Date.now()
-});
-data.activity=data.activity.slice(0,40);
-save();
+  const clean=String(title||"").split("|").pop().slice(0,80);
+  data.activity.unshift({type,title:clean,time:Date.now()});
+  data.activity=data.activity.slice(0,40);
+  save();
 }
 
-function esc(x){
-return String(x)
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
+function toast(msg,kind){
+  const wrap=document.getElementById("toasts");
+  const el=document.createElement("div");
+  el.className="toast"+(kind?" "+kind:"");
+  el.textContent=msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{el.style.opacity="0";setTimeout(()=>el.remove(),250);},2400);
 }
+
+/* Modal system (replaces alert/prompt/confirm) */
+function openModal({title,bodyHtml,actions}){
+  document.getElementById("modal-title").textContent=title;
+  document.getElementById("modal-body").innerHTML=bodyHtml;
+  const acts=document.getElementById("modal-actions");
+  acts.innerHTML="";
+  actions.forEach(a=>{
+    const b=document.createElement("button");
+    b.className=a.primary?"btn":"btn2";
+    b.textContent=a.label;
+    b.onclick=()=>{ closeModal(); if(a.onClick) a.onClick(); };
+    acts.appendChild(b);
+  });
+  document.getElementById("modal-backdrop").classList.add("show");
+  setTimeout(()=>{
+    const f=document.querySelector("#modal button, #modal input");
+    if(f) f.focus();
+  },50);
+}
+function closeModal(){
+  document.getElementById("modal-backdrop").classList.remove("show");
+}
+document.getElementById("modal-backdrop").addEventListener("click",e=>{
+  if(e.target.id==="modal-backdrop") closeModal();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") closeModal();
+});
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 function go(id,btn){
-document.querySelectorAll(".page")
-.forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 
-document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(x=>{
+    x.classList.remove("active");
+    x.removeAttribute("aria-current");
+  });
 
-document.querySelectorAll("nav button")
-.forEach(x=>x.classList.remove("active"));
+  const navBtn=btn||document.querySelector(`nav button[data-page="${id}"]`);
+  if(navBtn){
+    navBtn.classList.add("active");
+    navBtn.setAttribute("aria-current","page");
+  }
 
-if(btn)btn.classList.add("active");
+  if(id==="home")     renderLearn();
+  if(id==="calc")     renderCalc();
+  if(id==="labs")     renderLabs();
+  if(id==="practice") renderPractice();
+  if(id==="profile")  renderProfile();
 
-if(id==="home")renderLearn();
-if(id==="calc")renderCalc();
-if(id==="labs")renderLabs();
-if(id==="practice")renderPractice();
-if(id==="profile")renderProfile();
+  /* live announcement */
+  const ann=document.getElementById("main-content");
+  ann.textContent=id.charAt(0).toUpperCase()+id.slice(1)+" page opened.";
+  /* scroll target top */
+  const active=document.querySelector(".page.active .scroll");
+  if(active) active.scrollTop=0;
 }
 
 /* =========================================================
    LEARN
    ========================================================= */
 
-let learnState={
-level:null,
-subject:null,
-chapter:null,
-sub:null
-};
-
 function renderLearn(){
 
-const p=document.getElementById("learnPage");
+  if(learnState.level&&!CURRICULUM[learnState.level]){
+    learnState={level:null,subject:null,chapter:null,sub:null};
+    saveLearnState();
+  }
 
-if(!learnState.level){
+  const p=document.getElementById("learnPage");
 
-p.innerHTML=`
-<div class="homehero">
-<div class="eyebrow">ELECTRICAL ENGINEERING LEARNING PLATFORM</div>
-<h1>Smart Calculations for Electrical Engineers</h1>
-<p>Learn • Calculate • Experiment</p>
-<p style="margin-top:8px">
-CTVET-aligned textbook-style learning for SHS, TVET and
-University 100–400.
-</p>
-</div>
+  /* Level picker */
+  if(!learnState.level){
+    const resume=lastResume();
+    p.innerHTML=`
+      <div class="homehero">
+        <div class="eyebrow">ELECTRICAL ENGINEERING LEARNING PLATFORM</div>
+        <h1>Smart Calculations for Electrical Engineers</h1>
+        <p>Learn • Calculate • Experiment</p>
+        <p style="margin-top:8px">
+          CTVET-aligned textbook-style learning for SHS, TVET and
+          University 100–400.
+        </p>
+      </div>
 
-<div class="sectiontitle">
-<h2>Learn</h2>
-<span style="color:var(--muted);font-size:11px">Understand</span>
-</div>
+      ${resume?`
+      <div class="card" style="margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="font-size:26px">${resume.icon}</div>
+        <div style="flex:1;min-width:160px">
+          <div class="eyebrow">CONTINUE LEARNING</div>
+          <b>${esc(resume.title)}</b>
+          <p style="margin-top:3px">${esc(resume.sub)}</p>
+        </div>
+        <button class="btn" onclick="resumeLesson()">Resume</button>
+      </div>`:""}
 
-<div class="card">
-<h2>Select Academic Level</h2>
-<div class="grid" style="margin-top:12px">
-${LEVELS.map(x=>`
-<div class="topic" onclick="selectLearnLevel('${esc(x)}')">
-<div class="ico">📘</div>
-<b>${esc(x)}</b>
-<small>${SUBJECTS[x].length} subjects</small>
-</div>`).join("")}
-</div>
-</div>
+      <div class="sectiontitle">
+        <h2>Learn</h2>
+        <span>Understand</span>
+      </div>
 
-<div class="quick">
-<button onclick="go('calc')">⚡ Calculate</button>
-<button onclick="go('labs')">⚙ Experiment</button>
-<button onclick="go('practice')">✓ Practice</button>
-<button onclick="go('profile')">● My Progress</button>
-</div>`;
-return;
+      <div class="card">
+        <h2>Select Academic Level</h2>
+        <div class="grid" style="margin-top:12px">
+          ${LEVELS.map(x=>`
+            <div class="topic" onclick="selectLearnLevel('${esc(x)}')" role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLearnLevel('${esc(x)}')}">
+              <div class="ico" aria-hidden="true">📘</div>
+              <b>${esc(x)}</b>
+              <small>${SUBJECTS[x].length} subjects</small>
+            </div>`).join("")}
+        </div>
+      </div>
+
+      <div class="quick">
+        <button onclick="go('calc')">⚡ Calculate</button>
+        <button onclick="go('labs')">⚙ Experiment</button>
+        <button onclick="go('practice')">✓ Practice</button>
+        <button onclick="go('profile')">● My Progress</button>
+      </div>
+    `;
+    return;
+  }
+
+  /* Subject picker */
+  if(learnState.subject===null){
+    const subjects=CURRICULUM[learnState.level];
+    p.innerHTML=`
+      <button class="back" onclick="learnState.level=null;learnState.subject=null;saveLearnState();renderLearn()">← Levels</button>
+      <div class="eyebrow">${esc(learnState.level)}</div>
+      <h1>Select Subject</h1>
+      <p>Choose a subject to enter its textbook structure.</p>
+
+      <div class="grid" style="margin-top:15px">
+        ${subjects.map((x,i)=>{
+          const done=countSubjectLessons(x);
+          const total=x.chapters.length*4;
+          return `
+            <div class="topic" onclick="selectLearnSubject(${i})" role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLearnSubject(${i})}">
+              <div class="ico" aria-hidden="true">⚡</div>
+              <b>${esc(x.subject)}</b>
+              <small>4 chapters • 16 lessons</small>
+              <div class="progress subject-progress" style="margin-top:8px">
+                <i style="width:${total?Math.round(done/total*100):0}%"></i>
+              </div>
+              <small>${done}/${total} lessons opened</small>
+            </div>`;
+        }).join("")}
+      </div>
+    `;
+    return;
+  }
+
+  /* Chapter picker */
+  if(learnState.chapter===null){
+    const s=CURRICULUM[learnState.level][learnState.subject];
+    p.innerHTML=`
+      <button class="back" onclick="learnState.subject=null;learnState.chapter=null;saveLearnState();renderLearn()">← Subjects</button>
+      <div class="eyebrow">${esc(learnState.level)}</div>
+      <h1>${esc(s.subject)}</h1>
+      <p>Select a chapter.</p>
+
+      <div class="grid" style="margin-top:15px">
+        ${s.chapters.map((x,i)=>`
+          <div class="topic" onclick="selectLearnChapter(${i})" role="button" tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLearnChapter(${i})}">
+            <div class="ico" aria-hidden="true">📚</div>
+            <b>${esc(x.chapter)}</b>
+            <small>${esc(x.topic)}</small>
+          </div>`).join("")}
+      </div>
+    `;
+    return;
+  }
+
+  /* Sub-topic picker */
+  if(learnState.sub===null){
+    const s=CURRICULUM[learnState.level][learnState.subject];
+    const c=s.chapters[learnState.chapter];
+    p.innerHTML=`
+      <button class="back" onclick="learnState.chapter=null;saveLearnState();renderLearn()">← Chapters</button>
+      <div class="eyebrow">${esc(c.chapter)}</div>
+      <h1>${esc(c.topic)}</h1>
+      <p>Select a sub-topic.</p>
+
+      <div class="grid" style="margin-top:15px">
+        ${c.subs.map((x,i)=>`
+          <div class="topic" onclick="openLesson(${i})" role="button" tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLesson(${i})}">
+            <div class="ico" aria-hidden="true">📖</div>
+            <b>${esc(x)}</b>
+            <small>Textbook lesson</small>
+          </div>`).join("")}
+      </div>
+    `;
+    return;
+  }
 }
 
-if(learnState.subject===null){
-
-const subjects=CURRICULUM[learnState.level];
-
-p.innerHTML=`
-<button class="back" onclick="learnState.level=null;renderLearn()">← Levels</button>
-<div class="eyebrow">${esc(learnState.level)}</div>
-<h1>Select Subject</h1>
-<p>Choose a subject to enter its textbook structure.</p>
-
-<div class="grid" style="margin-top:15px">
-${subjects.map((x,i)=>`
-<div class="topic" onclick="selectLearnSubject(${i})">
-<div class="ico">⚡</div>
-<b>${esc(x.subject)}</b>
-<small>4 chapters • 16 lessons</small>
-</div>`).join("")}
-</div>`;
-return;
+function countSubjectLessons(subject){
+  let n=0;
+  subject.chapters.forEach(ch=>{
+    ch.subs.forEach((_,i)=>{
+      const id=learnState.level+"|"+subject.subject+"|"+ch.chapter+"|"+ch.topic+"|"+ch.subs[i];
+      if(data.learned.includes(id)) n++;
+    });
+  });
+  return n;
 }
 
-if(learnState.chapter===null){
-
-const s=CURRICULUM[learnState.level][learnState.subject];
-
-p.innerHTML=`
-<button class="back" onclick="learnState.subject=null;renderLearn()">← Subjects</button>
-<div class="eyebrow">${esc(learnState.level)}</div>
-<h1>${esc(s.subject)}</h1>
-<p>Select a chapter.</p>
-
-<div class="grid" style="margin-top:15px">
-${s.chapters.map((x,i)=>`
-<div class="topic" onclick="selectLearnChapter(${i})">
-<div class="ico">📚</div>
-<b>${esc(x.chapter)}</b>
-<small>${esc(x.topic)}</small>
-</div>`).join("")}
-</div>`;
-return;
-}
-
-if(learnState.sub===null){
-
-const s=CURRICULUM[learnState.level][learnState.subject];
-const c=s.chapters[learnState.chapter];
-
-p.innerHTML=`
-<button class="back" onclick="learnState.chapter=null;renderLearn()">← Chapters</button>
-<div class="eyebrow">${esc(c.chapter)}</div>
-<h1>${esc(c.topic)}</h1>
-<p>Select a sub-topic.</p>
-
-<div class="grid" style="margin-top:15px">
-${c.subs.map((x,i)=>`
-<div class="topic" onclick="openLesson(${i})">
-<div class="ico">📖</div>
-<b>${esc(x)}</b>
-<small>Textbook lesson</small>
-</div>`).join("")}
-</div>`;
-return;
-}
+function lastResume(){
+  if(!learnState.level||learnState.subject==null||learnState.chapter==null||learnState.sub==null) return null;
+  try{
+    const s=CURRICULUM[learnState.level][learnState.subject];
+    const c=s.chapters[learnState.chapter];
+    return {
+      icon:"📘",
+      title:c.topic,
+      sub:learnState.level+" • "+s.subject+" • "+c.subs[learnState.sub]
+    };
+  }catch(e){ return null; }
 }
 
 function selectLearnLevel(x){
-learnState={level:x,subject:null,chapter:null,sub:null};
-renderLearn();
+  learnState={level:x,subject:null,chapter:null,sub:null};
+  saveLearnState();
+  renderLearn();
 }
 
 function selectLearnSubject(i){
-learnState.subject=i;
-learnState.chapter=null;
-learnState.sub=null;
-renderLearn();
+  learnState.subject=i;
+  learnState.chapter=null;
+  learnState.sub=null;
+  saveLearnState();
+  renderLearn();
 }
 
 function selectLearnChapter(i){
-learnState.chapter=i;
-learnState.sub=null;
-renderLearn();
+  learnState.chapter=i;
+  learnState.sub=null;
+  saveLearnState();
+  renderLearn();
+}
+
+function resumeLesson(){
+  renderLearn();
+  if(learnState.level&&learnState.subject!=null&&learnState.chapter!=null&&learnState.sub!=null){
+    openLesson(learnState.sub);
+  }
 }
 
 /* =========================================================
-   TEXTBOOK LESSON ENGINE
+   LESSON CONTENT
    ========================================================= */
 
 function getLessonContent(topic,subject){
 
-/* Use the exact topic's textbook content first */
-if(TEXTBOOK[topic]){
-const t=TEXTBOOK[topic];
+  if(TEXTBOOK[topic]){
+    const t=TEXTBOOK[topic];
+    return {
+      key:topic,
+      definition:t.definition,
+      importance:t.importance,
+      explanation:t.explanation,
+      formula:t.formula,
+      symbols:t.symbols,
+      example:t.example,
+      application:t.application,
+      points:t.points
+    };
+  }
 
-return {
-key:topic,
-definition:t.definition,
-importance:t.importance,
-explanation:t.explanation,
-formula:t.formula,
-symbols:t.symbols,
-example:t.example,
-application:t.application,
-points:t.points
-};
-}
+  if(TEXTBOOK[subject]){
+    const t=TEXTBOOK[subject];
+    return {
+      key:subject,
+      definition:`${topic} is a topic within ${subject}. It introduces the principles, components and engineering concepts associated with ${topic}.`,
+      importance:t.importance,
+      explanation:`${topic} is studied as part of ${subject}. Understanding this topic helps learners connect the relevant electrical principles with practical engineering applications.`,
+      formula:t.formula,
+      symbols:t.symbols,
+      example:t.example,
+      application:t.application,
+      points:t.points
+    };
+  }
 
-/* Use subject-level textbook content only when it is
-   actually available and the topic has no separate entry */
-if(TEXTBOOK[subject]){
-const t=TEXTBOOK[subject];
-
-return {
-key:subject,
-definition:`${topic} is a topic within ${subject}. It introduces the principles, components and engineering concepts associated with ${topic}.`,
-importance:t.importance,
-explanation:`${topic} is studied as part of ${subject}. Understanding this topic helps learners connect the relevant electrical principles with practical engineering applications.`,
-formula:t.formula,
-symbols:t.symbols,
-example:t.example,
-application:t.application,
-points:t.points
-};
-}
-
-/* Topic-specific fallback.
-   IMPORTANT: Never use Ohm's Law as a fallback. */
-return {
-key:topic,
-
-definition:`${topic} is an electrical engineering topic concerned with the principles, components, methods or applications associated with ${topic}.`,
-
-importance:`Understanding ${topic} is important because it helps learners develop the theoretical and practical knowledge required to analyse, design, operate and troubleshoot electrical engineering systems.`,
-
-explanation:`${topic} should be understood by studying its fundamental principles, relevant electrical quantities, components, operating conditions and practical applications. The exact behaviour depends on the type of system or equipment being studied.`,
-
-formula:`No single formula applies to all aspects of ${topic}. Use the appropriate engineering relationship for the specific problem.`,
-
-symbols:`The symbols and units depend on the particular calculation or engineering relationship being studied under ${topic}.`,
-
-example:`A worked example for ${topic} should use the appropriate quantities, units and engineering relationship for the specific problem being solved.`,
-
-application:`${topic} is applied in electrical engineering study, practical work, equipment operation, system analysis and troubleshooting where relevant.`,
-
-points:[
-`Understand the meaning and purpose of ${topic}.`,
-`Identify the relevant components, quantities and units.`,
-`Use the appropriate engineering principle or formula.`,
-`Apply the concept to practical electrical engineering situations.`,
-`Check calculations and results carefully.`
-]
-};
+  return {
+    key:topic,
+    definition:`${topic} is an electrical engineering topic concerned with the principles, components, methods or applications associated with ${topic}.`,
+    importance:`Understanding ${topic} is important because it helps learners develop the theoretical and practical knowledge required to analyse, design, operate and troubleshoot electrical engineering systems.`,
+    explanation:`${topic} should be understood by studying its fundamental principles, relevant electrical quantities, components, operating conditions and practical applications. The exact behaviour depends on the type of system or equipment being studied.`,
+    formula:`No single formula applies to all aspects of ${topic}. Use the appropriate engineering relationship for the specific problem.`,
+    symbols:`The symbols and units depend on the particular calculation or engineering relationship being studied under ${topic}.`,
+    example:`A worked example for ${topic} should use the appropriate quantities, units and engineering relationship for the specific problem being solved.`,
+    application:`${topic} is applied in electrical engineering study, practical work, equipment operation, system analysis and troubleshooting where relevant.`,
+    points:[
+      `Understand the meaning and purpose of ${topic}.`,
+      `Identify the relevant components, quantities and units.`,
+      `Use the appropriate engineering principle or formula.`,
+      `Apply the concept to practical electrical engineering situations.`,
+      `Check calculations and results carefully.`
+    ]
+  };
 }
 
 function openLesson(sub){
 
-const s=CURRICULUM[learnState.level][learnState.subject];
-const c=s.chapters[learnState.chapter];
+  const s=CURRICULUM[learnState.level][learnState.subject];
+  const c=s.chapters[learnState.chapter];
 
-learnState.sub=sub;
+  learnState.sub=sub;
+  saveLearnState();
 
-const content=getLessonContent(c.topic,s.subject);
+  const content=getLessonContent(c.topic,s.subject);
 
-const lessonId=
-learnState.level+"|"+s.subject+"|"+
-c.chapter+"|"+c.topic+"|"+c.subs[sub];
+  const lessonId=learnState.level+"|"+s.subject+"|"+c.chapter+"|"+c.topic+"|"+c.subs[sub];
 
-if(!data.learned.includes(lessonId)){
-data.learned.push(lessonId);
-data.xp+=15;
-logActivity("Learn",c.topic);
-}
+  if(!data.learned.includes(lessonId)){
+    data.learned.push(lessonId);
+    data.xp+=15;
+    logActivity("Learn",c.topic);
+    save();
+  }
 
-save();
+  let extra="";
 
-let extra="";
+  if(sub===0){
+    extra=`
+      <h3>Definition</h3>
+      <p>${esc(content.definition)}</p>
+      <h3>Introduction</h3>
+      <p>
+        This lesson introduces the fundamental meaning of
+        ${esc(c.topic)} and establishes the terminology required
+        for further electrical engineering study.
+      </p>
+      <h3>Importance</h3>
+      <p>${esc(content.importance)}</p>`;
+  }
 
-if(sub===0){
-extra=`
-<h3>Definition</h3>
-<p>${esc(content.definition)}</p>
+  if(sub===1){
+    extra=`
+      <h3>Importance</h3>
+      <p>${esc(content.importance)}</p>
+      <h3>Detailed Explanation</h3>
+      <p>${esc(content.explanation)}</p>
+      <h3>Principle of Operation</h3>
+      <p>
+        The concept should be understood from the relationship between
+        the electrical quantities, physical components and conditions
+        under which the system operates.
+      </p>
+      <h3>Components / Identification</h3>
+      <div class="answerbox">
+        Identify the relevant physical components, terminals,
+        conductors, instruments or devices before applying the theory.
+        Their exact arrangement depends on the practical system.
+      </div>`;
+  }
 
-<h3>Introduction</h3>
-<p>
-This lesson introduces the fundamental meaning of
-${esc(c.topic)} and establishes the terminology required
-for further electrical engineering study.
-</p>
+  if(sub===2){
+    extra=`
+      <h3>Formula</h3>
+      <div class="formula">${esc(content.formula)}</div>
+      <h3>Meaning of Symbols</h3>
+      <div class="answerbox">${esc(content.symbols)}</div>
+      <h3>Worked Example</h3>
+      <div class="answerbox">${esc(content.example)}</div>
+      <h3>Step-by-Step Method</h3>
+      <ul>
+        <li>Read the problem carefully.</li>
+        <li>List the known quantities and their units.</li>
+        <li>Identify the quantity required.</li>
+        <li>Select the applicable relationship.</li>
+        <li>Substitute the values.</li>
+        <li>Calculate and include the correct unit.</li>
+        <li>Check whether the result is reasonable.</li>
+      </ul>`;
+  }
 
-<h3>Importance</h3>
-<p>${esc(content.importance)}</p>`;
-}
+  if(sub===3){
+    extra=`
+      <h3>Practical Applications</h3>
+      <p>${esc(content.application)}</p>
+      <h3>Important Points</h3>
+      <ul>${content.points.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      <h3>Common Mistakes</h3>
+      <ul>
+        <li>Using an incorrect formula.</li>
+        <li>Ignoring units.</li>
+        <li>Substituting the wrong quantity.</li>
+        <li>Applying a relationship outside its appropriate conditions.</li>
+        <li>Failing to check the final result.</li>
+      </ul>
+      <h3>Quick Check</h3>
+      <div class="answerbox">
+        <b>Question:</b> What should you identify before applying
+        a calculation?<br><br>
+        <b>Answer:</b> The known quantities, required quantity,
+        units and applicable engineering relationship.
+      </div>`;
+  }
 
-if(sub===1){
-extra=`
-<h3>Importance</h3>
-<p>${esc(content.importance)}</p>
+  const bookmarked=data.bookmarks.includes(lessonId);
 
-<h3>Detailed Explanation</h3>
-<p>${esc(content.explanation)}</p>
+  const dots=c.subs.map((_,i)=>`<i class="${i===sub?'on':''}"></i>`).join("");
 
-<h3>Principle of Operation</h3>
-<p>
-The concept should be understood from the relationship between
-the electrical quantities, physical components and conditions
-under which the system operates.
-</p>
+  document.getElementById("learnPage").innerHTML=`
+    <button class="back" onclick="learnState.sub=null;saveLearnState();renderLearn()">
+      ← Sub-topics
+    </button>
 
-<h3>Components / Identification</h3>
-<div class="answerbox">
-Identify the relevant physical components, terminals,
-conductors, instruments or devices before applying the theory.
-Their exact arrangement depends on the practical system.
-</div>`;
-}
+    <div class="eyebrow">${esc(learnState.level)} • ${esc(s.subject)} • ${esc(c.chapter)}</div>
+    <h1>${esc(c.topic)}</h1>
+    <div class="lesson-meta">
+      <span>${esc(c.subs[sub])}</span>
+      <div class="progress-dots" aria-hidden="true">${dots}</div>
+    </div>
 
-if(sub===2){
-extra=`
-<h3>Formula</h3>
-<div class="formula">${esc(content.formula)}</div>
+    <div class="lesson">
 
-<h3>Meaning of Symbols</h3>
-<div class="answerbox">${esc(content.symbols)}</div>
+      <div class="diagram">
+        ${content.key==="Transformers"?"⚡ ⇄ ⚡":
+          content.key==="Induction Motors"?"⚙️":
+          content.key==="PLC Fundamentals"?"🎛️ → 🧠 → ⚙️":
+          content.key==="Variable Frequency Drives"?"⚡ → 📟 → ⚙️":
+          content.key==="Solar PV Systems"?"☀️ → 🔋 → ⚡":
+          content.key==="Voltage"?"＋ ─── ○ ─── −":
+          content.key==="Current"?"⚡ → → →":
+          content.key==="Resistance"?"Ω":
+          "⚡"}
+      </div>
 
-<h3>Worked Example</h3>
-<div class="answerbox">${esc(content.example)}</div>
+      ${extra}
 
-<h3>Step-by-Step Method</h3>
-<ul>
-<li>Read the problem carefully.</li>
-<li>List the known quantities and their units.</li>
-<li>Identify the quantity required.</li>
-<li>Select the applicable relationship.</li>
-<li>Substitute the values.</li>
-<li>Calculate and include the correct unit.</li>
-<li>Check whether the result is reasonable.</li>
-</ul>`;
-}
+      <div class="notice">
+        ElectroBrain provides educational content and simulation.
+        Safety-critical electrical installation, testing, protection,
+        isolation and commissioning must be performed under appropriate
+        supervision and according to applicable standards and procedures.
+      </div>
 
-if(sub===3){
-extra=`
-<h3>Practical Applications</h3>
-<p>${esc(content.application)}</p>
+      <div class="calc-actions">
+        <button class="btn2" onclick="toggleBookmark('${esc(lessonId)}')">
+          ${bookmarked?"★ Bookmarked":"☆ Bookmark"}
+        </button>
+        <button class="btn2" onclick="openRelatedCalc('${esc(c.topic)}')">
+          ⚡ Related Calculator
+        </button>
+      </div>
 
-<h3>Important Points</h3>
-<ul>
-${content.points.map(x=>`<li>${esc(x)}</li>`).join("")}
-</ul>
+      <div class="calc-actions">
+        <button class="btn2" onclick="openRelatedLab('${esc(c.topic)}')">
+          ⚙ Related Lab
+        </button>
+        <button class="btn2" onclick="practiceFromLesson('${esc(c.topic)}')">
+          ✓ Practice
+        </button>
+      </div>
 
-<h3>Common Mistakes</h3>
-<ul>
-<li>Using an incorrect formula.</li>
-<li>Ignoring units.</li>
-<li>Substituting the wrong quantity.</li>
-<li>Applying a relationship outside its appropriate conditions.</li>
-<li>Failing to check the final result.</li>
-</ul>
+      <div class="lessonnav">
+        <button onclick="lessonPrevious()">← Previous</button>
+        <button onclick="lessonNext()">Next →</button>
+      </div>
 
-<h3>Quick Check</h3>
-<div class="answerbox">
-<b>Question:</b> What should you identify before applying
-a calculation?<br><br>
-<b>Answer:</b> The known quantities, required quantity,
-units and applicable engineering relationship.
-</div>`;
-}
-
-const bookmarked=data.bookmarks.includes(lessonId);
-
-document.getElementById("learnPage").innerHTML=`
-
-<button class="back" onclick="learnState.sub=null;renderLearn()">
-← Sub-topics
-</button>
-
-<div class="eyebrow">${esc(c.chapter)} • ${esc(learnState.level)}</div>
-<h1>${esc(c.topic)}</h1>
-<p>${esc(c.subs[sub])}</p>
-
-<div class="lesson">
-
-<div class="diagram">
-${content.key==="Transformers"?"⚡ ⇄ ⚡":
-content.key==="Induction Motors"?"⚙️":
-content.key==="PLC Fundamentals"?"🎛️ → 🧠 → ⚙️":
-content.key==="Variable Frequency Drives"?"⚡ → 📟 → ⚙️":
-content.key==="Solar PV Systems"?"☀️ → 🔋 → ⚡":
-content.key==="Voltage"?"＋ ─── ○ ─── −":
-content.key==="Current"?"⚡ → → →":
-content.key==="Resistance"?"Ω":
-"⚡"}
-</div>
-
-${extra}
-
-<div class="notice">
-ElectroBrain provides educational content and simulation.
-Safety-critical electrical installation, testing, protection,
-isolation and commissioning must be performed under appropriate
-supervision and according to applicable standards and procedures.
-</div>
-
-<div class="calc-actions">
-<button class="btn2" onclick="toggleBookmark('${esc(lessonId)}')">
-${bookmarked?"★ Bookmarked":"☆ Bookmark"}
-</button>
-<button class="btn2" onclick="openRelatedCalc('${esc(c.topic)}')">
-⚡ Related Calculator
-</button>
-</div>
-
-<div class="calc-actions">
-<button class="btn2" onclick="openRelatedLab('${esc(c.topic)}')">
-⚙ Related Lab
-</button>
-<button class="btn2" onclick="practiceFromLesson('${esc(c.topic)}')">
-✓ Practice
-</button>
-</div>
-
-<div class="lessonnav">
-<button onclick="lessonPrevious()">← Previous</button>
-<button onclick="lessonNext()">Next →</button>
-</div>
-
-</div>`;
+    </div>`;
 }
 
 function lessonPrevious(){
-if(learnState.sub>0){
-learnState.sub--;
-openLesson(learnState.sub);
-}else{
-learnState.sub=null;
-renderLearn();
-}
+  if(learnState.sub>0){
+    learnState.sub--;
+    saveLearnState();
+    openLesson(learnState.sub);
+  }else{
+    learnState.sub=null;
+    saveLearnState();
+    renderLearn();
+  }
 }
 
 function lessonNext(){
-const s=CURRICULUM[learnState.level][learnState.subject];
-const c=s.chapters[learnState.chapter];
+  const s=CURRICULUM[learnState.level][learnState.subject];
+  const c=s.chapters[learnState.chapter];
 
-if(learnState.sub<c.subs.length-1){
-learnState.sub++;
-openLesson(learnState.sub);
-}else{
-if(learnState.chapter<s.chapters.length-1){
-learnState.chapter++;
-learnState.sub=0;
-openLesson(0);
-}else{
-learnState.sub=null;
-renderLearn();
-}
-}
+  if(learnState.sub<c.subs.length-1){
+    learnState.sub++;
+    saveLearnState();
+    openLesson(learnState.sub);
+  }else{
+    if(learnState.chapter<s.chapters.length-1){
+      learnState.chapter++;
+      learnState.sub=0;
+      saveLearnState();
+      openLesson(0);
+    }else{
+      learnState.sub=null;
+      learnState.chapter=null;
+      learnState.subject=null;
+      saveLearnState();
+      renderLearn();
+    }
+  }
 }
 
 function toggleBookmark(id){
-
-const i=data.bookmarks.indexOf(id);
-
-if(i>=0)data.bookmarks.splice(i,1);
-else data.bookmarks.push(id);
-
-save();
-openLesson(learnState.sub);
+  const i=data.bookmarks.indexOf(id);
+  if(i>=0){
+    data.bookmarks.splice(i,1);
+    toast("Bookmark removed");
+  }else{
+    data.bookmarks.push(id);
+    toast("Bookmark added");
+  }
+  save();
+  openLesson(learnState.sub);
 }
 
 function openRelatedCalc(topic){
-go("calc");
-calcState.topic=0;
-calcState.sub=1;
-renderCalc();
+  const t=topic.toLowerCase();
+  const idx=CALCS.findIndex(c=>{
+    const name=c[0].toLowerCase();
+    if(name===t) return true;
+    const first=t.split(" ")[0];
+    if(first.length>3&&name.includes(first)) return true;
+    return false;
+  });
+  go("calc");
+  if(idx>=0){
+    calcState.topic=idx;
+    calcState.sub=0;
+  }else{
+    calcState.topic=null;
+    calcState.sub=null;
+  }
+  renderCalc();
 }
 
 function openRelatedLab(topic){
-go("labs");
-renderLabs();
+  go("labs");
+  labModeState="Domestic";
+  savePrefs();
+  renderLabs();
+  const key=topic.toLowerCase().split(" ")[0];
+  setTimeout(()=>{
+    const nodes=document.querySelectorAll("#labsPage .topic");
+    for(const n of nodes){
+      if(n.textContent.toLowerCase().includes(key)){
+        n.scrollIntoView({behavior:"smooth",block:"center"});
+        n.style.borderColor="var(--yellow)";
+        break;
+      }
+    }
+  },60);
 }
 
 function practiceFromLesson(topic){
-go("practice");
-practiceModeState="Theory";
-renderPractice();
+  go("practice");
+  practiceModeState="Theory";
+  savePrefs();
+  practiceQuestions=[];
+  practiceIndex=0;
+  practiceScore=0;
+  renderPractice();
 }
 
 /* =========================================================
@@ -1129,1482 +1395,1185 @@ renderPractice();
    ========================================================= */
 
 const CALCS=[
-["Ohm's Law","V = IR"],
-["Electrical Power","P = VI"],
-["Electrical Energy","E = Pt"],
-["DC Circuits","V = IR"],
-["AC Circuits","Z = √(R² + X²)"],
-["Resistors","Rtotal = R1 + R2"],
-["Capacitors","Ctotal"],
-["Inductors","Ltotal"],
-["Impedance","Z = V/I"],
-["Power Factor","PF = P/S"],
-["Single-Phase Systems","P = VIcosφ"],
-["Three-Phase Systems","P = √3VIcosφ"],
-["Transformers","Vp/Vs = Np/Ns"],
-["DC Motors","Eb = V − IaRa"],
-["AC Motors","Ns = 120f/P"],
-["Cable & Wire Sizing","I = P/V"],
-["Voltage Drop","Vd = IR"],
-["Fuses & Circuit Breakers","I = P/V"],
-["Batteries","E = VAh"],
-["Solar PV Systems","P = VI"],
-["Electricity Consumption & Cost","Cost = kWh × Rate"],
-["Engineering Unit Conversions","Value × Factor"]
+  ["Ohm's Law","V = IR"],
+  ["Electrical Power","P = VI"],
+  ["Electrical Energy","E = Pt"],
+  ["AC Circuits","Z = √(R² + X²)"],
+  ["Impedance","Z = V/I"],
+  ["Power Factor","PF = P/S"],
+  ["Single-Phase Systems","P = VIcosφ"],
+  ["Three-Phase Systems","P = √3VIcosφ"],
+  ["Transformers","Vp/Vs = Np/Ns"],
+  ["AC Motors","Ns = 120f/P"],
+  ["Voltage Drop","Vd = IR"],
+  ["Solar PV Systems","P = VI"],
+  ["Electricity Consumption & Cost","Cost = kWh × Rate"],
+  ["Engineering Unit Conversions","Value × Factor"]
 ];
 
 let calcState={topic:null,sub:null};
 
+function calcCards(arr){
+  return arr.map(c=>{
+    const i=CALCS.indexOf(c);
+    return `
+      <div class="topic" data-index="${i}" role="button" tabindex="0"
+           onclick="calcState.topic=${i};calcState.sub=null;renderCalc()"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();calcState.topic=${i};calcState.sub=null;renderCalc()}">
+        <div class="ico" aria-hidden="true">⚡</div>
+        <b>${esc(c[0])}</b>
+        <small>${esc(c[1])}</small>
+      </div>`;
+  }).join("");
+}
+
 function renderCalc(){
 
-const p=document.getElementById("calcPage");
+  const p=document.getElementById("calcPage");
 
-if(calcState.topic===null){
+  if(calcState.topic===null){
 
-p.innerHTML=`
-<div class="eyebrow">CALCULATE • ENGINEERING TOOLS</div>
-<h1>Calculations</h1>
-<p>Smart Calculations for Electrical Engineers.</p>
+    p.innerHTML=`
+      <div class="eyebrow">CALCULATE • ENGINEERING TOOLS</div>
+      <h1>Calculations</h1>
+      <p>Smart Calculations for Electrical Engineers.</p>
 
-<input class="search" style="margin-top:15px"
-placeholder="Search calculators, formulas or topics..."
-oninput="filterCalc(this.value)">
+      <div class="search-wrap" style="margin-top:15px">
+        <input id="calcSearch" class="search"
+               placeholder="Search calculators, formulas or topics..."
+               oninput="filterCalc(this.value)"
+               onkeydown="if(event.key==='Enter'){const f=document.querySelector('#calcTopics .topic');if(f)f.click()}"
+               aria-label="Search calculators">
+        <button class="search-clear" onclick="clearCalcSearch()" aria-label="Clear search">✕</button>
+      </div>
 
-<div id="calcTopics" class="grid" style="margin-top:12px">
-${calcCards(CALCS)}
-</div>`;
-return;
+      <p id="calcCount" style="margin-top:8px;font-size:11px"></p>
+
+      <div id="calcTopics" class="grid" style="margin-top:12px">
+        ${calcCards(CALCS)}
+      </div>`;
+    const count=document.getElementById("calcCount");
+    if(count) count.textContent=CALCS.length+" calculators available";
+    return;
+  }
+
+  const c=CALCS[calcState.topic];
+
+  if(calcState.sub===null){
+    p.innerHTML=`
+      <button class="back" onclick="calcState.topic=null;calcState.sub=null;renderCalc()">
+        ← All Calculation Topics
+      </button>
+      <div class="eyebrow">CALCULATION TOPIC</div>
+      <h1>${esc(c[0])}</h1>
+      <p>Select the calculator.</p>
+
+      <div class="card" style="margin-top:15px">
+        <div class="formula-card">
+          <h2>Formula</h2>
+          <div style="color:var(--yellow);font-weight:900;font-size:19px">${esc(c[1])}</div>
+        </div>
+        <button class="btn" style="width:100%;margin-top:12px"
+                onclick="calcState.sub=0;renderCalc()">
+          Open Calculator
+        </button>
+      </div>`;
+    return;
+  }
+
+  renderCalculatorScreen();
 }
 
-const c=CALCS[calcState.topic];
-
-if(calcState.sub===null){
-
-p.innerHTML=`
-<button class="back" onclick="calcState.topic=null;renderCalc()">
-← All Calculation Topics
-</button>
-
-<div class="eyebrow">CALCULATION TOPIC</div>
-<h1>${esc(c[0])}</h1>
-<p>Select the calculator.</p>
-
-<div class="card" style="margin-top:15px">
-<div class="formula-card">
-<h2>Formula</h2>
-<div style="color:var(--yellow);font-weight:900;font-size:19px">
-${esc(c[1])}
-</div>
-</div>
-
-<button class="btn" style="width:100%;margin-top:12px"
-onclick="calcState.sub=0;renderCalc()">
-Open Calculator
-</button>
-</div>`;
-return;
-}
-
-renderCalculatorScreen();
-}
-
-function calcCards(arr){
-
-return arr.map(c=>{
-const i=CALCS.indexOf(c);
-
-return `
-<div class="topic"
-onclick="calcState.topic=${i};calcState.sub=null;renderCalc()">
-<div class="ico">⚡</div>
-<b>${esc(c[0])}</b>
-<small>${esc(c[1])}</small>
-</div>`;
-}).join("");
+function clearCalcSearch(){
+  const el=document.getElementById("calcSearch");
+  if(el){ el.value=""; el.parentElement.classList.remove("has-value"); filterCalc(""); el.focus(); }
 }
 
 function filterCalc(q){
-
-const arr=CALCS.filter(x=>
-x[0].toLowerCase().includes(q.toLowerCase())||
-x[1].toLowerCase().includes(q.toLowerCase())
-);
-
-document.getElementById("calcTopics").innerHTML=calcCards(arr);
+  const wrap=document.querySelector(".search-wrap");
+  if(wrap){
+    if(q) wrap.classList.add("has-value");
+    else wrap.classList.remove("has-value");
+  }
+  const arr=q?CALCS.filter(x=>
+    x[0].toLowerCase().includes(q.toLowerCase())||
+    x[1].toLowerCase().includes(q.toLowerCase())
+  ):CALCS;
+  const box=document.getElementById("calcTopics");
+  if(!box) return;
+  box.innerHTML=arr.length
+    ? calcCards(arr)
+    : `<div class="empty" style="grid-column:1/-1">No calculators match "${esc(q)}".</div>`;
+  const count=document.getElementById("calcCount");
+  if(count) count.textContent=arr.length+" calculator"+(arr.length===1?"":"s")+" shown";
 }
 
-function field(id,label,unit){
-
-return `
-<div class="formrow">
-<label>${label}</label>
-<input id="${id}" type="number" step="any"
-placeholder="Enter value">
-<div style="font-size:10px;color:#647991;margin-top:4px">
-Unit: ${unit}
-</div>
-</div>`;
+function field(id,label,unit,extra){
+  return `
+    <div class="formrow">
+      <label for="${id}">${label}</label>
+      <input id="${id}" type="number" step="any" inputmode="decimal"
+             placeholder="Enter value" autocomplete="off">
+      <div style="font-size:10px;color:#647991;margin-top:4px">Unit: ${esc(unit)}${extra?" • "+esc(extra):""}</div>
+    </div>`;
 }
 
 function renderCalculatorScreen(){
 
-const c=CALCS[calcState.topic];
-const p=document.getElementById("calcPage");
+  const c=CALCS[calcState.topic];
+  const p=document.getElementById("calcPage");
 
-if(c[0]==="Ohm's Law"){
-p.innerHTML=ohmsLawScreen();
-return;
+  if(c[0]==="Ohm's Law"){
+    p.innerHTML=ohmsLawScreen();
+    return;
+  }
+
+  let fields="";
+  switch(c[0]){
+    case"Electrical Power":
+      fields=field("cv","Voltage","V")+field("ci","Current","A");break;
+    case"Electrical Energy":
+      fields=field("cp","Power","W")+field("ct","Time","h");break;
+    case"AC Circuits":
+      fields=field("cr","Resistance","Ω")+field("cx","Reactance","Ω");break;
+    case"Impedance":
+      fields=field("cv","Voltage","V")+field("ci","Current","A");break;
+    case"Power Factor":
+      fields=field("cp","Real Power","W")+field("cs","Apparent Power","VA");break;
+    case"Single-Phase Systems":
+      fields=field("cv","Voltage","V")+field("ci","Current","A")+field("cpf","Power Factor","0–1");break;
+    case"Three-Phase Systems":
+      fields=field("cv","Line Voltage","V")+field("ci","Line Current","A")+field("cpf","Power Factor","0–1");break;
+    case"Transformers":
+      fields=field("vp","Primary Voltage","V")+field("np","Primary Turns","turns")+field("ns","Secondary Turns","turns");break;
+    case"AC Motors":
+      fields=field("cf","Frequency","Hz")+field("cpoles","Number of Poles","poles");break;
+    case"Voltage Drop":
+      fields=field("ci","Current","A")+field("cr","Resistance","Ω");break;
+    case"Solar PV Systems":
+      fields=field("cv","Voltage","V")+field("ci","Current","A");break;
+    case"Electricity Consumption & Cost":
+      fields=field("ckwh","Energy","kWh")+field("crate","Rate per kWh","currency/kWh");break;
+    case"Engineering Unit Conversions":
+      fields=field("cvalue","Value","")+field("cfactor","Conversion Factor","");break;
+    default:
+      fields=field("cv","Voltage","V")+field("ci","Current","A");
+  }
+
+  p.innerHTML=`
+    <button class="back" onclick="calcState.sub=null;renderCalc()">← Topic</button>
+    <div class="eyebrow">CALCULATOR</div>
+    <h1>${esc(c[0])}</h1>
+
+    <div class="card">
+      <div class="formula-card">
+        <h2>Formula</h2>
+        <div style="color:var(--yellow);font-size:19px;font-weight:900">${esc(c[1])}</div>
+      </div>
+
+      ${fields}
+
+      <button class="btn" style="width:100%;margin-top:12px" onclick="doGeneralCalc()">Calculate</button>
+      <button class="btn2" style="width:100%;margin-top:8px" onclick="renderCalculatorScreen()">Reset</button>
+
+      <div id="calcResult"></div>
+
+      <div class="notice">
+        Educational/preliminary calculation only. Safety-critical
+        installation, protection, cable sizing and equipment decisions
+        require appropriate engineering standards, equipment data and
+        professional review.
+      </div>
+    </div>`;
 }
 
-let fields="";
-
-switch(c[0]){
-
-case"Electrical Power":
-fields=field("cv","Voltage","V")+field("ci","Current","A");
-break;
-
-case"Electrical Energy":
-fields=field("cp","Power","W")+field("ct","Time","h");
-break;
-
-case"AC Circuits":
-fields=field("cr","Resistance","Ω")+field("cx","Reactance","Ω");
-break;
-
-case"Impedance":
-fields=field("cv","Voltage","V")+field("ci","Current","A");
-break;
-
-case"Power Factor":
-fields=field("cp","Real Power","W")+field("cs","Apparent Power","VA");
-break;
-
-case"Single-Phase Systems":
-fields=field("cv","Voltage","V")+
-field("ci","Current","A")+
-field("cpf","Power Factor","");
-break;
-
-case"Three-Phase Systems":
-fields=field("cv","Line Voltage","V")+
-field("ci","Line Current","A")+
-field("cpf","Power Factor","");
-break;
-
-case"Transformers":
-fields=field("vp","Primary Voltage","V")+
-field("np","Primary Turns","turns")+
-field("ns","Secondary Turns","turns");
-break;
-
-case"AC Motors":
-fields=field("cf","Frequency","Hz")+
-field("cpoles","Number of Poles","poles");
-break;
-
-case"Voltage Drop":
-fields=field("ci","Current","A")+
-field("cr","Resistance","Ω");
-break;
-
-case"Solar PV Systems":
-fields=field("cv","Voltage","V")+field("ci","Current","A");
-break;
-
-case"Electricity Consumption & Cost":
-fields=field("ckwh","Energy","kWh")+field("crate","Rate per kWh","");
-break;
-
-case"Engineering Unit Conversions":
-fields=field("cvalue","Value","")+field("cfactor","Conversion Factor","");
-break;
-
-default:
-fields=field("cv","Voltage","V")+field("ci","Current","A");
-}
-
-p.innerHTML=`
-<button class="back" onclick="calcState.sub=null;renderCalc()">
-← Topic
-</button>
-
-<div class="eyebrow">CALCULATOR</div>
-<h1>${esc(c[0])}</h1>
-
-<div class="card">
-
-<div class="formula-card">
-<h2>Formula</h2>
-<div style="color:var(--yellow);font-size:19px;font-weight:900">
-${esc(c[1])}
-</div>
-</div>
-
-${fields}
-
-<button class="btn" style="width:100%;margin-top:12px"
-onclick="doGeneralCalc()">
-Calculate
-</button>
-
-<button class="btn2" style="width:100%;margin-top:8px"
-onclick="renderCalculatorScreen()">
-Reset
-</button>
-
-<div id="calcResult"></div>
-
-<div class="notice">
-Educational/preliminary calculation only. Safety-critical
-installation, protection, cable sizing and equipment decisions
-require appropriate engineering standards, equipment data and
-professional review.
-</div>
-
-</div>`;
-}
-
-/* =========================================================
-   OHM'S LAW — FULLY FUNCTIONAL
-   ========================================================= */
+/* ---------- Ohm's Law ---------- */
 
 function ohmsLawScreen(){
+  return `
+    <button class="back" onclick="calcState.sub=null;renderCalc()">← Topic</button>
+    <div class="eyebrow">OHM'S LAW • CALCULATOR</div>
+    <h1>Ohm's Law</h1>
+    <p>Enter exactly two known quantities. ElectroBrain calculates the third.</p>
 
-return `
-<button class="back" onclick="calcState.sub=null;renderCalc()">
-← Topic
-</button>
+    <div class="card">
+      <div class="formula-card">
+        <h2>Formula</h2>
+        <div style="color:var(--yellow);font-size:19px;font-weight:900">V = I × R</div>
+        <p style="margin-top:6px">I = V / R &nbsp;&nbsp; R = V / I</p>
+      </div>
 
-<div class="eyebrow">OHM'S LAW • CALCULATOR</div>
-<h1>Ohm's Law</h1>
-<p>Enter any two known quantities. ElectroBrain calculates the third.</p>
+      <div class="formrow">
+        <label for="ohmV">Voltage (V)</label>
+        <input id="ohmV" type="number" step="any" inputmode="decimal" placeholder="Leave blank if unknown">
+      </div>
+      <div class="formrow">
+        <label for="ohmI">Current (A)</label>
+        <input id="ohmI" type="number" step="any" inputmode="decimal" placeholder="Leave blank if unknown">
+      </div>
+      <div class="formrow">
+        <label for="ohmR">Resistance (Ω)</label>
+        <input id="ohmR" type="number" step="any" inputmode="decimal" placeholder="Leave blank if unknown">
+      </div>
 
-<div class="card">
+      <button class="btn" style="width:100%;margin-top:8px" onclick="calculateOhmsLaw()">Calculate</button>
+      <button class="btn2" style="width:100%;margin-top:8px" onclick="resetOhmsLaw()">Reset</button>
 
-<div class="formula-card">
-<h2>Formula</h2>
-<div style="color:var(--yellow);font-size:19px;font-weight:900">
-V = I × R
-</div>
-<p style="margin-top:6px">
-I = V / R &nbsp;&nbsp; R = V / I
-</p>
-</div>
+      <div id="ohmResult"></div>
 
-<div class="formrow">
-<label>Voltage (V)</label>
-<input id="ohmV" type="number" step="any"
-placeholder="Leave blank if unknown">
-</div>
-
-<div class="formrow">
-<label>Current (I)</label>
-<input id="ohmI" type="number" step="any"
-placeholder="Leave blank if unknown">
-</div>
-
-<div class="formrow">
-<label>Resistance (R)</label>
-<input id="ohmR" type="number" step="any"
-placeholder="Leave blank if unknown">
-</div>
-
-<button class="btn" style="width:100%;margin-top:8px"
-onclick="calculateOhmsLaw()">
-Calculate
-</button>
-
-<button class="btn2" style="width:100%;margin-top:8px"
-onclick="resetOhmsLaw()">
-Reset
-</button>
-
-<div id="ohmResult"></div>
-
-<div class="notice">
-Enter exactly two known values. ElectroBrain determines the
-missing quantity automatically.
-</div>
-
-</div>`;
+      <div class="notice">
+        Enter exactly two known values. ElectroBrain determines the
+        missing quantity automatically.
+      </div>
+    </div>`;
 }
 
 function calculateOhmsLaw(){
+  const V=parseFloat(document.getElementById("ohmV").value);
+  const I=parseFloat(document.getElementById("ohmI").value);
+  const R=parseFloat(document.getElementById("ohmR").value);
 
-const V=parseFloat(document.getElementById("ohmV").value);
-const I=parseFloat(document.getElementById("ohmI").value);
-const R=parseFloat(document.getElementById("ohmR").value);
+  const hasV=Number.isFinite(V);
+  const hasI=Number.isFinite(I);
+  const hasR=Number.isFinite(R);
 
-const hasV=Number.isFinite(V);
-const hasI=Number.isFinite(I);
-const hasR=Number.isFinite(R);
+  if((hasV?1:0)+(hasI?1:0)+(hasR?1:0)!==2){
+    ohmError("Enter exactly two known values.");
+    return;
+  }
 
-if((hasV?1:0)+(hasI?1:0)+(hasR?1:0)!==2){
-document.getElementById("ohmResult").innerHTML=`
-<div class="notice" style="border-color:var(--red);color:var(--red)">
-Enter exactly two known values.
-</div>`;
-return;
+  let answer,unit,formula,steps,explanation;
+
+  if(!hasI){
+    if(R===0){ ohmError("Resistance cannot be zero for this calculation."); return; }
+    answer=V/R; unit="A"; formula="I = V / R";
+    steps=`I = V / R<br>I = ${V} / ${R}<br>I = ${fmt(answer)}`;
+    explanation="Current was calculated from voltage divided by resistance.";
+  }else if(!hasV){
+    answer=I*R; unit="V"; formula="V = I × R";
+    steps=`V = I × R<br>V = ${I} × ${R}<br>V = ${fmt(answer)}`;
+    explanation="Voltage was calculated by multiplying current by resistance.";
+  }else{
+    if(I===0){ ohmError("Current cannot be zero when calculating resistance."); return; }
+    answer=V/I; unit="Ω"; formula="R = V / I";
+    steps=`R = V / I<br>R = ${V} / ${I}<br>R = ${fmt(answer)}`;
+    explanation="Resistance was calculated from voltage divided by current.";
+  }
+
+  if(!Number.isFinite(answer)){ ohmError("The entered values produced an invalid result."); return; }
+
+  data.calculations++;
+  data.xp+=5;
+  logActivity("Calculation","Ohm's Law");
+  save();
+
+  document.getElementById("ohmResult").innerHTML=resultBox(answer,unit,formula,steps,explanation);
 }
 
-let answer,unit,formula,steps,explanation;
-
-if(!hasI){
-
-if(R===0){
-showOhmError("Resistance cannot be zero for this calculation.");
-return;
-}
-
-answer=V/R;
-unit="A";
-formula="I = V / R";
-steps=
-`I = V / R<br>
-I = ${V} / ${R}<br>
-I = ${answer}`;
-explanation="Current was calculated from voltage divided by resistance.";
-
-}
-
-else if(!hasV){
-
-answer=I*R;
-unit="V";
-formula="V = I × R";
-steps=
-`V = I × R<br>
-V = ${I} × ${R}<br>
-V = ${answer}`;
-explanation="Voltage was calculated by multiplying current by resistance.";
-
-}
-
-else{
-
-if(I===0){
-showOhmError("Current cannot be zero when calculating resistance.");
-return;
-}
-
-answer=V/I;
-unit="Ω";
-formula="R = V / I";
-steps=
-`R = V / I<br>
-R = ${V} / ${I}<br>
-R = ${answer}`;
-explanation="Resistance was calculated from voltage divided by current.";
-}
-
-if(!Number.isFinite(answer)){
-showOhmError("The entered values produced an invalid result.");
-return;
-}
-
-data.calculations++;
-data.xp+=5;
-logActivity("Calculation","Ohm's Law");
-save();
-
-const formatted=Number(answer.toFixed(6)).toString();
-
-document.getElementById("ohmResult").innerHTML=`
-<div class="calc-answer">
-
-<div style="font-size:10px;color:var(--blue);font-weight:900">
-FINAL ANSWER
-</div>
-
-<div class="big">${formatted} ${unit}</div>
-
-<h3 style="color:var(--blue);margin-top:15px">
-Formula Used
-</h3>
-
-<div class="answerbox">${formula}</div>
-
-<h3 style="color:var(--blue);margin-top:15px">
-Step-by-Step Solution
-</h3>
-
-<div class="answerbox">${steps}</div>
-
-<h3 style="color:var(--blue);margin-top:15px">
-Explanation
-</h3>
-
-<p>${explanation}</p>
-
-</div>`;
-}
-
-function showOhmError(msg){
-document.getElementById("ohmResult").innerHTML=`
-<div class="notice" style="border-color:var(--red);color:var(--red)">
-${esc(msg)}
-</div>`;
+function ohmError(msg){
+  document.getElementById("ohmResult").innerHTML=`
+    <div class="notice" style="border-color:var(--red);color:var(--red)">${esc(msg)}</div>`;
 }
 
 function resetOhmsLaw(){
-document.getElementById("ohmV").value="";
-document.getElementById("ohmI").value="";
-document.getElementById("ohmR").value="";
-document.getElementById("ohmResult").innerHTML="";
+  ["ohmV","ohmI","ohmR"].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value="";
+  });
+  document.getElementById("ohmResult").innerHTML="";
 }
 
-/* =========================================================
-   OTHER CALCULATORS
-   ========================================================= */
+/* ---------- Generic result box ---------- */
+
+function resultBox(value,unit,formula,steps,explanation){
+  return `
+    <div class="calc-answer">
+      <div style="font-size:10px;color:var(--blue);font-weight:900">FINAL ANSWER</div>
+      <div class="big">
+        <span>${fmt(value)}</span>
+        <span class="unit">${esc(unit)}</span>
+      </div>
+
+      <h3 style="color:var(--blue);margin-top:15px">Formula Used</h3>
+      <div class="answerbox">${formula}</div>
+
+      <h3 style="color:var(--blue);margin-top:15px">Step-by-Step Solution</h3>
+      <div class="answerbox">${steps}</div>
+
+      ${explanation?`
+      <h3 style="color:var(--blue);margin-top:15px">Explanation</h3>
+      <p>${esc(explanation)}</p>`:""}
+
+      <button class="btn2" style="width:100%;margin-top:12px"
+              onclick="copyResult('${fmt(value)} ${esc(unit)}')">
+        ⧉ Copy Result
+      </button>
+    </div>`;
+}
+
+function copyResult(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast("Copied to clipboard")).catch(()=>toast("Copy failed","err"));
+  }else{
+    toast("Clipboard unavailable","warn");
+  }
+}
+
+/* ---------- Generic calculator dispatch ---------- */
 
 function n(id){
-const x=parseFloat(document.getElementById(id)?.value);
-return Number.isFinite(x)?x:NaN;
+  const el=document.getElementById(id);
+  if(!el) return NaN;
+  const x=parseFloat(el.value);
+  return Number.isFinite(x)?x:NaN;
 }
 
-function generalResult(value,unit,formula,steps){
-
-if(!Number.isFinite(value)){
-alert("Enter valid values.");
-return;
-}
-
-data.calculations++;
-data.xp+=5;
-logActivity("Calculation",CALCS[calcState.topic][0]);
-save();
-
-document.getElementById("calcResult").innerHTML=`
-<div class="calc-answer">
-
-<div style="font-size:10px;color:var(--blue);font-weight:900">
-FINAL ANSWER
-</div>
-
-<div class="big">
-${Number(value.toFixed(6))} ${unit}
-</div>
-
-<h3 style="color:var(--blue);margin-top:15px">
-Formula Used
-</h3>
-
-<div class="answerbox">${esc(formula)}</div>
-
-<h3 style="color:var(--blue);margin-top:15px">
-Step-by-Step Solution
-</h3>
-
-<div class="answerbox">${steps}</div>
-
-</div>`;
+function generalResult(value,unit,formula,steps,explanation){
+  if(!Number.isFinite(value)){
+    document.getElementById("calcResult").innerHTML=`
+      <div class="notice" style="border-color:var(--red);color:var(--red)">
+        Enter valid values before calculating.
+      </div>`;
+    return;
+  }
+  data.calculations++;
+  data.xp+=5;
+  logActivity("Calculation",CALCS[calcState.topic][0]);
+  save();
+  document.getElementById("calcResult").innerHTML=resultBox(value,unit,formula,steps,explanation);
 }
 
 function doGeneralCalc(){
+  const name=CALCS[calcState.topic][0];
+  let value,unit,formula,steps,explanation;
 
-const name=CALCS[calcState.topic][0];
-let value,unit,formula,steps;
+  try{
+    switch(name){
 
-switch(name){
+      case"Electrical Power":{
+        const v=n("cv"),i=n("ci");
+        value=v*i; unit="W"; formula="P = VI";
+        steps=`P = ${v} × ${i} = ${fmt(value)} W`;
+        explanation="Power is the product of voltage and current.";
+        break;
+      }
+      case"Electrical Energy":{
+        const p=n("cp"),t=n("ct");
+        value=p*t; unit="Wh"; formula="E = Pt";
+        steps=`E = ${p} × ${t} = ${fmt(value)} Wh`;
+        explanation="Electrical energy is power multiplied by time.";
+        break;
+      }
+      case"AC Circuits":{
+        const r=n("cr"),x=n("cx");
+        value=Math.sqrt(r*r+x*x); unit="Ω"; formula="Z = √(R² + X²)";
+        steps=`Z = √(${r}² + ${x}²) = ${fmt(value)} Ω`;
+        explanation="Impedance magnitude combines resistance and reactance.";
+        break;
+      }
+      case"Impedance":{
+        const v=n("cv"),i=n("ci");
+        if(i===0){ generalResult(NaN); return; }
+        value=v/i; unit="Ω"; formula="Z = V/I";
+        steps=`Z = ${v} / ${i} = ${fmt(value)} Ω`;
+        explanation="Impedance is voltage divided by current.";
+        break;
+      }
+      case"Power Factor":{
+        const p=n("cp"),s=n("cs");
+        if(s===0){ generalResult(NaN); return; }
+        value=p/s; unit=""; formula="PF = P/S";
+        steps=`PF = ${p} / ${s} = ${fmt(value)}`;
+        explanation="Power factor is real power divided by apparent power.";
+        break;
+      }
+      case"Single-Phase Systems":{
+        const v=n("cv"),i=n("ci"),pf=n("cpf");
+        value=v*i*pf; unit="W"; formula="P = VIcosφ";
+        steps=`P = ${v} × ${i} × ${pf} = ${fmt(value)} W`;
+        explanation="Single-phase real power uses the power factor.";
+        break;
+      }
+      case"Three-Phase Systems":{
+        const v=n("cv"),i=n("ci"),pf=n("cpf");
+        value=Math.sqrt(3)*v*i*pf; unit="W"; formula="P = √3VIcosφ";
+        steps=`P = √3 × ${v} × ${i} × ${pf} = ${fmt(value)} W`;
+        explanation="Three-phase real power uses √3, line V, line I and power factor.";
+        break;
+      }
+      case"Transformers":{
+        const vp=n("vp"),np=n("np"),ns=n("ns");
+        if(np===0){ generalResult(NaN); return; }
+        value=vp*ns/np; unit="V"; formula="Vs = Vp × Ns/Np";
+        steps=`Vs = ${vp} × ${ns}/${np} = ${fmt(value)} V`;
+        explanation="Secondary voltage follows the turns ratio.";
+        break;
+      }
+      case"AC Motors":{
+        const f=n("cf"),poles=n("cpoles");
+        if(poles===0){ generalResult(NaN); return; }
+        value=120*f/poles; unit="rpm"; formula="Ns = 120f/P";
+        steps=`Ns = 120 × ${f} / ${poles} = ${fmt(value)} rpm`;
+        explanation="Synchronous speed depends on frequency and pole count.";
+        break;
+      }
+      case"Voltage Drop":{
+        const i=n("ci"),r=n("cr");
+        value=i*r; unit="V"; formula="Vd = IR";
+        steps=`Vd = ${i} × ${r} = ${fmt(value)} V`;
+        explanation="Voltage drop equals current times conductor resistance.";
+        break;
+      }
+      case"Solar PV Systems":{
+        const v=n("cv"),i=n("ci");
+        value=v*i; unit="W"; formula="P = VI";
+        steps=`P = ${v} × ${i} = ${fmt(value)} W`;
+        explanation="PV DC output power is voltage times current.";
+        break;
+      }
+      case"Electricity Consumption & Cost":{
+        const kwh=n("ckwh"),rate=n("crate");
+        value=kwh*rate; unit=""; formula="Cost = kWh × Rate";
+        steps=`Cost = ${kwh} × ${rate} = ${fmt(value)}`;
+        explanation="Energy consumption cost is energy in kWh times the rate.";
+        break;
+      }
+      case"Engineering Unit Conversions":{
+        const v=n("cvalue"),f=n("cfactor");
+        value=v*f; unit=""; formula="Result = Value × Conversion Factor";
+        steps=`Result = ${v} × ${f} = ${fmt(value)}`;
+        explanation="A conversion factor scales a quantity to new units.";
+        break;
+      }
+      default:{
+        const v=n("cv"),i=n("ci");
+        if(i===0){ generalResult(NaN); return; }
+        value=v/i; unit=""; formula="Engineering relationship";
+        steps=`Result = ${fmt(value)}`;
+        explanation="";
+      }
+    }
+  }catch(e){
+    generalResult(NaN);
+    return;
+  }
 
-case"Electrical Power":
-value=n("cv")*n("ci");
-unit="W";
-formula="P = VI";
-steps=`P = ${n("cv")} × ${n("ci")} = ${value} W`;
-break;
-
-case"Electrical Energy":
-value=n("cp")*n("ct");
-unit="Wh";
-formula="E = Pt";
-steps=`E = ${n("cp")} × ${n("ct")} = ${value} Wh`;
-break;
-
-case"AC Circuits":
-value=Math.sqrt(n("cr")**2+n("cx")**2);
-unit="Ω";
-formula="Z = √(R² + X²)";
-steps=`Z = √(${n("cr")}² + ${n("cx")}²) = ${value} Ω`;
-break;
-
-case"Impedance":
-value=n("cv")/n("ci");
-unit="Ω";
-formula="Z = V/I";
-steps=`Z = ${n("cv")} / ${n("ci")} = ${value} Ω`;
-break;
-
-case"Power Factor":
-value=n("cp")/n("cs");
-unit="";
-formula="PF = P/S";
-steps=`PF = ${n("cp")} / ${n("cs")} = ${value}`;
-break;
-
-case"Single-Phase Systems":
-value=n("cv")*n("ci")*n("cpf");
-unit="W";
-formula="P = VIcosφ";
-steps=`P = ${n("cv")} × ${n("ci")} × ${n("cpf")} = ${value} W`;
-break;
-
-case"Three-Phase Systems":
-value=Math.sqrt(3)*n("cv")*n("ci")*n("cpf");
-unit="W";
-formula="P = √3VIcosφ";
-steps=`P = √3 × ${n("cv")} × ${n("ci")} × ${n("cpf")} = ${value} W`;
-break;
-
-case"Transformers":
-value=n("vp")*n("ns")/n("np");
-unit="V";
-formula="Vs = Vp × Ns/Np";
-steps=`Vs = ${n("vp")} × ${n("ns")}/${n("np")} = ${value} V`;
-break;
-
-case"AC Motors":
-value=120*n("cf")/n("cpoles");
-unit="rpm";
-formula="Ns = 120f/P";
-steps=`Ns = 120 × ${n("cf")} / ${n("cpoles")} = ${value} rpm`;
-break;
-
-case"Voltage Drop":
-value=n("ci")*n("cr");
-unit="V";
-formula="Vd = IR";
-steps=`Vd = ${n("ci")} × ${n("cr")} = ${value} V`;
-break;
-
-case"Solar PV Systems":
-value=n("cv")*n("ci");
-unit="W";
-formula="P = VI";
-steps=`P = ${n("cv")} × ${n("ci")} = ${value} W`;
-break;
-
-case"Electricity Consumption & Cost":
-value=n("ckwh")*n("crate");
-unit="";
-formula="Cost = kWh × Rate";
-steps=`Cost = ${n("ckwh")} × ${n("crate")} = ${value}`;
-break;
-
-case"Engineering Unit Conversions":
-value=n("cvalue")*n("cfactor");
-unit="";
-formula="Result = Value × Conversion Factor";
-steps=`Result = ${n("cvalue")} × ${n("cfactor")} = ${value}`;
-break;
-
-default:
-value=n("cv")/n("ci");
-unit="";
-formula="Engineering relationship";
-steps=`Result = ${value}`;
-}
-
-generalResult(value,unit,formula,steps);
+  generalResult(value,unit,formula,steps,explanation);
 }
 
 /* =========================================================
-   LAB LIBRARY
+   LABS
    ========================================================= */
 
 const LABS=[
-["Socket Outlet Assembly","Domestic","🔌"],
-["Two-Way Lighting","Domestic","💡"],
-["Intermediate Lighting","Domestic","💡"],
-["Radial Circuit","Domestic","🔌"],
-["Ring Circuit","Domestic","⭕"],
-["Switch Installation","Domestic","🔘"],
-["Junction Box / Cable Termination","Domestic","🧵"],
-["Conduit / Cable Installation","Domestic","🧰"],
-["Distribution Board Assembly","Domestic","⚡"],
-["MCB Identification & Arrangement","Domestic","🛡️"],
-["Fuse Replacement Simulation","Domestic","🔧"],
-["Earthing & Bonding Concept","Domestic","⏚"],
-["Installation Inspection","Domestic","🔎"],
-["Domestic Fault Tracing","Domestic","🔍"],
+  ["Socket Outlet Assembly","Domestic","🔌"],
+  ["Two-Way Lighting","Domestic","💡"],
+  ["Intermediate Lighting","Domestic","💡"],
+  ["Radial Circuit","Domestic","🔌"],
+  ["Ring Circuit","Domestic","⭕"],
+  ["Switch Installation","Domestic","🔘"],
+  ["Junction Box / Cable Termination","Domestic","🧵"],
+  ["Conduit / Cable Installation","Domestic","🧰"],
+  ["Distribution Board Assembly","Domestic","⚡"],
+  ["MCB Identification & Arrangement","Domestic","🛡️"],
+  ["Fuse Replacement Simulation","Domestic","🔧"],
+  ["Earthing & Bonding Concept","Domestic","⏚"],
+  ["Installation Inspection","Domestic","🔎"],
+  ["Domestic Fault Tracing","Domestic","🔍"],
 
-["Motor Identification","Industrial","⚙️"],
-["Motor Mounting","Industrial","🔩"],
-["Motor Terminal Identification","Industrial","⚙️"],
-["Motor Connection Simulation","Industrial","🔌"],
-["Motor Inspection & Maintenance","Industrial","🧰"],
-["Motor Fault Tracing","Industrial","🔎"],
-["Transformer Identification","Industrial","⚡"],
-["Transformer Terminal Inspection","Industrial","🔧"],
+  ["Motor Identification","Industrial","⚙️"],
+  ["Motor Mounting","Industrial","🔩"],
+  ["Motor Terminal Identification","Industrial","⚙️"],
+  ["Motor Connection Simulation","Industrial","🔌"],
+  ["Motor Inspection & Maintenance","Industrial","🧰"],
+  ["Motor Fault Tracing","Industrial","🔎"],
+  ["Transformer Identification","Industrial","⚡"],
+  ["Transformer Terminal Inspection","Industrial","🔧"],
 
-["DOL Starter","Industrial","🎛️"],
-["Star-Delta Starter","Industrial","🔄"],
-["Forward / Reverse Control","Industrial","↔️"],
-["Contactor Identification","Industrial","🔧"],
-["Overload Relay","Industrial","🛡️"],
-["Control Panel Assembly","Industrial","🎛️"],
-["Push-Button Control","Industrial","🔘"],
-["Indicator Lamps","Industrial","💡"],
-["Emergency-Stop Concept","Industrial","🛑"],
-["Industrial Fault Tracing","Industrial","🔎"],
+  ["DOL Starter","Industrial","🎛️"],
+  ["Star-Delta Starter","Industrial","🔄"],
+  ["Forward / Reverse Control","Industrial","↔️"],
+  ["Contactor Identification","Industrial","🔧"],
+  ["Overload Relay","Industrial","🛡️"],
+  ["Control Panel Assembly","Industrial","🎛️"],
+  ["Push-Button Control","Industrial","🔘"],
+  ["Indicator Lamps","Industrial","💡"],
+  ["Emergency-Stop Concept","Industrial","🛑"],
+  ["Industrial Fault Tracing","Industrial","🔎"],
 
-["PLC Components","Industrial","🧠"],
-["PLC I/O Identification","Industrial","🔌"],
-["Sensor Identification","Industrial","📡"],
-["PLC I/O Wiring","Industrial","🧠"],
-["PLC Motor Control","Industrial","⚙️"],
-["PLC Timer / Counter Concept","Industrial","⏱️"],
-["HMI Identification","Industrial","🖥️"],
-["PLC Fault Diagnosis","Industrial","🔎"],
+  ["PLC Components","Industrial","🧠"],
+  ["PLC I/O Identification","Industrial","🔌"],
+  ["Sensor Identification","Industrial","📡"],
+  ["PLC I/O Wiring","Industrial","🧠"],
+  ["PLC Motor Control","Industrial","⚙️"],
+  ["PLC Timer / Counter Concept","Industrial","⏱️"],
+  ["HMI Identification","Industrial","🖥️"],
+  ["PLC Fault Diagnosis","Industrial","🔎"],
 
-["VFD Identification","Industrial","📟"],
-["VFD Terminal Identification","Industrial","🔌"],
-["VFD Parameter Setup","Industrial","📟"],
-["VFD / Motor Relationship","Industrial","⚙️"],
-["VFD Speed & Direction Simulation","Industrial","↔️"],
-["VFD Fault Investigation","Industrial","🔎"],
+  ["VFD Identification","Industrial","📟"],
+  ["VFD Terminal Identification","Industrial","🔌"],
+  ["VFD Parameter Setup","Industrial","📟"],
+  ["VFD / Motor Relationship","Industrial","⚙️"],
+  ["VFD Speed & Direction Simulation","Industrial","↔️"],
+  ["VFD Fault Investigation","Industrial","🔎"],
 
-["Multimeter Identification","Industrial","📐"],
-["Voltage Measurement Concept","Industrial","⚡"],
-["Current Measurement Concept","Industrial","📏"],
-["Resistance Measurement Concept","Industrial","Ω"],
-["Continuity Testing Concept","Industrial","✓"],
-["Clamp Meter Identification","Industrial","📐"],
-["Instrument Identification","Industrial","🧰"],
-["Measurement Fault Diagnosis","Industrial","🔎"],
+  ["Multimeter Identification","Industrial","📐"],
+  ["Voltage Measurement Concept","Industrial","⚡"],
+  ["Current Measurement Concept","Industrial","📏"],
+  ["Resistance Measurement Concept","Industrial","Ω"],
+  ["Continuity Testing Concept","Industrial","✓"],
+  ["Clamp Meter Identification","Industrial","📐"],
+  ["Instrument Identification","Industrial","🧰"],
+  ["Measurement Fault Diagnosis","Industrial","🔎"],
 
-["Resistor Identification","Industrial","Ω"],
-["Capacitor Identification","Industrial","▣"],
-["Diode Identification","Industrial","◁"],
-["LED Identification","Industrial","💡"],
-["Transistor Identification","Industrial","🔺"],
-["Rectifier Concept","Industrial","◈"],
-["Electronic Control Circuit","Industrial","🔌"],
+  ["Resistor Identification","Industrial","Ω"],
+  ["Capacitor Identification","Industrial","▣"],
+  ["Diode Identification","Industrial","◁"],
+  ["LED Identification","Industrial","💡"],
+  ["Transistor Identification","Industrial","🔺"],
+  ["Rectifier Concept","Industrial","◈"],
+  ["Electronic Control Circuit","Industrial","🔌"],
 
-["PV Components","Industrial","☀️"],
-["PV Panel Identification","Industrial","☀️"],
-["Charge Controller","Industrial","🔋"],
-["Battery Identification","Industrial","🔋"],
-["Inverter Identification","Industrial","⚡"],
-["PV Layout Simulation","Industrial","☀️"],
-["Battery Connection Simulation","Industrial","🔋"],
-["Renewable Energy Fault Investigation","Industrial","🔎"]
+  ["PV Components","Industrial","☀️"],
+  ["PV Panel Identification","Industrial","☀️"],
+  ["Charge Controller","Industrial","🔋"],
+  ["Battery Identification","Industrial","🔋"],
+  ["Inverter Identification","Industrial","⚡"],
+  ["PV Layout Simulation","Industrial","☀️"],
+  ["Battery Connection Simulation","Industrial","🔋"],
+  ["Renewable Energy Fault Investigation","Industrial","🔎"]
 ];
 
-let labModeState="Domestic";
 let currentLab=null;
-let workshopState={
-selected:[],
-connections:{},
-actions:[]
-};
-
-function renderLabs(){
-
-const list=LABS.filter(x=>x[1]===labModeState);
-
-document.getElementById("labsPage").innerHTML=`
-
-<div class="eyebrow">EXPERIMENT • PROFESSIONAL WORKSHOP</div>
-<h1>Labs</h1>
-<p>Explore practical electrical engineering simulations.</p>
-
-<div class="tabs">
-<button class="${labModeState==="Domestic"?"active":""}"
-onclick="labModeState='Domestic';renderLabs()">
-Domestic
-</button>
-
-<button class="${labModeState==="Industrial"?"active":""}"
-onclick="labModeState='Industrial';renderLabs()">
-Industrial
-</button>
-</div>
-
-<div class="grid">
-${list.map(x=>`
-<div class="topic" onclick="openLab('${esc(x[0])}')">
-<div class="ico">${x[2]}</div>
-<b>${esc(x[0])}</b>
-<small>${x[1]} practical</small>
-</div>`).join("")}
-</div>`;
-}
+let workshopState={selected:[],connections:{},actions:[]};
 
 function labEquipment(title){
-
-if(/Motor/i.test(title))
-return ["Motor","Cable","Terminal","Mounting Base","Fasteners","Control"];
-
-if(/PLC/i.test(title))
-return ["PLC","Cable","Input","Output","Sensor","Terminal"];
-
-if(/VFD/i.test(title))
-return ["VFD","Motor","Cable","Terminal","Control"];
-
-if(/Transformer/i.test(title))
-return ["Transformer","Cable","Terminal","Meter"];
-
-if(/PV|Battery|Inverter|Charge/i.test(title))
-return ["PV Panel","Battery","Inverter","Cable","Terminal","Controller"];
-
-if(/Multimeter|Measurement|Meter|Testing/i.test(title))
-return ["Multimeter","Test Lead","Source","Component","Terminal"];
-
-if(/Resistor|Capacitor|Diode|LED|Transistor|Rectifier|Electronic/i.test(title))
-return ["Component","Source","Cable","Terminal","Meter"];
-
-return ["Source","Cable","Switch","Protection","Load","Terminal"];
+  if(/Motor/i.test(title)) return ["Motor","Cable","Terminal","Mounting Base","Fasteners","Control"];
+  if(/PLC/i.test(title)) return ["PLC","Cable","Input","Output","Sensor","Terminal"];
+  if(/VFD/i.test(title)) return ["VFD","Motor","Cable","Terminal","Control"];
+  if(/Transformer/i.test(title)) return ["Transformer","Cable","Terminal","Meter"];
+  if(/PV|Battery|Inverter|Charge/i.test(title)) return ["PV Panel","Battery","Inverter","Cable","Terminal","Controller"];
+  if(/Multimeter|Measurement|Meter|Testing/i.test(title)) return ["Multimeter","Test Lead","Source","Component","Terminal"];
+  if(/Resistor|Capacitor|Diode|LED|Transistor|Rectifier|Electronic/i.test(title)) return ["Component","Source","Cable","Terminal","Meter"];
+  return ["Source","Cable","Switch","Protection","Load","Terminal"];
 }
 
 function labTools(title){
+  if(/Measurement|Multimeter|Testing|Meter/i.test(title)) return ["Multimeter","Test Leads"];
+  if(/Motor Mounting/i.test(title)) return ["Spanner","Screwdriver"];
+  if(/Cable|Termination|Conduit/i.test(title)) return ["Wire Stripper","Screwdriver"];
+  if(/Panel|Starter|Control/i.test(title)) return ["Screwdriver","Test Meter"];
+  return ["Screwdriver"];
+}
 
-if(/Measurement|Multimeter|Testing|Meter/i.test(title))
-return ["Multimeter","Test Leads"];
+function renderLabs(){
+  const list=LABS.filter(x=>x[1]===labModeState);
 
-if(/Motor Mounting/i.test(title))
-return ["Spanner","Screwdriver"];
+  document.getElementById("labsPage").innerHTML=`
+    <div class="eyebrow">EXPERIMENT • PROFESSIONAL WORKSHOP</div>
+    <h1>Labs</h1>
+    <p>Explore practical electrical engineering simulations.</p>
 
-if(/Cable|Termination|Conduit/i.test(title))
-return ["Wire Stripper","Screwdriver"];
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="${labModeState==="Domestic"}" class="${labModeState==="Domestic"?"active":""}"
+              onclick="labModeState='Domestic';savePrefs();renderLabs()">
+        Domestic
+      </button>
+      <button role="tab" aria-selected="${labModeState==="Industrial"}" class="${labModeState==="Industrial"?"active":""}"
+              onclick="labModeState='Industrial';savePrefs();renderLabs()">
+        Industrial
+      </button>
+    </div>
 
-if(/Panel|Starter|Control/i.test(title))
-return ["Screwdriver","Test Meter"];
-
-return ["Screwdriver"];
+    <div class="grid">
+      ${list.map(x=>`
+        <div class="topic" role="button" tabindex="0"
+             onclick="openLab('${esc(x[0])}')"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLab('${esc(x[0])}')}">
+          <div class="ico" aria-hidden="true">${x[2]}</div>
+          <b>${esc(x[0])}</b>
+          <small>${x[1]} practical</small>
+        </div>`).join("")}
+    </div>`;
 }
 
 function openLab(title){
+  currentLab=title;
+  const lab=LABS.find(x=>x[0]===title);
+  const equipment=labEquipment(title);
+  const tools=labTools(title);
 
-currentLab=title;
+  document.getElementById("labsPage").innerHTML=`
+    <button class="back" onclick="renderLabs()">← Lab Library</button>
 
-const lab=LABS.find(x=>x[0]===title);
-const equipment=labEquipment(title);
-const tools=labTools(title);
+    <div class="eyebrow">${esc(lab[1])} • PRACTICAL BRIEF</div>
+    <div class="labhero">
+      <h1>${esc(title)}</h1>
+      <p>Prepare for the practical before entering the free workshop.</p>
+    </div>
 
-document.getElementById("labsPage").innerHTML=`
+    <div class="labvisual">${lab[2]}</div>
 
-<button class="back" onclick="renderLabs()">← Lab Library</button>
+    <div class="labsection">
+      <h2>Objective</h2>
+      <p>Understand the equipment, components, arrangement and operating principle involved in this practical task.</p>
+    </div>
 
-<div class="eyebrow">${esc(lab[1])} • PRACTICAL BRIEF</div>
+    <div class="labsection">
+      <h2>Equipment</h2>
+      <div class="grid">
+        ${equipment.map(x=>`
+          <div class="topic">
+            <div class="ico" aria-hidden="true">⚙️</div>
+            <b>${esc(x)}</b>
+            <small>Required equipment/component</small>
+          </div>`).join("")}
+      </div>
+    </div>
 
-<div class="labhero">
-<h1>${esc(title)}</h1>
-<p>Prepare for the practical before entering the free workshop.</p>
-</div>
+    <div class="labsection">
+      <h2>Tools Actually Used</h2>
+      <div class="toolgrid">
+        ${tools.map(x=>`<div class="tool">🧰 ${esc(x)}</div>`).join("")}
+      </div>
+    </div>
 
-<div class="labvisual">${lab[2]}</div>
+    <div class="labsection">
+      <h2>Reference / Technical Arrangement</h2>
+      <div class="terminal-board">
+        <div style="text-align:center;color:var(--yellow);font-weight:900">
+          SOURCE → PROTECTION → CONTROL → LOAD
+        </div>
+        <div style="text-align:center;margin-top:15px">
+          <span class="terminal target">L</span>
+          <span class="terminal target">N</span>
+          <span class="terminal target">PE</span>
+          <span class="terminal">LOAD</span>
+        </div>
+      </div>
+    </div>
 
-<div class="labsection">
-<h2>Objective</h2>
-<p>
-Understand the equipment, components, arrangement and
-operating principle involved in this practical task.
-</p>
-</div>
+    <div class="labsection">
+      <h2>Simulation Safety Briefing</h2>
+      <p>
+        This is a controlled educational simulation. Do not use the
+        simulation as permission to perform unsupervised live electrical
+        work. Real electrical systems require isolation, appropriate
+        testing, protection and qualified supervision.
+      </p>
+    </div>
 
-<div class="labsection">
-<h2>Equipment</h2>
-<div class="grid">
-${equipment.map(x=>`
-<div class="topic">
-<div class="ico">⚙️</div>
-<b>${esc(x)}</b>
-<small>Required equipment/component</small>
-</div>`).join("")}
-</div>
-</div>
+    <div class="labsection">
+      <h2>Reference Procedure</h2>
+      <div class="labsteps">
+        <div class="step"><b>1</b> Identify the equipment and components.</div>
+        <div class="step"><b>2</b> Inspect terminals and connection points.</div>
+        <div class="step"><b>3</b> Identify the required conductors and materials.</div>
+        <div class="step"><b>4</b> Review the technical arrangement.</div>
+        <div class="step"><b>5</b> Enter the Free Workshop and perform the task independently.</div>
+        <div class="step"><b>6</b> Finish the job for final evaluation.</div>
+      </div>
+    </div>
 
-<div class="labsection">
-<h2>Tools Actually Used</h2>
-<div class="toolgrid">
-${tools.map(x=>`<div class="tool">🧰 ${esc(x)}</div>`).join("")}
-</div>
-</div>
+    <div class="labsection">
+      <h2>Expected Finished Result</h2>
+      <div class="labvisual" style="height:110px;font-size:38px">${lab[2]} ✓</div>
+    </div>
 
-<div class="labsection">
-<h2>Reference / Technical Arrangement</h2>
-<div class="terminal-board">
-<div style="text-align:center;color:var(--yellow);font-weight:900">
-SOURCE → PROTECTION → CONTROL → LOAD
-</div>
-<div style="text-align:center;margin-top:15px">
-<span class="terminal target">L</span>
-<span class="terminal target">N</span>
-<span class="terminal target">PE</span>
-<span class="terminal">LOAD</span>
-</div>
-</div>
-</div>
-
-<div class="labsection">
-<h2>Simulation Safety Briefing</h2>
-<p>
-This is a controlled educational simulation. Do not use the
-simulation as permission to perform unsupervised live electrical
-work. Real electrical systems require isolation, appropriate
-testing, protection and qualified supervision.
-</p>
-</div>
-
-<div class="labsection">
-<h2>Reference Procedure</h2>
-<div class="labsteps">
-<div class="step"><b>1</b> Identify the equipment and components.</div>
-<div class="step"><b>2</b> Inspect terminals and connection points.</div>
-<div class="step"><b>3</b> Identify the required conductors and materials.</div>
-<div class="step"><b>4</b> Review the technical arrangement.</div>
-<div class="step"><b>5</b> Enter the Free Workshop and perform the task independently.</div>
-<div class="step"><b>6</b> Finish the job for final evaluation.</div>
-</div>
-</div>
-
-<div class="labsection">
-<h2>Expected Finished Result</h2>
-<div class="labvisual" style="height:110px;font-size:38px">
-${lab[2]} ✓
-</div>
-</div>
-
-<button class="btn" style="width:100%;margin-top:14px"
-onclick="enterFreeWorkshop()">
-Enter Free Workshop
-</button>`;
+    <button class="btn" style="width:100%;margin-top:14px" onclick="enterFreeWorkshop()">
+      Enter Free Workshop
+    </button>`;
 }
 
-/* =========================================================
-   PROFESSIONAL FREE WORKSPACE
-   ========================================================= */
-
 function enterFreeWorkshop(){
-
-workshopState={
-selected:[],
-connections:{},
-actions:[]
-};
-
-renderFreeWorkshop();
+  workshopState={selected:[],connections:{},actions:[]};
+  renderFreeWorkshop();
 }
 
 function renderFreeWorkshop(){
+  const equipment=labEquipment(currentLab);
 
-const equipment=labEquipment(currentLab);
+  document.getElementById("labsPage").innerHTML=`
+    <button class="back" onclick="openLab('${esc(currentLab)}')">← Job Brief</button>
+    <div class="eyebrow">FREE WORKSHOP • INDEPENDENT MODE</div>
+    <h1>${esc(currentLab)}</h1>
+    <p>Work independently. Inspect, select, move and connect the simulated equipment. There is no continuous grading.</p>
 
-document.getElementById("labsPage").innerHTML=`
+    <div class="workshop">
+      <h2>Virtual Workshop</h2>
 
-<button class="back" onclick="openLab('${esc(currentLab)}')">
-← Job Brief
-</button>
+      <div class="bench">
+        <div class="equipment">
+          ${equipment.map((x,i)=>`
+            <button id="part_${i}" aria-pressed="false"
+                    onclick="workshopSelect('${esc(x)}',this)">
+              <span style="font-size:25px" aria-hidden="true">${equipmentIcon(x)}</span><br>
+              ${esc(x)}
+            </button>`).join("")}
+        </div>
 
-<div class="eyebrow">FREE WORKSHOP • INDEPENDENT MODE</div>
-<h1>${esc(currentLab)}</h1>
+        <div class="terminal-board">
+          <h3>Equipment Terminals</h3>
+          <span class="terminal target" data-terminal="L">L</span>
+          <span class="terminal target" data-terminal="N">N</span>
+          <span class="terminal target" data-terminal="PE">PE</span>
+          <span class="terminal" data-terminal="A1">A1</span>
+          <span class="terminal" data-terminal="A2">A2</span>
+        </div>
 
-<p>
-Work independently. Inspect, select, move and connect the
-simulated equipment. There is no continuous grading.
-</p>
+        <div class="wires">
+          <h3 style="margin:8px 0">Cable Fitting</h3>
 
-<div class="workshop">
+          <div class="wireitem">
+            <span class="conductor brown" aria-hidden="true"></span>
+            <b style="font-size:11px">Brown conductor</b>
+            <div class="dropzone" data-wire="Brown"
+                 ondragover="event.preventDefault()"
+                 ondrop="dropConductor(event,'Brown','L')">
+              Drop on terminal L
+            </div>
+          </div>
 
-<h2>Virtual Workshop</h2>
+          <div class="wireitem">
+            <span class="conductor bluewire" aria-hidden="true"></span>
+            <b style="font-size:11px">Blue conductor</b>
+            <div class="dropzone" data-wire="Blue"
+                 ondragover="event.preventDefault()"
+                 ondrop="dropConductor(event,'Blue','N')">
+              Drop on terminal N
+            </div>
+          </div>
 
-<div class="bench">
+          <div class="wireitem">
+            <span class="conductor pe" aria-hidden="true"></span>
+            <b style="font-size:11px">Green/Yellow PE</b>
+            <div class="dropzone" data-wire="Green/Yellow"
+                 ondragover="event.preventDefault()"
+                 ondrop="dropConductor(event,'Green/Yellow','PE')">
+              Drop on terminal PE
+            </div>
+          </div>
 
-<div class="equipment">
+          <div style="margin-top:10px">
+            <button class="dragwire" draggable="true" aria-pressed="false"
+                    ondragstart="event.dataTransfer.setData('conductor','Brown')"
+                    onclick="fitConductor('Brown','L',this)">
+              ↔ Brown → L
+            </button>
+            <button class="dragwire" draggable="true" aria-pressed="false" style="margin-top:6px"
+                    ondragstart="event.dataTransfer.setData('conductor','Blue')"
+                    onclick="fitConductor('Blue','N',this)">
+              ↔ Blue → N
+            </button>
+            <button class="dragwire" draggable="true" aria-pressed="false" style="margin-top:6px"
+                    ondragstart="event.dataTransfer.setData('conductor','Green/Yellow')"
+                    onclick="fitConductor('Green/Yellow','PE',this)">
+              ↔ Green/Yellow → PE
+            </button>
+          </div>
+        </div>
+      </div>
 
-${equipment.map((x,i)=>`
-<button id="part_${i}"
-onclick="workshopSelect('${esc(x)}',this)">
-<span style="font-size:25px">
-${equipmentIcon(x)}
-</span><br>
-${esc(x)}
-</button>`).join("")}
+      <div class="card" style="margin-top:12px">
+        <h2>Workshop Actions</h2>
+        <div class="grid" style="margin-top:9px">
+          <button class="btn2" onclick="recordWorkshopAction('Inspect')">Inspect</button>
+          <button class="btn2" onclick="recordWorkshopAction('Pick Up')">Pick Up</button>
+          <button class="btn2" onclick="recordWorkshopAction('Move')">Move</button>
+          <button class="btn2" onclick="recordWorkshopAction('Rotate')">Rotate</button>
+          <button class="btn2" onclick="recordWorkshopAction('Strip')">Strip</button>
+          <button class="btn2" onclick="recordWorkshopAction('Fasten')">Fasten</button>
+          <button class="btn2" onclick="recordWorkshopAction('Disconnect')">Disconnect</button>
+          <button class="btn2" onclick="recordWorkshopAction('Test')">Test</button>
+        </div>
+        <p style="margin-top:12px">Actions are recorded quietly. Evaluation happens only when you finish the job.</p>
+      </div>
 
-</div>
+      <button class="btn" style="width:100%;margin-top:13px" onclick="finishWorkshop()">FINISH JOB</button>
 
-<div class="terminal-board">
-
-<h3>Equipment Terminals</h3>
-
-<span class="terminal target" data-terminal="L">
-L
-</span>
-
-<span class="terminal target" data-terminal="N">
-N
-</span>
-
-<span class="terminal target" data-terminal="PE">
-PE
-</span>
-
-<span class="terminal" data-terminal="A1">
-A1
-</span>
-
-<span class="terminal" data-terminal="A2">
-A2
-</span>
-
-</div>
-
-<div class="wires">
-
-<h3 style="margin:8px 0">Cable Fitting</h3>
-
-<div class="wireitem">
-<span class="conductor brown"></span>
-<b style="font-size:11px">Brown conductor</b>
-<div class="dropzone"
-ondragover="event.preventDefault()"
-ondrop="dropConductor(event,'Brown','L')">
-Drop on terminal L
-</div>
-</div>
-
-<div class="wireitem">
-<span class="conductor bluewire"></span>
-<b style="font-size:11px">Blue conductor</b>
-<div class="dropzone"
-ondragover="event.preventDefault()"
-ondrop="dropConductor(event,'Blue','N')">
-Drop on terminal N
-</div>
-</div>
-
-<div class="wireitem">
-<span class="conductor pe"></span>
-<b style="font-size:11px">Green/Yellow PE</b>
-<div class="dropzone"
-ondragover="event.preventDefault()"
-ondrop="dropConductor(event,'Green/Yellow','PE')">
-Drop on terminal PE
-</div>
-</div>
-
-<div style="margin-top:10px">
-<div class="dragwire"
-draggable="true"
-ondragstart="event.dataTransfer.setData('conductor','Brown')">
-↔ Drag Brown conductor
-</div>
-
-<div class="dragwire" style="margin-top:6px"
-draggable="true"
-ondragstart="event.dataTransfer.setData('conductor','Blue')">
-↔ Drag Blue conductor
-</div>
-
-<div class="dragwire" style="margin-top:6px"
-draggable="true"
-ondragstart="event.dataTransfer.setData('conductor','Green/Yellow')">
-↔ Drag Green/Yellow PE conductor
-</div>
-</div>
-
-</div>
-
-</div>
-
-<div class="card" style="margin-top:12px">
-
-<h2>Workshop Actions</h2>
-
-<div class="grid" style="margin-top:9px">
-
-<button class="btn2" onclick="recordWorkshopAction('Inspect')">
-Inspect
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Pick Up')">
-Pick Up
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Move')">
-Move
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Rotate')">
-Rotate
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Strip')">
-Strip
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Fasten')">
-Fasten
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Disconnect')">
-Disconnect
-</button>
-
-<button class="btn2" onclick="recordWorkshopAction('Test')">
-Test
-</button>
-
-</div>
-
-<p style="margin-top:12px">
-Actions are recorded quietly. Evaluation happens only when
-you finish the job.
-</p>
-
-</div>
-
-<button class="btn" style="width:100%;margin-top:13px"
-onclick="finishWorkshop()">
-FINISH JOB
-</button>
-
-<div class="notice">
-Free Workshop is an educational simulation. Real electrical
-work must be performed with appropriate supervision,
-isolation and approved procedures.
-</div>
-
-</div>`;
+      <div class="notice">
+        Free Workshop is an educational simulation. Real electrical
+        work must be performed with appropriate supervision,
+        isolation and approved procedures.
+      </div>
+    </div>`;
 }
 
 function equipmentIcon(x){
-
-if(/Motor|Load/i.test(x))return"⚙️";
-if(/Cable|Wire|Lead/i.test(x))return"🧵";
-if(/Terminal/i.test(x))return"🔩";
-if(/Source/i.test(x))return"⚡";
-if(/Switch|Button|Control/i.test(x))return"🔘";
-if(/Protection|MCB|Fuse/i.test(x))return"🛡️";
-if(/PLC/i.test(x))return"🧠";
-if(/VFD/i.test(x))return"📟";
-if(/Battery/i.test(x))return"🔋";
-if(/PV/i.test(x))return"☀️";
-if(/Transformer/i.test(x))return"⚡";
-if(/Meter|Multimeter/i.test(x))return"📐";
-return"⚙️";
+  if(/Motor|Load/i.test(x)) return "⚙️";
+  if(/Cable|Wire|Lead/i.test(x)) return "🧵";
+  if(/Terminal/i.test(x)) return "🔩";
+  if(/Source/i.test(x)) return "⚡";
+  if(/Switch|Button|Control/i.test(x)) return "🔘";
+  if(/Protection|MCB|Fuse/i.test(x)) return "🛡️";
+  if(/PLC/i.test(x)) return "🧠";
+  if(/VFD/i.test(x)) return "📟";
+  if(/Battery/i.test(x)) return "🔋";
+  if(/PV/i.test(x)) return "☀️";
+  if(/Transformer/i.test(x)) return "⚡";
+  if(/Meter|Multimeter/i.test(x)) return "📐";
+  return "⚙️";
 }
 
 function workshopSelect(name,el){
-
-el.classList.toggle("selected");
-
-if(el.classList.contains("selected")){
-workshopState.selected.push(name);
-recordWorkshopAction("Selected "+name);
-}else{
-workshopState.selected=
-workshopState.selected.filter(x=>x!==name);
-recordWorkshopAction("Removed "+name);
-}
+  el.classList.toggle("selected");
+  const on=el.classList.contains("selected");
+  el.setAttribute("aria-pressed",on?"true":"false");
+  if(on){
+    workshopState.selected.push(name);
+    recordWorkshopAction("Selected "+name);
+  }else{
+    workshopState.selected=workshopState.selected.filter(x=>x!==name);
+    recordWorkshopAction("Removed "+name);
+  }
 }
 
 function recordWorkshopAction(action){
-workshopState.actions.push({
-action,
-time:Date.now()
-});
+  workshopState.actions.push({action,time:Date.now()});
+}
+
+function fitConductor(wire,target,btn){
+  const zone=document.querySelector(`.dropzone[data-wire="${wire}"]`);
+  if(!zone) return;
+  workshopState.connections[wire]=target;
+  zone.classList.remove("wrong");
+  zone.classList.add("connected");
+  zone.textContent="✓ "+wire+" conductor connected";
+  if(btn) btn.setAttribute("aria-pressed","true");
+  recordWorkshopAction("Connected "+wire+" conductor → "+target);
 }
 
 function dropConductor(event,wire,target){
-
-event.preventDefault();
-
-const dropped=event.dataTransfer.getData("conductor");
-
-if(dropped!==wire){
-
-showWorkshopMessage(
-"Incorrect simulated terminal placement. Review the conductor identification."
-);
-
-recordWorkshopAction(
-"Incorrect connection: "+dropped+" → "+target
-);
-
-return;
-}
-
-workshopState.connections[wire]=target;
-
-const zone=event.currentTarget;
-zone.classList.add("connected");
-zone.innerHTML="✓ "+wire+" conductor connected";
-
-recordWorkshopAction(
-"Connected "+wire+" conductor → "+target
-);
-}
-
-function showWorkshopMessage(msg){
-
-const old=document.getElementById("workshopMessage");
-
-if(old)old.remove();
-
-const div=document.createElement("div");
-
-div.id="workshopMessage";
-div.className="notice";
-div.style.borderColor="var(--yellow)";
-div.style.color="var(--yellow)";
-div.innerHTML=esc(msg);
-
-document.querySelector(".workshop")
-.appendChild(div);
+  event.preventDefault();
+  const dropped=event.dataTransfer.getData("conductor");
+  if(dropped!==wire){
+    const zone=event.currentTarget;
+    zone.classList.add("wrong");
+    zone.textContent="✕ "+dropped+" placed on "+target+" — incorrect";
+    recordWorkshopAction("Incorrect connection: "+dropped+" → "+target);
+    return;
+  }
+  fitConductor(wire,target);
 }
 
 function finishWorkshop(){
+  const conn=workshopState.connections;
+  const requirements=[
+    {wire:"Brown",to:"L"},
+    {wire:"Blue",to:"N"},
+    {wire:"Green/Yellow",to:"PE"}
+  ];
+  const results=requirements.map(r=>({
+    ...r,
+    ok: conn[r.wire]===r.to
+  }));
+  const correct=results.filter(r=>r.ok).length;
+  const required=requirements.length;
+  const missing=required-correct;
+  const score=Math.round(correct/required*100);
 
-const connections=Object.keys(workshopState.connections);
+  data.labs++;
+  data.xp+=25;
+  logActivity("Lab",currentLab);
+  save();
 
-const correct=connections.length;
+  document.getElementById("labsPage").innerHTML=`
+    <div class="eyebrow">FINAL JOB EVALUATION</div>
+    <h1>${esc(currentLab)}</h1>
 
-const required=3;
+    <div class="result">
+      <div>SIMULATION RESULT</div>
+      <strong>${score}%</strong>
+      <p style="margin-top:8px">${correct}/${required} required connections correct.</p>
+    </div>
 
-const missing=Math.max(0,required-correct);
+    <div class="labsection">
+      <h2>Conductor Checklist</h2>
+      <ul style="list-style:none;padding:0;margin:0">
+        ${results.map(r=>`
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center">
+            <span style="color:${r.ok?"var(--green)":"var(--red)"}">${r.ok?"✓":"✕"}</span>
+            <span style="flex:1">${esc(r.wire)} → ${esc(r.to)}</span>
+            <span style="font-size:11px;color:var(--muted)">${r.ok?"correct":"missing / incorrect"}</span>
+          </li>`).join("")}
+      </ul>
+    </div>
 
-const score=Math.round((correct/required)*100);
+    <div class="labsection">
+      <h2>Missing / Incorrect</h2>
+      <p>
+        ${missing
+          ? "⚠ "+missing+" required simulated connection(s) were not completed correctly."
+          : "✓ All required conductor connections were correct."}
+      </p>
+    </div>
 
-data.labs++;
-data.xp+=25;
+    <div class="labsection">
+      <h2>Why It Matters</h2>
+      <p>
+        Electrical conductors must be identified and connected to the
+        appropriate terminals according to the applicable circuit and
+        equipment documentation. An incorrect connection can produce an
+        unsafe or non-operating circuit.
+      </p>
+    </div>
 
-logActivity("Lab",currentLab);
-save();
+    <div class="labsection">
+      <h2>Safe Simulated Consequence</h2>
+      <p>
+        ElectroBrain represents an incorrect arrangement as a simulated
+        fault or non-operating condition. This does not reproduce the
+        hazards of a real electrical installation.
+      </p>
+    </div>
 
-document.getElementById("labsPage").innerHTML=`
+    <div class="labsection">
+      <h2>Correction</h2>
+      <p>
+        Review the reference arrangement, identify each conductor,
+        inspect the target terminal and repeat the connection in the
+        Free Workshop.
+      </p>
+    </div>
 
-<div class="eyebrow">FINAL JOB EVALUATION</div>
-<h1>${esc(currentLab)}</h1>
-
-<div class="result">
-<div>SIMULATION RESULT</div>
-<strong>${Math.min(100,score)}%</strong>
-<p style="margin-top:8px">
-Evaluation performed after FINISH JOB.
-</p>
-</div>
-
-<div class="labsection">
-<h2>Correct Connections</h2>
-<p>
-${correct?connections.map(x=>"✓ "+esc(x)+" conductor connected").join("<br>"):
-"No correct conductor connections recorded."}
-</p>
-</div>
-
-<div class="labsection">
-<h2>Missing / Incorrect</h2>
-<p>
-${missing?
-"⚠ "+missing+" required simulated connection(s) were not completed.":
-"✓ No required conductor connection was missing."}
-</p>
-</div>
-
-<div class="labsection">
-<h2>Why It Matters</h2>
-<p>
-Electrical conductors must be identified and connected to the
-appropriate terminals according to the applicable circuit and
-equipment documentation. An incorrect connection can produce an
-unsafe or non-operating circuit.
-</p>
-</div>
-
-<div class="labsection">
-<h2>Safe Simulated Consequence</h2>
-<p>
-ElectroBrain represents an incorrect arrangement as a simulated
-fault or non-operating condition. This does not reproduce the
-hazards of a real electrical installation.
-</p>
-</div>
-
-<div class="labsection">
-<h2>Correction</h2>
-<p>
-Review the reference arrangement, identify each conductor,
-inspect the target terminal and repeat the connection in the
-Free Workshop.
-</p>
-</div>
-
-<button class="btn" style="width:100%;margin-top:12px"
-onclick="enterFreeWorkshop()">
-Replay Job
-</button>
-
-<button class="btn2" style="width:100%;margin-top:8px"
-onclick="renderLabs()">
-Back to Labs
-</button>`;
+    <button class="btn" style="width:100%;margin-top:12px" onclick="enterFreeWorkshop()">Replay Job</button>
+    <button class="btn2" style="width:100%;margin-top:8px" onclick="renderLabs()">Back to Labs</button>`;
 }
 
 /* =========================================================
    PRACTICE
    ========================================================= */
 
-let practiceModeState="Theory";
 let practiceQuestions=[];
 let practiceIndex=0;
 let practiceScore=0;
 let practiceTopic="";
+let _theoryCache=null;
+
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
 
 function getTheoryTopics(){
-
-let all=[];
-
-Object.keys(CURRICULUM).forEach(level=>{
-CURRICULUM[level].forEach(subject=>{
-subject.chapters.forEach(ch=>{
-const content=getLessonContent(ch.topic,subject.subject);
-
-all.push({
-level,
-subject:subject.subject,
-title:ch.topic,
-question:{
-q:`Which statement best describes "${ch.topic}"?`,
-a:[
-content.definition,
-"It is unrelated to electrical engineering.",
-"It is only a mechanical tool.",
-"It is only a programming command."
-],
-correct:0,
-why:content.importance
-}
-});
-});
-});
-});
-
-return all;
+  if(_theoryCache) return _theoryCache;
+  const all=[];
+  Object.keys(CURRICULUM).forEach(level=>{
+    CURRICULUM[level].forEach(subject=>{
+      subject.chapters.forEach(ch=>{
+        const content=getLessonContent(ch.topic,subject.subject);
+        all.push({
+          level,
+          subject:subject.subject,
+          title:ch.topic,
+          question:{
+            q:`Which statement best describes "${ch.topic}"?`,
+            a:[
+              content.definition,
+              "It is unrelated to electrical engineering.",
+              "It is only a mechanical tool.",
+              "It is only a programming command."
+            ],
+            correct:0,
+            why:content.importance
+          }
+        });
+      });
+    });
+  });
+  _theoryCache=all;
+  return all;
 }
 
 const PRACTICAL_Q=[
-["Socket Outlet Assembly","What should be identified before making a simulated connection?",["The required terminals and conductors","Room colour","Screen brightness","Nothing"],0],
-["Two-Way Lighting","Two-way lighting provides control from:",["Two locations","No locations","Only a transformer","Only a motor"],0],
-["DOL Starter","DOL means:",["Direct-On-Line","Digital Output Load","Dual Overload Logic","Direct Open Load"],0],
-["Star-Delta Starter","A star-delta starter is associated with:",["Motor starting","Battery storage only","Lighting decoration","Temperature measurement"],0],
-["Motor Mounting","Before mounting a motor, inspect:",["Mounting arrangement and equipment condition","Paint colour only","Room colour","Nameplate font"],0],
-["PLC I/O Wiring","PLC inputs commonly receive signals from:",["Sensors and switches","Paint brushes","Motor frames","Labels"],0],
-["VFD Setup","A VFD controls an AC motor primarily through:",["Controlled frequency and voltage","Paint thickness","Bearing colour","Cable length"],0],
-["Multimeter Identification","A multimeter can commonly measure:",["Voltage, current and resistance","Only motor speed","Only cable length","Only labels"],0],
-["Transformer Inspection","A conventional transformer operates through:",["Electromagnetic induction","Mechanical friction","Combustion","Hydraulic pressure"],0],
-["PV System Layout","PV modules produce:",["DC electrical power","Only mechanical power","Compressed air","Hydraulic pressure"],0],
-["Domestic Fault Tracing","Good fault finding should be:",["Systematic and based on circuit information","Random","Based only on guessing","Done without inspection"],0],
-["Industrial Fault Tracing","Industrial troubleshooting should use:",["Logical testing and documentation","Random replacement","Guessing","No circuit information"],0]
+  ["Socket Outlet Assembly","What should be identified before making a simulated connection?",["The required terminals and conductors","Room colour","Screen brightness","Nothing"],0],
+  ["Two-Way Lighting","Two-way lighting provides control from:",["Two locations","No locations","Only a transformer","Only a motor"],0],
+  ["DOL Starter","DOL means:",["Direct-On-Line","Digital Output Load","Dual Overload Logic","Direct Open Load"],0],
+  ["Star-Delta Starter","A star-delta starter is associated with:",["Motor starting","Battery storage only","Lighting decoration","Temperature measurement"],0],
+  ["Motor Mounting","Before mounting a motor, inspect:",["Mounting arrangement and equipment condition","Paint colour only","Room colour","Nameplate font"],0],
+  ["PLC I/O Wiring","PLC inputs commonly receive signals from:",["Sensors and switches","Paint brushes","Motor frames","Labels"],0],
+  ["VFD Setup","A VFD controls an AC motor primarily through:",["Controlled frequency and voltage","Paint thickness","Bearing colour","Cable length"],0],
+  ["Multimeter Identification","A multimeter can commonly measure:",["Voltage, current and resistance","Only motor speed","Only cable length","Only labels"],0],
+  ["Transformer Inspection","A conventional transformer operates through:",["Electromagnetic induction","Mechanical friction","Combustion","Hydraulic pressure"],0],
+  ["PV System Layout","PV modules produce:",["DC electrical power","Only mechanical power","Compressed air","Hydraulic pressure"],0],
+  ["Domestic Fault Tracing","Good fault finding should be:",["Systematic and based on circuit information","Random","Based only on guessing","Done without inspection"],0],
+  ["Industrial Fault Tracing","Industrial troubleshooting should use:",["Logical testing and documentation","Random replacement","Guessing","No circuit information"],0]
 ];
 
 function renderPractice(){
+  const p=document.getElementById("practicePage");
 
-const p=document.getElementById("practicePage");
+  if(practiceQuestions.length){
+    renderPracticeQuestion();
+    return;
+  }
 
-if(practiceQuestions.length){
-renderPracticeQuestion();
-return;
-}
+  p.innerHTML=`
+    <div class="eyebrow">TEST • PRACTICE</div>
+    <h1>Practice</h1>
+    <p>Test theory from Learn and practical knowledge from Labs.</p>
 
-p.innerHTML=`
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="${practiceModeState==="Theory"}" class="${practiceModeState==="Theory"?"active":""}"
+              onclick="practiceModeState='Theory';savePrefs();renderPractice()">
+        📘 Theory
+      </button>
+      <button role="tab" aria-selected="${practiceModeState==="Practical"}" class="${practiceModeState==="Practical"?"active":""}"
+              onclick="practiceModeState='Practical';savePrefs();renderPractice()">
+        🧪 Practical
+      </button>
+    </div>
 
-<div class="eyebrow">TEST • PRACTICE</div>
-<h1>Practice</h1>
-<p>
-Test theory from Learn and practical knowledge from Labs.
-</p>
+    <div class="card">
+      <h2>${practiceModeState} Practice</h2>
+      <p>
+        ${practiceModeState==="Theory"
+          ?"Questions are connected to topics from the Learn curriculum. Each session has 5 randomly selected questions."
+          :"Questions assess knowledge from the Labs practical library."}
+      </p>
+    </div>
 
-<div class="tabs">
-<button class="${practiceModeState==="Theory"?"active":""}"
-onclick="practiceModeState='Theory';renderPractice()">
-📘 Theory
-</button>
-
-<button class="${practiceModeState==="Practical"?"active":""}"
-onclick="practiceModeState='Practical';renderPractice()">
-🧪 Practical
-</button>
-</div>
-
-<div class="card">
-<h2>${practiceModeState} Practice</h2>
-<p>
-${practiceModeState==="Theory"
-?"Questions are connected to topics from the Learn curriculum."
-:"Questions assess knowledge from the Labs practical library."}
-</p>
-</div>
-
-<div class="grid" style="margin-top:12px">
-
-${practiceModeState==="Theory"
-
-?getTheoryTopics().map((x,i)=>`
-<div class="topic" onclick="startTheoryPractice(${i})">
-<div class="ico">📘</div>
-<b>${esc(x.title)}</b>
-<small>${esc(x.level)} • ${esc(x.subject)}</small>
-</div>`).join("")
-
-:PRACTICAL_Q.map((x,i)=>`
-<div class="topic" onclick="startPracticalPractice(${i})">
-<div class="ico">🧪</div>
-<b>${esc(x[0])}</b>
-<small>Practical assessment</small>
-</div>`).join("")}
-
-</div>`;
+    <div class="grid" style="margin-top:12px">
+      ${practiceModeState==="Theory"
+        ? getTheoryTopics().slice(0,40).map((x,i)=>`
+            <div class="topic" role="button" tabindex="0"
+                 onclick="startTheoryPractice(${i})"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();startTheoryPractice(${i})}">
+              <div class="ico" aria-hidden="true">📘</div>
+              <b>${esc(x.title)}</b>
+              <small>${esc(x.level)} • ${esc(x.subject)}</small>
+            </div>`).join("")
+        : PRACTICAL_Q.map((x,i)=>`
+            <div class="topic" role="button" tabindex="0"
+                 onclick="startPracticalPractice(${i})"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();startPracticalPractice(${i})}">
+              <div class="ico" aria-hidden="true">🧪</div>
+              <b>${esc(x[0])}</b>
+              <small>Practical assessment</small>
+            </div>`).join("")}
+    </div>`;
 }
 
 function startTheoryPractice(i){
+  const all=getTheoryTopics();
+  const item=all[i];
 
-const item=getTheoryTopics()[i];
+  /* Build a 5-question session starting with the selected topic */
+  const others=shuffle(all.filter((_,j)=>j!==i)).slice(0,4);
+  const set=[item,...others];
 
-practiceQuestions=[item.question];
-practiceIndex=0;
-practiceScore=0;
-practiceTopic=item.title;
+  practiceQuestions=set.map(x=>{
+    const answers=shuffle(x.question.a.map((text,idx)=>({text,correct:idx===x.question.correct})));
+    return {
+      q:x.question.q,
+      a:answers.map(a=>a.text),
+      correct:answers.findIndex(a=>a.correct),
+      why:x.question.why
+    };
+  });
 
-renderPracticeQuestion();
+  practiceIndex=0;
+  practiceScore=0;
+  practiceTopic=item.title;
+  renderPracticeQuestion();
 }
 
 function startPracticalPractice(i){
-
-const x=PRACTICAL_Q[i];
-
-practiceQuestions=[{
-q:x[1],
-a:x[2],
-correct:x[3],
-why:"This practical knowledge is associated with the selected ElectroBrain Lab."
-}];
-
-practiceIndex=0;
-practiceScore=0;
-practiceTopic=x[0];
-
-renderPracticeQuestion();
+  const x=PRACTICAL_Q[i];
+  const answers=shuffle(x[2].map((text,idx)=>({text,correct:idx===x[3]})));
+  practiceQuestions=[{
+    q:x[1],
+    a:answers.map(a=>a.text),
+    correct:answers.findIndex(a=>a.correct),
+    why:"This practical knowledge is associated with the selected ElectroBrain Lab."
+  }];
+  practiceIndex=0;
+  practiceScore=0;
+  practiceTopic=x[0];
+  renderPracticeQuestion();
 }
 
 function renderPracticeQuestion(){
+  const q=practiceQuestions[practiceIndex];
+  if(!q){ finishPractice(); return; }
 
-const q=practiceQuestions[practiceIndex];
+  document.getElementById("practicePage").innerHTML=`
+    <button class="back" onclick="practiceQuestions=[];renderPractice()">← Practice Library</button>
 
-if(!q){
-finishPractice();
-return;
-}
+    <div class="eyebrow">${esc(practiceTopic)} • QUESTION ${practiceIndex+1} / ${practiceQuestions.length}</div>
 
-document.getElementById("practicePage").innerHTML=`
-
-<button class="back"
-onclick="practiceQuestions=[];renderPractice()">
-← Practice Library
-</button>
-
-<div class="eyebrow">
-${esc(practiceTopic)} • QUESTION ${practiceIndex+1}
-</div>
-
-<div class="quiz">
-
-<div class="question">${esc(q.q)}</div>
-
-<div class="answers">
-${q.a.map((a,i)=>`
-<button class="answer"
-onclick="answerPractice(${i},${q.correct})">
-${esc(a)}
-</button>`).join("")}
-</div>
-
-<div id="practiceFeedback"></div>
-
-</div>`;
+    <div class="quiz">
+      <div class="question">${esc(q.q)}</div>
+      <div class="answers">
+        ${q.a.map((a,i)=>`
+          <button class="answer" onclick="answerPractice(${i},${q.correct})">
+            ${esc(a)}
+          </button>`).join("")}
+      </div>
+      <div id="practiceFeedback"></div>
+    </div>`;
 }
 
 function answerPractice(selected,correct){
+  const buttons=document.querySelectorAll(".answer");
+  buttons.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===correct) b.classList.add("correct");
+    if(i===selected&&selected!==correct) b.classList.add("wrong");
+  });
 
-const buttons=document.querySelectorAll(".answer");
+  const ok=selected===correct;
+  if(ok) practiceScore++;
 
-buttons.forEach((b,i)=>{
-b.disabled=true;
-if(i===correct)b.classList.add("correct");
-if(i===selected&&selected!==correct)b.classList.add("wrong");
-});
+  data.attempts++;
+  data.practice++;
+  if(ok){ data.correct++; data.xp+=10; }
+  logActivity("Practice",practiceTopic);
+  save();
 
-const ok=selected===correct;
-
-if(ok)practiceScore++;
-
-data.attempts++;
-data.practice++;
-
-if(ok){
-data.correct++;
-data.xp+=10;
-}
-
-logActivity("Practice",practiceTopic);
-save();
-
-document.getElementById("practiceFeedback").innerHTML=`
-
-<div class="feedback">
-
-<b style="color:${ok?"var(--green)":"var(--red)"}">
-${ok?"Correct":"Incorrect"}
-</b>
-
-<br><br>
-
-${esc(practiceQuestions[practiceIndex].why)}
-
-<button class="btn" style="width:100%;margin-top:12px"
-onclick="nextPractice()">
-${practiceIndex+1<practiceQuestions.length?"Next":"Finish"}
-</button>
-
-</div>`;
+  document.getElementById("practiceFeedback").innerHTML=`
+    <div class="feedback">
+      <b style="color:${ok?"var(--green)":"var(--red)"}">${ok?"Correct":"Incorrect"}</b>
+      <br><br>
+      ${esc(practiceQuestions[practiceIndex].why)}
+      <button class="btn" style="width:100%;margin-top:12px" onclick="nextPractice()">
+        ${practiceIndex+1<practiceQuestions.length?"Next":"Finish"}
+      </button>
+    </div>`;
 }
 
 function nextPractice(){
-practiceIndex++;
-renderPracticeQuestion();
+  practiceIndex++;
+  renderPracticeQuestion();
 }
 
 function finishPractice(){
+  const pct=practiceQuestions.length
+    ?Math.round(practiceScore/practiceQuestions.length*100)
+    :0;
 
-const pct=practiceQuestions.length?
-Math.round(practiceScore/practiceQuestions.length*100):0;
+  document.getElementById("practicePage").innerHTML=`
+    <div class="eyebrow">PRACTICE COMPLETE</div>
+    <h1>${esc(practiceTopic)}</h1>
 
-document.getElementById("practicePage").innerHTML=`
+    <div class="result">
+      <div>SCORE</div>
+      <strong>${pct}%</strong>
+      <p style="margin-top:8px">${practiceScore}/${practiceQuestions.length} correct</p>
+    </div>
 
-<div class="eyebrow">PRACTICE COMPLETE</div>
-<h1>${esc(practiceTopic)}</h1>
+    <button class="btn" style="width:100%;margin-top:12px"
+            onclick="practiceQuestions=[];renderPractice()">
+      Back to Practice
+    </button>
+    <button class="btn2" style="width:100%;margin-top:8px" onclick="go('profile')">
+      View Profile
+    </button>`;
 
-<div class="result">
-<div>SCORE</div>
-<strong>${pct}%</strong>
-<p style="margin-top:8px">
-${practiceScore}/${practiceQuestions.length} correct
-</p>
-</div>
-
-<button class="btn" style="width:100%;margin-top:12px"
-onclick="practiceQuestions=[];renderPractice()">
-Back to Practice
-</button>
-
-<button class="btn2" style="width:100%;margin-top:8px"
-onclick="go('profile')">
-View Profile
-</button>`;
-
-practiceQuestions=[];
+  practiceQuestions=[];
 }
 
 /* =========================================================
@@ -2612,246 +2581,208 @@ practiceQuestions=[];
    ========================================================= */
 
 function renderProfile(){
+  const accuracy=data.attempts?Math.round(data.correct/data.attempts*100):0;
+  const total=data.learned.length+data.practice+data.labs+data.calculations;
+  const progress=Math.min(100,total);
 
-const accuracy=data.attempts?
-Math.round(data.correct/data.attempts*100):0;
+  const achievements=[
+    ["⚡","First Calculation",data.calculations>=1],
+    ["📘","First Lesson",data.learned.length>=1],
+    ["✓","Practice Started",data.practice>=1],
+    ["🧪","First Lab",data.labs>=1],
+    ["🏆","10 Questions",data.attempts>=10],
+    ["⚙️","100 XP",data.xp>=100],
+    ["🔥","3-Day Streak",data.streak>=3],
+    ["📚","10 Lessons",data.learned.length>=10]
+  ];
 
-const total=
-data.learned.length+
-data.practice+
-data.labs+
-data.calculations;
+  document.getElementById("profilePage").innerHTML=`
+    <div class="profilehero">
+      <div class="avatar" aria-hidden="true">⚡</div>
+      <div>
+        <div class="eyebrow">ENGINEERING PROFILE</div>
+        <h1>${esc(data.name)}</h1>
+        <p>${esc(data.level)} • 🔥 ${data.streak||0}-day streak</p>
+      </div>
+      <button class="iconbtn" onclick="editProfile()" aria-label="Edit profile">✎</button>
+    </div>
 
-const progress=Math.min(100,total);
+    <div class="grid4" style="margin-top:10px">
+      <div class="metric"><b>${data.xp}</b><span>XP</span></div>
+      <div class="metric"><b>${data.learned.length}</b><span>Lessons</span></div>
+      <div class="metric"><b>${data.labs}</b><span>Labs</span></div>
+      <div class="metric"><b>${data.calculations}</b><span>Calculations</span></div>
+    </div>
 
-const achievements=[
-["⚡","First Calculation",data.calculations>=1],
-["📘","First Lesson",data.learned.length>=1],
-["✓","Practice Started",data.practice>=1],
-["🧪","First Lab",data.labs>=1],
-["🏆","10 Questions",data.attempts>=10],
-["⚙️","100 XP",data.xp>=100]
-];
+    <div class="card" style="margin-top:18px">
+      <h2>Performance</h2>
+      <div style="display:flex;justify-content:space-between;margin:10px 0">
+        <span>Practice Accuracy</span><b>${accuracy}%</b>
+      </div>
+      <div class="progress"><i style="width:${accuracy}%"></i></div>
 
-document.getElementById("profilePage").innerHTML=`
+      <div style="display:flex;justify-content:space-between;margin:15px 0 10px">
+        <span>Overall Activity</span><b>${progress}%</b>
+      </div>
+      <div class="progress"><i style="width:${progress}%"></i></div>
+    </div>
 
-<div class="profilehero">
+    <div style="margin-top:20px">
+      <h2>Achievements</h2>
+      <div class="grid">
+        ${achievements.map(x=>`
+          <div class="badge ${x[2]?"":"locked"}">
+            <b>${x[0]} ${esc(x[1])}</b>
+            <small>${x[2]?"Unlocked":"Locked"}</small>
+          </div>`).join("")}
+      </div>
+    </div>
 
-<div class="avatar">⚡</div>
+    <div style="margin-top:20px">
+      <h2>Account & Data</h2>
+      <div class="menu">
+        <button onclick="editProfile()">
+          👤
+          <span>
+            <b>Profile Details</b>
+            <small>Name and academic level</small>
+          </span>›
+        </button>
+        <button onclick="showBookmarks()">
+          🔖
+          <span>
+            <b>Bookmarks</b>
+            <small>${data.bookmarks.length} saved lessons</small>
+          </span>›
+        </button>
+        <button onclick="showActivity()">
+          ◷
+          <span>
+            <b>Recent Activity</b>
+            <small>${data.activity.length} records</small>
+          </span>›
+        </button>
+        <button onclick="resetData()">
+          ⚙️
+          <span>
+            <b>Reset Local Progress</b>
+            <small>Clear data stored on this device</small>
+          </span>›
+        </button>
+      </div>
+    </div>
 
-<div>
-<div class="eyebrow">ENGINEERING PROFILE</div>
-<h1>${esc(data.name)}</h1>
-<p>${esc(data.level)}</p>
-</div>
-
-<button class="iconbtn" onclick="editProfile()">✎</button>
-
-</div>
-
-<div class="grid4" style="margin-top:10px">
-
-<div class="metric">
-<b>${data.xp}</b>
-<span>XP</span>
-</div>
-
-<div class="metric">
-<b>${data.learned.length}</b>
-<span>Lessons</span>
-</div>
-
-<div class="metric">
-<b>${data.labs}</b>
-<span>Labs</span>
-</div>
-
-<div class="metric">
-<b>${data.calculations}</b>
-<span>Calculations</span>
-</div>
-
-</div>
-
-<div class="card" style="margin-top:18px">
-
-<h2>Performance</h2>
-
-<div style="display:flex;justify-content:space-between;margin:10px 0">
-<span>Practice Accuracy</span>
-<b>${accuracy}%</b>
-</div>
-
-<div class="progress">
-<i style="width:${accuracy}%"></i>
-</div>
-
-<div style="display:flex;justify-content:space-between;margin:15px 0 10px">
-<span>Overall Activity</span>
-<b>${progress}%</b>
-</div>
-
-<div class="progress">
-<i style="width:${progress}%"></i>
-</div>
-
-</div>
-
-<div style="margin-top:20px">
-
-<h2>Achievements</h2>
-
-<div class="grid">
-
-${achievements.map(x=>`
-<div class="badge" style="opacity:${x[2]?1:.45}">
-<b>${x[0]} ${x[1]}</b>
-<small>${x[2]?"Unlocked":"Locked"}</small>
-</div>`).join("")}
-
-</div>
-</div>
-
-<div style="margin-top:20px">
-
-<h2>Account & Data</h2>
-
-<div class="menu">
-
-<button onclick="editProfile()">
-👤
-<span>
-<b>Profile Details</b>
-<small>Name and academic level</small>
-</span>›
-</button>
-
-<button onclick="showBookmarks()">
-🔖
-<span>
-<b>Bookmarks</b>
-<small>${data.bookmarks.length} saved lessons</small>
-</span>›
-</button>
-
-<button onclick="showActivity()">
-◷
-<span>
-<b>Recent Activity</b>
-<small>${data.activity.length} records</small>
-</span>›
-</button>
-
-<button onclick="resetData()">
-⚙️
-<span>
-<b>Reset Local Progress</b>
-<small>Clear data stored on this device</small>
-</span>›
-</button>
-
-</div>
-</div>
-
-<div class="card" style="margin-top:20px;text-align:center">
-
-<h2>ElectroBrain ⚡</h2>
-
-<p>Learn • Calculate • Experiment</p>
-
-<p style="margin-top:7px">
-Created by Richmond Owusu
-</p>
-
-<p style="margin-top:4px">
-SHS • TVET • UNIVERSITY 100–400
-</p>
-
-<p style="margin-top:8px;color:var(--blue)">
-WhatsApp: 0544920538
-</p>
-
-</div>`;
+    <div class="card" style="margin-top:20px;text-align:center">
+      <h2>ElectroBrain ⚡</h2>
+      <p>Learn • Calculate • Experiment</p>
+      <p style="margin-top:7px">Created by Richmond Owusu</p>
+      <p style="margin-top:4px">SHS • TVET • University 100–400</p>
+      <p style="margin-top:8px;color:var(--blue)">WhatsApp: 0544920538</p>
+    </div>`;
 }
 
 function editProfile(){
-
-const name=prompt("Display name:",data.name);
-
-if(name!==null&&name.trim())
-data.name=name.trim().slice(0,40);
-
-const level=prompt(
-"Academic level:\n\n"+LEVELS.join("\n"),
-data.level
-);
-
-if(level!==null&&level.trim())
-data.level=level.trim().slice(0,40);
-
-save();
-renderProfile();
+  openModal({
+    title:"Edit Profile",
+    bodyHtml:`
+      <div class="formrow">
+        <label for="pf-name">Display name</label>
+        <input id="pf-name" type="text" maxlength="40" value="${esc(data.name)}">
+      </div>
+      <div class="formrow">
+        <label for="pf-level">Academic level</label>
+        <select id="pf-level">
+          ${LEVELS.map(l=>`<option value="${esc(l)}" ${l===data.level?"selected":""}>${esc(l)}</option>`).join("")}
+        </select>
+      </div>`,
+    actions:[
+      {label:"Cancel"},
+      {label:"Save",primary:true,onClick:()=>{
+        const name=document.getElementById("pf-name").value.trim().slice(0,40);
+        const level=document.getElementById("pf-level").value;
+        if(name) data.name=name;
+        if(LEVELS.includes(level)) data.level=level;
+        save();
+        renderProfile();
+        toast("Profile updated");
+      }}
+    ]
+  });
 }
 
 function showBookmarks(){
+  const items=data.bookmarks.length
+    ? `<ul class="modal-list">${data.bookmarks.map(b=>{
+        const parts=b.split("|");
+        return `<li>${esc(parts[parts.length-2]||b)} — ${esc(parts[parts.length-1]||"")}</li>`;
+      }).join("")}</ul>`
+    : `<p>No bookmarks yet. Bookmark a lesson from the lesson page.</p>`;
 
-alert(
-data.bookmarks.length?
-"Saved Lessons:\n\n"+data.bookmarks.join("\n"):
-"No bookmarks yet."
-);
+  openModal({
+    title:"Bookmarked Lessons",
+    bodyHtml:items,
+    actions:[{label:"Close",primary:true}]
+  });
 }
 
 function showActivity(){
+  const items=data.activity.length
+    ? `<ul class="modal-list">${data.activity.slice(0,15)
+        .map(a=>`<li>${esc(a.type)}: ${esc(a.title)}</li>`).join("")}</ul>`
+    : `<p>No recent activity yet.</p>`;
 
-if(!data.activity.length){
-alert("No recent activity.");
-return;
-}
-
-alert(
-"Recent Activity\n\n"+
-data.activity.slice(0,15)
-.map((x,i)=>`${i+1}. ${x.type}: ${x.title}`)
-.join("\n")
-);
+  openModal({
+    title:"Recent Activity",
+    bodyHtml:items,
+    actions:[{label:"Close",primary:true}]
+  });
 }
 
 function resetData(){
+  openModal({
+    title:"Reset progress?",
+    bodyHtml:`<p>This clears all ElectroBrain progress stored on this device — lessons, bookmarks, labs, calculations and XP. It cannot be undone.</p>`,
+    actions:[
+      {label:"Cancel"},
+      {label:"Reset",primary:true,onClick:()=>{
+        try{ localStorage.removeItem(KEY); }catch(e){}
+        try{ localStorage.removeItem(LEARN_KEY); }catch(e){}
+        try{ localStorage.removeItem(PREF_KEY); }catch(e){}
 
-if(!confirm(
-"Reset all ElectroBrain progress stored on this device?"
-))return;
+        data=defaultData();
+        data.streak=1;
+        data.lastVisit=Date.now();
+        _theoryCache=null;
+        learnState={level:null,subject:null,chapter:null,sub:null};
+        calcState={topic:null,sub:null};
+        practiceQuestions=[];
+        practiceIndex=0;
+        practiceScore=0;
 
-localStorage.removeItem(KEY);
-
-data={
-name:"Engineer",
-level:"SHS / TVET",
-xp:0,
-correct:0,
-attempts:0,
-practice:0,
-labs:0,
-calculations:0,
-learned:[],
-bookmarks:[],
-activity:[],
-streak:0
-};
-
-renderProfile();
+        renderLearn();
+        renderCalc();
+        renderLabs();
+        renderPractice();
+        renderProfile();
+        toast("Progress reset");
+      }}
+    ]
+  });
 }
 
 /* =========================================================
-   START
+   BOOT
    ========================================================= */
 
+/* Lazy render: only the active page renders on load. */
 renderLearn();
-renderCalc();
-renderLabs();
-renderPractice();
-renderProfile();
+save();
+
+/* mark the current nav button active */
+(function markHome(){
+  const b=document.querySelector('nav button[data-page="home"]');
+  if(b){ b.classList.add("active"); b.setAttribute("aria-current","page"); }
+})();
 
 </script>
 
